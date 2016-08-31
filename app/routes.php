@@ -11,7 +11,24 @@
 |
 */
 
-Route::get('/', function()
-{
-	return View::make('hello');
+Route::get('/', function(){
+	
+	$usuario = Usuario::all()->first();
+
+	if ($usuario) {
+		if (Auth::user()) {
+			return Redirect::to('usuario/panel');
+		}else{
+			return View::make('inicio.login');
+		}
+	}else{
+		return Redirect::to('configuracion/inicio');
+	}
 });
+
+Route::controller('configuracion', 'ConfiguracionController');
+
+Route::controller('usuario', 'UsuarioController');
+
+Route::resource('empresa', 'EmpresaController');
+
