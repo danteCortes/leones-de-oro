@@ -19,6 +19,7 @@ class CrearTablaClientes extends Migration {
 			$table->string('nombre');
 			$table->string('direccion');
 			$table->string('telefono');
+			$table->string('contacto');
 		});
 	}
 

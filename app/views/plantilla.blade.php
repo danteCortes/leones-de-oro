@@ -32,7 +32,7 @@
 
   <header class="main-header">
     <!-- Logo -->
-    <a href="<?=URL::to('index2.html')?>" class="logo">
+    <a href="<?=URL::to('usuario/panel')?>" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>L</b>dO</span>
       <!-- logo for regular state and mobile devices -->
@@ -120,50 +120,34 @@
           <img src="<?=URL::to('dist/img/user2-160x160.jpg')?>" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Alexander Pierce</p>
+          <p>{{Auth::user()->persona->nombre}}</p>
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
         <li class="header">MENU ADMINISTRADOR</li>
-        <li class="treeview">
-          <a href="#">
+        <li>
+          <a href="<?=URL::to('empresa')?>">
             <i class="fa fa-bank"></i> <span>Empresas</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
           </a>
-          <ul class="treeview-menu">
-            <li><a href="<?=URL::to('empresa')?>"><i class="fa fa-circle-o"></i> Ver Todos</a></li>
-            <li><a href="<?=URL::to('empresa/create')?>"><i class="fa fa-circle-o"></i> Agregar</a></li>
-          </ul>
+        </li>
+        <li>
+          <a href="<?=URL::to('cliente')?>">
+            <i class="fa fa-bank"></i> <span>Clientes</span>
+          </a>
         </li>
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-circle"></i> <span>Armas</span>
+            <i class="fa fa-users"></i> <span>Personal</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i> Ver Todos</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Agregar</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Asignar</a></li>
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-circle"></i> <span>Uniformes</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i> Ver Uniformes</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Asignar</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Ver Prendas</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Agregar Prendas</a></li>
+            @foreach(Empresa::all() as $empresa)
+            <li><a href="<?=URL::to('trabajador/inicio/'.$empresa->ruc)?>"><i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
+            @endforeach
           </ul>
         </li>
       </ul>
@@ -209,6 +193,12 @@
 <script src="<?=URL::to('dist/js/app.min.js')?>"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="<?=URL::to('dist/js/demo.js')?>"></script>
+
+<script src="<?=URL::to('plugins/input-mask/jquery.inputmask.js')?>"></script>
+
+
+<script src="<?=URL::to('plugins/datatables/jquery.dataTables.min.js')?>"></script>
+<script src="<?=URL::to('plugins/datatables/dataTables.bootstrap.min.js')?>"></script>
 @yield('scripts')
 </body>
 </html>

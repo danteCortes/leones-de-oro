@@ -2,6 +2,11 @@
 
 class UsuarioController extends BaseController{
 
+	public function __construct(){
+
+        $this->beforeFilter('auth', array('except' => 'postLoguearse'));
+    }
+
 	public function postLoguearse(){
 		
 		$password = Input::get('password');

@@ -8,69 +8,45 @@ class EmpresaController extends \BaseController {
 		return View::make('empresa.inicio')->with('empresas', $empresas);
 	}
 
-	public function create()
-	{
-		//
+	public function store(){
+		
+		$empresa = new Empresa;
+		$empresa->ruc = Input::get('ruc');
+		$empresa->nombre = strtoupper(Input::get('nombre'));
+		$empresa->save();
+
+		$mensaje = "LA EMPRESA FUE CREADA CON EXITO.";
+		return Redirect::to('empresa')->with('verde', $mensaje);
 	}
 
+	public function update($id){
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		//
+		$empresa = Empresa::find($id);
+		$empresa->ruc = Input::get('ruc');
+		$empresa->nombre = strtoupper(Input::get('nombre'));
+		$empresa->save();
+
+		$mensaje = "SE MODIFICO LOS DATOS DE LA EMPRESA SATISFACTORIAMENTE.";
+		return Redirect::to('empresa')->with('naranja', $mensaje);
 	}
 
+	public function destroy($id){
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
+		if (Hash::check(Input::get('password'), Auth::user()->password)) {
+			if (Auth::user()->empresa_ruc != $id) {
+				$empresa = Empresa::find($id);
+				$empresa->delete();
+
+				$mensaje = "LA EMPRESA FUE ELIMINADOA SIN PROBLEMAS.";
+				return Redirect::to('empresa')->with('naranja', $mensaje);
+			}else{
+				$mensaje = "ESTA EMPRESA NO SE PUEDE ELIMINAR, DEBIDO A QUE USTED ESTA ASOCIADO A ESTA EMPRESA.
+					LE RECOMENDAMOS CAMBIARSE DE EMPRESA ANTES DE ELIMINARLO.";
+				return Redirect::to('empresa')->with('rojo', $mensaje);
+			}
+		}else{
+			$mensaje = "SU CONTRASEÑA ES ERRONEA, INTENTE NUEVAMENTE.";
+			return Redirect::to('empresa')->with('rojo', $mensaje);
+		}
 	}
-
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
-
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
-
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
-
-
 }

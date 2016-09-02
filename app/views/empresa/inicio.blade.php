@@ -6,6 +6,11 @@ Empresa | Inicio
 
 @section('estilos')
 <link rel="stylesheet" href="<?=URL::to('plugins/datatables/dataTables.bootstrap.css')?>">
+<style type="text/css">
+	.mayuscula{
+		text-transform: uppercase;
+	}
+</style>
 @stop
 
 @section('contenido')
@@ -21,6 +26,70 @@ Empresa | Inicio
   	</ol>
 </section>
 <section class="content">
+	<div class="row">
+		<div class="col-xs-12">
+	      	<a class="btn btn-primary" data-toggle="modal" data-target="#nuevo">
+	        	<i class="fa fa-plus-square"></i> Nueva Empresa
+	      	</a>
+	      	<div class="modal fade modal-primary" id="nuevo" tabindex="-1" role="dialog"
+				aria-labelledby="myModalLabel" aria-hidden="true">
+			  	<div class="modal-dialog">
+				    <div class="modal-content">
+				      	<div class="modal-header">
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span></button>
+					        <h4 class="modal-title">Nueva Empresa</h4>
+				      	</div>
+				      	{{Form::open(array('url'=>'empresa', 'class'=>'form-horizontal', 'method'=>'post'))}}
+					      	<div class="modal-body">
+				                <div class="form-group">
+				                	{{Form::label(null, 'RUC:', array('class'=>'col-sm-2 control-label'))}}
+				                  	<div class="col-sm-10">
+				                  		{{Form::text('ruc', null, array('class'=>'form-control ruc', 'placeholder'=>'RUC',
+				                  		'required'=>''))}}
+				                  	</div>
+				                </div>
+				                <div class="form-group">
+				                  	{{Form::label(null, 'Nombre:', array('class'=>'col-sm-2 control-label'))}}
+				                  	<div class="col-sm-10">
+				                  		{{Form::text('nombre', null, array('class'=>'form-control mayuscula', 'placeholder'=>'NOMBRE',
+				                  		'required'=>''))}}
+				                  	</div>
+				                </div>
+					      	</div>
+					      	<div class="modal-footer clearfix">
+						        <button type="button" class="btn btn-outline" data-dismiss="modal">Cancelar</button>
+						        <button type="submit" class="btn btn-outline pull-left">Guardar</button>
+					      	</div>
+				      	{{Form::close()}}
+				    </div>
+			  	</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+	    	@if(Session::has('rojo'))
+		      	<div class="alert alert-danger alert-dismissable">
+		          	<i class="fa fa-info"></i>
+		          	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		          	<b>Alerta!</b> {{ Session::get('rojo')}}
+		      	</div>
+		  	@elseif(Session::has('verde'))
+		      	<div class="alert alert-success alert-dismissable">
+		          	<i class="fa fa-info"></i>
+		          	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		          	<b>Excelente!</b> {{ Session::get('verde')}}
+		      	</div>
+		  	@elseif(Session::has('naranja'))
+		      	<div class="alert alert-warning alert-dismissable">
+		          	<i class="fa fa-info"></i>
+		          	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		          	<b>Cuidado!</b> {{ Session::get('naranja')}}
+		      	</div>
+		  	@endif
+		</div>
+	</div>
   	<div class="row">
 	    <div class="col-xs-12">
 	      	<div class="box">
@@ -43,11 +112,80 @@ Empresa | Inicio
 				              	<td>{{$empresa->ruc}}</td>
 				              	<td>{{$empresa->nombre}}</td>
 				              	<td>
-				              		<button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#myModal">
-								  	Edit
+				              		<button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#editar{{$empresa->ruc}}">
+								  	Editar
 									</button>
+									<div class="modal fade modal-info" id="editar{{$empresa->ruc}}" tabindex="-1" role="dialog"
+										aria-labelledby="myModalLabel" aria-hidden="true">
+									  	<div class="modal-dialog">
+										    <div class="modal-content">
+										      	<div class="modal-header">
+											        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											          <span aria-hidden="true">&times;</span></button>
+											        <h4 class="modal-title">Editar Empresa</h4>
+										      	</div>
+										      	{{Form::open(array('url'=>'empresa/'.$empresa->ruc, 'class'=>'form-horizontal', 'method'=>'put'))}}
+											      	<div class="modal-body">
+										                <div class="form-group">
+										                	{{Form::label(null, 'RUC:', array('class'=>'col-sm-2 control-label'))}}
+										                  	<div class="col-sm-10">
+										                  		{{Form::text('ruc', $empresa->ruc, array('class'=>'form-control ruc', 'placeholder'=>'RUC',
+										                  		'required'=>''))}}
+										                  	</div>
+										                </div>
+										                <div class="form-group">
+										                  	{{Form::label(null, 'Nombre:', array('class'=>'col-sm-2 control-label'))}}
+										                  	<div class="col-sm-10">
+										                  		{{Form::text('nombre', $empresa->nombre, array('class'=>'form-control mayuscula', 'placeholder'=>'RUC',
+										                  		'required'=>''))}}
+										                  	</div>
+										                </div>
+											      	</div>
+											      	<div class="modal-footer clearfix">
+												        <button type="button" class="btn btn-outline" data-dismiss="modal">Cancelar</button>
+												        <button type="submit" class="btn btn-outline pull-left">Guardar</button>
+											      	</div>
+										      	{{Form::close()}}
+										    </div>
+									  	</div>
+									</div>
 								</td>
-				              	<td><a href="" class="btn btn-danger btn-xs">Borrar</a></td>
+				              	<td>
+				              		<button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#borrar{{$empresa->ruc}}">
+								  	Borrar
+									</button>
+									<div class="modal fade modal-danger" id="borrar{{$empresa->ruc}}" tabindex="-1" role="dialog"
+										aria-labelledby="myModalLabel" aria-hidden="true">
+									  	<div class="modal-dialog">
+										    <div class="modal-content">
+										      	<div class="modal-header">
+											        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											          <span aria-hidden="true">&times;</span></button>
+											        <h4 class="modal-title">Borrar Empresa</h4>
+										      	</div>
+										      	{{Form::open(array('url'=>'empresa/'.$empresa->ruc, 'class'=>'', 'method'=>'delete'))}}
+											      	<div class="modal-body">
+										                <div class="form-group">
+										                	<label>Está a punto de eliminar la empresa "{{$empresa->nombre}}". Algunos datos como usuarios,
+                        									trabajadores, documentos, etc. asociados a esta empresa serán borrados.<br>
+                        									Le recomendamos cambiar los registros asociados a esta empresa antes de eliminarlo.</label>
+										                </div>
+										                <div class="form-group">
+										                  	<label>Para confirmar esta acción se necesita su contraseña, de lo contrario pulse cancelar para
+									                        declinar.</label>
+									                        {{Form::password('password', array('class'=>'form-control input-sm', 'placeholder'=>'PASSWORD',
+									                        'required'=>''))}}
+										                </div>
+											      	</div>
+											      	<div class="modal-footer clearfix">
+												        <button type="button" class="btn btn-outline" data-dismiss="modal">Cancelar</button>
+												        <button type="submit" class="btn btn-outline pull-left">Borrar</button>
+											      	</div>
+										      	{{Form::close()}}
+										    </div>
+									  	</div>
+									</div>
+				              	</td>
 				            </tr>
 			            @endforeach
 		            </tbody>
@@ -57,45 +195,4 @@ Empresa | Inicio
 	    </div>
   	</div>
 </section>
-<div class="example-modal">
-	<div class="modal modal-info">
-	  	<div class="modal-dialog">
-		    <div class="modal-content">
-		      	<div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			          <span aria-hidden="true">&times;</span></button>
-			        <h4 class="modal-title">Info Modal</h4>
-		      	</div>
-		      	<div class="modal-body">
-		        	<p>One fine body&hellip;</p>
-		      	</div>
-		      	<div class="modal-footer">
-			        <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
-			        <button type="button" class="btn btn-outline">Save changes</button>
-		      	</div>
-		    </div>
-	  	</div>
-	</div>
-</div>
-@stop
-
-@section('scripts')
-<script src="<?=URL::to('plugins/datatables/jquery.dataTables.min.js')?>"></script>
-<script src="<?=URL::to('plugins/datatables/dataTables.bootstrap.min.js')?>"></script>
-<script>
-	$(function () {
-	    $("#empresas").DataTable({
-			"oLanguage": {
-				"oPaginate": {
-					"sNext": "Siguiente",
-					"sPrevious": "Anterior",
-				},
-				"sSearch": "Buscar",
-				"sInfo": "Mostrando _START_ a _END_ de _TOTAL_ registros",
-				"sLengthMenu": "Mostrar _MENU_ resultados por página",
-				"sInfoFiltered": " - filtrado de _MAX_ resultados"
-			}
-	    });
-	});
-</script>
 @stop

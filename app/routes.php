@@ -30,5 +30,12 @@ Route::controller('configuracion', 'ConfiguracionController');
 
 Route::controller('usuario', 'UsuarioController');
 
-Route::resource('empresa', 'EmpresaController');
+Route::group(array('before' => 'auth'), function(){
+	
+	Route::resource('empresa', 'EmpresaController', array('except'=>array('create', 'show', 'edit')));
+
+	Route::resource('cliente', 'ClienteController', array('except'=>array('create', 'edit')));
+
+	Route::controller('trabajador', 'TrabajadorController');
+});
 
