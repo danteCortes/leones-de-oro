@@ -64,7 +64,9 @@ Cliente | Mostrar
 		          	</table>
 		        </div>
 	      	</div>
-	      	<a href="<?=URL::to('cliente')?>" class="btn btn-primary">Volver</a>
+	      	@foreach($cliente->empresas as $empresa)
+	      	<a href="<?=URL::to('cliente/inicio/'.$empresa->ruc)?>" class="btn btn-primary">Volver a {{$empresa->nombre}}</a><br>
+	      	@endforeach
 	    </div>
   	</div>
 </section>

@@ -13,4 +13,8 @@ class Empresa extends Eloquent{
 	public function trabajadores(){
 		return $this->hasMany('Trabajador', 'empresa_ruc');
 	}
+
+	public function clientes(){
+		return $this->belongsToMany('Cliente', 'cliente_empresa', 'empresa_ruc', 'cliente_ruc');
+	}
 }

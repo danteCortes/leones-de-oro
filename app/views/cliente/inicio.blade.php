@@ -38,9 +38,9 @@ Cliente | Inicio
 				      	<div class="modal-header">
 					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					          <span aria-hidden="true">&times;</span></button>
-					        <h4 class="modal-title">Nuevo Cliente</h4>
+					        <h4 class="modal-title">Nuevo Cliente de {{$empresa->nombre}}</h4>
 				      	</div>
-				      	{{Form::open(array('url'=>'cliente', 'class'=>'form-horizontal', 'method'=>'post'))}}
+				      	{{Form::open(array('url'=>'cliente/guardar', 'class'=>'form-horizontal', 'method'=>'post'))}}
 					      	<div class="modal-body">
 				                <div class="form-group">
 				                	{{Form::label(null, 'RUC*:', array('class'=>'col-sm-2 control-label'))}}
@@ -59,8 +59,7 @@ Cliente | Inicio
 				                <div class="form-group">
 				                  	{{Form::label(null, 'Dirección*:', array('class'=>'col-sm-2 control-label'))}}
 				                  	<div class="col-sm-10">
-				                  		{{Form::text('direccion', null, array('class'=>'form-control mayuscula input-sm', 'placeholder'=>'DIRECCION',
-				                  		'required'=>''))}}
+				                  		{{Form::text('direccion', null, array('class'=>'form-control mayuscula input-sm', 'placeholder'=>'DIRECCION'))}}
 				                  	</div>
 				                </div>
 				                <div class="form-group">
@@ -77,6 +76,7 @@ Cliente | Inicio
 				                </div>
 					      	</div>
 					      	<div class="modal-footer clearfix">
+					      		{{Form::hidden('empresa', $empresa->ruc)}}
 						        <button type="button" class="btn btn-outline" data-dismiss="modal">Cancelar</button>
 						        <button type="submit" class="btn btn-outline pull-left">Guardar</button>
 					      	</div>
@@ -113,7 +113,7 @@ Cliente | Inicio
 	    <div class="col-xs-12">
 	      	<div class="box">
 		        <div class="box-header">
-		          <h3 class="box-title">Clientes</h3>
+		          <h3 class="box-title">Clientes de {{$empresa->nombre}}</h3>
 		        </div>
 		        <div class="box-body">
 		          <table id="clientes" class="table table-bordered table-striped">
@@ -131,7 +131,7 @@ Cliente | Inicio
 				            <tr>
 				              	<td>{{$cliente->ruc}}</td>
 				              	<td>{{$cliente->nombre}}</td>
-				              	<td><a href="<?=URL::to('cliente/'.$cliente->ruc)?>" class="btn btn-warning btn-xs">Mostrar</a>
+				              	<td><a href="<?=URL::to('cliente/mostrar/'.$cliente->ruc)?>" class="btn btn-warning btn-xs">Mostrar</a>
 				              	</td>
 				              	<td>
 				              		<button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#editar{{$cliente->ruc}}">
@@ -145,7 +145,7 @@ Cliente | Inicio
 											          <span aria-hidden="true">&times;</span></button>
 											        <h4 class="modal-title">Editar Cliente</h4>
 										      	</div>
-										      	{{Form::open(array('url'=>'cliente/'.$cliente->ruc, 'class'=>'form-horizontal', 'method'=>'put'))}}
+										      	{{Form::open(array('url'=>'cliente/editar/'.$cliente->ruc, 'class'=>'form-horizontal', 'method'=>'put'))}}
 											      	<div class="modal-body">
 											      		<div class="row">
 											      			<div class="col-xs-12">
@@ -172,7 +172,7 @@ Cliente | Inicio
 													                  	{{Form::label(null, 'Dirección*:', array('class'=>'col-sm-2 control-label'))}}
 													                  	<div class="col-sm-10">
 													                  		{{Form::text('direccion', $cliente->direccion, array('class'=>'form-control input-sm mayuscula', 'placeholder'=>'DIRECCION',
-													                  		'required'=>'', 'size'=>'80'))}}
+													                  		'size'=>'80'))}}
 													                  	</div>
 											      					</div>
 											      				</div><br>
@@ -197,6 +197,7 @@ Cliente | Inicio
 											      		</div>
 											      	</div>
 											      	<div class="modal-footer clearfix">
+											      		{{Form::hidden('empresa', $empresa->ruc)}}
 												        <button type="button" class="btn btn-outline" data-dismiss="modal">Cancelar</button>
 												        <button type="submit" class="btn btn-outline pull-left">Guardar</button>
 											      	</div>
@@ -218,7 +219,7 @@ Cliente | Inicio
 											          <span aria-hidden="true">&times;</span></button>
 											        <h4 class="modal-title">Borrar cliente</h4>
 										      	</div>
-										      	{{Form::open(array('url'=>'cliente/'.$cliente->ruc, 'class'=>'', 'method'=>'delete'))}}
+										      	{{Form::open(array('url'=>'cliente/borrar/'.$cliente->ruc, 'class'=>'', 'method'=>'delete'))}}
 											      	<div class="modal-body">
 										                <div class="form-group">
 										                	<label>Está a punto de eliminar la cliente "{{$cliente->nombre}}". Algunos datos como trabajadores,
@@ -233,6 +234,7 @@ Cliente | Inicio
 										                </div>
 											      	</div>
 											      	<div class="modal-footer clearfix">
+											      		{{Form::hidden('empresa', $empresa->ruc)}}
 												        <button type="button" class="btn btn-outline" data-dismiss="modal">Cancelar</button>
 												        <button type="submit" class="btn btn-outline pull-left">Borrar</button>
 											      	</div>

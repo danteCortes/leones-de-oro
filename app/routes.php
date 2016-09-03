@@ -34,7 +34,7 @@ Route::group(array('before' => 'auth'), function(){
 	
 	Route::resource('empresa', 'EmpresaController', array('except'=>array('create', 'show', 'edit')));
 
-	Route::resource('cliente', 'ClienteController', array('except'=>array('create', 'edit')));
+	Route::controller('cliente', 'ClienteController');
 
 	Route::controller('trabajador', 'TrabajadorController');
 });
