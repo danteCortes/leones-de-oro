@@ -11,4 +11,8 @@ class Persona extends Eloquent{
 	public function usuario(){
 		return $this->hasOne('Usuario');
 	}
+
+	public function trabajador(){
+		return $this->hasOne('Trabajador', 'persona_dni');
+	}
 }

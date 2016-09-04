@@ -13,4 +13,9 @@ class Trabajador extends Eloquent{
 	public function persona(){
 		return $this->belongsTo('Persona', 'persona_dni');
 	}
+
+	public function documentos(){
+		return $this->belongsToMany('Documento', 'documento_trabajador',
+			'trabajador_id', 'documento_id');
+	}
 }

@@ -201,9 +201,10 @@
 <script src="<?=URL::to('dist/js/app.min.js')?>"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="<?=URL::to('dist/js/demo.js')?>"></script>
-
+<!-- InputMask -->
 <script src="<?=URL::to('plugins/input-mask/jquery.inputmask.js')?>"></script>
-
+<script src="<?=URL::to('plugins/input-mask/jquery.inputmask.date.extensions.js')?>"></script>
+<script src="<?=URL::to('plugins/input-mask/jquery.inputmask.extensions.js')?>"></script>
 
 <script src="<?=URL::to('plugins/datatables/jquery.dataTables.min.js')?>"></script>
 <script src="<?=URL::to('plugins/datatables/dataTables.bootstrap.min.js')?>"></script>

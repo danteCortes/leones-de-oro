@@ -21,8 +21,11 @@ class CrearTablaTrabajadores extends Migration {
 			$table->string('empresa_ruc', 11);
 			$table->foreign('empresa_ruc')->references('ruc')->on('empresas')
 				->onUpdate('cascade')->onDelete('cascade');
+			$table->date('inicio');
+			$table->date('fin');
 			$table->string('cuenta')->nullable();
 			$table->string('banco')->nullable();
+			$table->string('foto');
 		});
 	}
 

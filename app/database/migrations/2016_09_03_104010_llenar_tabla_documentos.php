@@ -39,6 +39,10 @@ class LlenarTablaDocumentos extends Migration {
 		$documento = new Documento;
 		$documento->nombre = 'CERTIFICADO DE ESTUDIOS';
 		$documento->save();
+
+		$documento = new Documento;
+		$documento->nombre = 'CONTRATO';
+		$documento->save();
 	}
 
 	/**

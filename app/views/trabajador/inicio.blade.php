@@ -40,51 +40,77 @@ Trabajador | Inicio
 					          <span aria-hidden="true">&times;</span></button>
 					        <h4 class="modal-title">Nuevo Trabajador de {{$empresa->nombre}}</h4>
 				      	</div>
-				      	{{Form::open(array('url'=>'trabajador/contratar', 'class'=>'form-horizontal', 'method'=>'post'))}}
+				      	{{Form::open(array('url'=>'trabajador/contratar', 'class'=>'form-horizontal', 'method'=>'post', 'files'=>true))}}
 					      	<div class="modal-body">
 				                <div class="form-group">
-				                	{{Form::label(null, 'DNI*:', array('class'=>'col-sm-2 control-label'))}}
-				                  	<div class="col-sm-10">
-				                  		{{Form::text('dni', null, array('class'=>'form-control dni', 'placeholder'=>'DNI',
+				                	{{Form::label(null, 'DNI*:', array('class'=>'col-sm-3 control-label'))}}
+				                  	<div class="col-sm-9">
+				                  		{{Form::text('dni', null, array('class'=>'form-control dni input-sm', 'placeholder'=>'DNI',
 				                  		'required'=>''))}}
 				                  	</div>
 				                </div>
 				                <div class="form-group">
-				                  	{{Form::label(null, 'Nombre*:', array('class'=>'col-sm-2 control-label'))}}
-				                  	<div class="col-sm-10">
-				                  		{{Form::text('nombre', null, array('class'=>'form-control mayuscula', 'placeholder'=>'NOMBRE',
+				                  	{{Form::label(null, 'Nombre*:', array('class'=>'col-sm-3 control-label'))}}
+				                  	<div class="col-sm-9">
+				                  		{{Form::text('nombre', null, array('class'=>'form-control mayuscula input-sm', 'placeholder'=>'NOMBRE',
 				                  		'required'=>''))}}
 				                  	</div>
 				                </div>
 				                <div class="form-group">
-				                  	{{Form::label(null, 'Apellidos*:', array('class'=>'col-sm-2 control-label'))}}
-				                  	<div class="col-sm-10">
-				                  		{{Form::text('apellidos', null, array('class'=>'form-control mayuscula', 'placeholder'=>'APELLIDOS',
+				                  	{{Form::label(null, 'Apellidos*:', array('class'=>'col-sm-3 control-label'))}}
+				                  	<div class="col-sm-9">
+				                  		{{Form::text('apellidos', null, array('class'=>'form-control mayuscula input-sm', 'placeholder'=>'APELLIDOS',
 				                  		'required'=>''))}}
 				                  	</div>
 				                </div>
 				                <div class="form-group">
-				                  	{{Form::label(null, 'Dirección*:', array('class'=>'col-sm-2 control-label'))}}
-				                  	<div class="col-sm-10">
-				                  		{{Form::text('direccion', null, array('class'=>'form-control mayuscula', 'placeholder'=>'DIRECCION'))}}
+				                  	{{Form::label(null, 'Dirección:', array('class'=>'col-sm-3 control-label'))}}
+				                  	<div class="col-sm-9">
+				                  		{{Form::text('direccion', null, array('class'=>'form-control mayuscula input-sm', 'placeholder'=>'DIRECCION'))}}
 				                  	</div>
 				                </div>
 				                <div class="form-group">
-				                  	{{Form::label(null, 'Teléfono:', array('class'=>'col-sm-2 control-label'))}}
-				                  	<div class="col-sm-10">
-				                  		{{Form::text('telefono', null, array('class'=>'form-control mayuscula', 'placeholder'=>'TELEFONO'))}}
+				                  	{{Form::label(null, 'Teléfono:', array('class'=>'col-sm-3 control-label'))}}
+				                  	<div class="col-sm-9">
+				                  		{{Form::text('telefono', null, array('class'=>'form-control mayuscula input-sm', 'placeholder'=>'TELEFONO'))}}
 				                  	</div>
 				                </div>
 				                <div class="form-group">
-				                  	{{Form::label(null, 'Nro Cuenta:', array('class'=>'col-sm-2 control-label'))}}
-				                  	<div class="col-sm-10">
-				                  		{{Form::text('cuenta', null, array('class'=>'form-control mayuscula', 'placeholder'=>'NRO DE CUENTA'))}}
+				                  	{{Form::label(null, 'Inicio*:', array('class'=>'col-sm-3 control-label'))}}
+				                  	<div class="col-sm-9">
+				                  		{{Form::text('inicio', null, array('class'=>'form-control input-sm', 'placeholder'=>'INICIO',
+				                  		'data-inputmask'=>"'alias': 'dd/mm/yyyy'", 'data-mask'=>'', 'required'=>''))}}
 				                  	</div>
 				                </div>
 				                <div class="form-group">
-				                  	{{Form::label(null, 'Banco:', array('class'=>'col-sm-2 control-label'))}}
-				                  	<div class="col-sm-10">
-				                  		{{Form::text('banco', null, array('class'=>'form-control mayuscula', 'placeholder'=>'BANCO'))}}
+				                  	{{Form::label(null, 'Fin*:', array('class'=>'col-sm-3 control-label'))}}
+				                  	<div class="col-sm-9">
+				                  		{{Form::text('fin', null, array('class'=>'form-control input-sm', 'placeholder'=>'FIN',
+				                  		'data-inputmask'=>"'alias': 'dd/mm/yyyy'", 'data-mask'=>'', 'required'=>''))}}
+				                  	</div>
+				                </div>
+				                <div class="form-group">
+				                  	{{Form::label(null, 'Nro Cuenta:', array('class'=>'col-sm-3 control-label'))}}
+				                  	<div class="col-sm-9">
+				                  		{{Form::text('cuenta', null, array('class'=>'form-control mayuscula input-sm', 'placeholder'=>'NRO DE CUENTA'))}}
+				                  	</div>
+				                </div>
+				                <div class="form-group">
+				                  	{{Form::label(null, 'Banco:', array('class'=>'col-sm-3 control-label'))}}
+				                  	<div class="col-sm-9">
+				                  		{{Form::text('banco', null, array('class'=>'form-control mayuscula input-sm', 'placeholder'=>'BANCO'))}}
+				                  	</div>
+				                </div>
+				                <div class="form-group">
+				                  	{{Form::label(null, 'Foto:', array('class'=>'col-sm-3 control-label'))}}
+				                  	<div class="col-sm-9">
+				                  		{{Form::file('foto')}}
+				                  	</div>
+				                </div>
+				                <div class="form-group">
+				                  	{{Form::label(null, 'Contrato*:', array('class'=>'col-sm-3 control-label'))}}
+				                  	<div class="col-sm-9">
+				                  		{{Form::file('contrato', array('required'=>''))}}
 				                  	</div>
 				                </div>
 					      	</div>
@@ -168,6 +194,7 @@ Trabajador | Inicio
 @section('scripts')
 <script>
   	$(function () {
+  		//Datatable con traducción
     	$('#trabajadores').dataTable({            
             "oLanguage": {
                 "oPaginate": {
@@ -180,6 +207,8 @@ Trabajador | Inicio
                 "sInfoFiltered": " - filtrando de _MAX_ resultados"
             }
         });
+        //fecha dd/mm/yyyy
+    	$("[data-mask]").inputmask();
   	});
 </script>
 @stop

@@ -21,6 +21,7 @@ class CrearTablaDocumentoTrabajador extends Migration {
 			$table->integer('trabajador_id')->unsigned();
 			$table->foreign('trabajador_id')->references('id')->on('trabajadores')
 				->onUpdate('cascade')->onDelete('cascade');
+			$table->string('nombre');
 		});
 	}
 
