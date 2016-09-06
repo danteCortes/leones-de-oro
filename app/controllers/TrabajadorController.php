@@ -29,7 +29,7 @@ class TrabajadorController extends BaseController{
 
 				if ($this->guardarFoto(Input::file('foto'), $trabajador->id)) {
 					
-					if ($this->guardarContrato(Input::file('contrato'), $trabajador->id)) {
+					if ($this->guardarDocumento(Input::file('contrato'), $trabajador->id, 8)) {
 				
 						$mensaje = "EL TRABAJADOR FUE CONTRATADO CON EXITO.";
 						return Redirect::to('trabajador/inicio/'.Input::get('empresa'))
@@ -43,7 +43,7 @@ class TrabajadorController extends BaseController{
 					}
 				}else{
 
-					if ($this->guardarContrato(Input::file('contrato'), $trabajador->id)) {
+					if ($this->guardarDocumento(Input::file('contrato'), $trabajador->id, 8)) {
 				
 						$mensaje = "EL TRABAJADOR FUE CONTRATADO CON EXITO, PERO DEBE ACTUALIZAR SU
 							FOTO.";
@@ -69,7 +69,7 @@ class TrabajadorController extends BaseController{
 
 			if ($this->guardarFoto(Input::file('foto'), $trabajador->id)) {
 					
-				if ($this->guardarContrato(Input::file('contrato'), $trabajador->id)) {
+				if ($this->guardarDocumento(Input::file('contrato'), $trabajador->id, 8)) {
 			
 					$mensaje = "EL TRABAJADOR FUE CONTRATADO CON EXITO.";
 					return Redirect::to('trabajador/inicio/'.Input::get('empresa'))
@@ -83,7 +83,7 @@ class TrabajadorController extends BaseController{
 				}
 			}else{
 
-				if ($this->guardarContrato(Input::file('contrato'), $trabajador->id)) {
+				if ($this->guardarDocumento(Input::file('contrato'), $trabajador->id, 8)) {
 			
 					$mensaje = "EL TRABAJADOR FUE CONTRATADO CON EXITO, PERO DEBE ACTUALIZAR SU
 						FOTO.";
@@ -102,15 +102,83 @@ class TrabajadorController extends BaseController{
 
 	public function getVer($id){
 		$trabajador = Trabajador::find($id);
-		return View::make('trabajador.mostrar')->with('trabajador', $trabajador);
+		$empresa = $trabajador->empresa;
+		return View::make('trabajador.mostrar')->with('trabajador', $trabajador)
+			->with('empresa', $empresa);
+	}
+
+	public function postDocumentar(){
+
+		if ($this->guardarDocumento(Input::file('archivo'), Input::get('trabajador_id')
+			,Input::get('documento_id'))) {
+			
+			$mensaje = "EL ARCHIVO FUE GUARDADO CON EXITO.";
+			return Redirect::to('trabajador/ver/'.Input::get('trabajador_id'))
+				->with('verde', $mensaje);
+		}else{
+
+			$mensaje = "HUBO UN ERROR AL GUARDAR EL ARCHIVO. EL FORMATO DEL ARCHIVO DEBE SER .pdf 
+			INTENTE NUEVAMENTE.";
+			return Redirect::to('trabajador/ver/'.Input::get('trabajador_id'))
+				->with('rojo', $mensaje);
+		}
 	}
 
 	public function getEditar($id){
-		return "Por modificar";
+
+		$trabajador = Trabajador::find($id);
+		return View::make('trabajador.editar')->with('trabajador', $trabajador);
+	}
+
+	public function putEditar($id){
+
+		$trabajador = Trabajador::find($id);
+		$persona = $trabajador->persona;
+		if ($this->actualizarPersona($persona->dni, Input::get('dni'), Input::get('nombre'),
+			Input::get('apellidos'), Input::get('direccion'), Input::get('telefono'))) {
+
+			$this->actualizarTrabajador($id, $this->formatoFecha(Input::get('inicio')),
+				$this->formatoFecha(Input::get('fin')), Input::get('cuenta'), Input::get('banco'));
+			
+			$mensaje = "LOS DATOS DEL TRABAJADOR SE ACTUALIZARON CON EXITO.";
+			return Redirect::to('trabajador/inicio/'.$trabajador->empresa->ruc)->with('verde', $mensaje);
+		}else{
+
+			$mensaje = "EL DNI YA ESTA SIENDO USADO POR OTRO TRABAJADOR, CORRIJA EL ERROR E INTENTE NUEVAMENTE.";
+			return Redirect::to('trabajador/inicio/'.$trabajador->empresa->ruc)->with('rojo', $mensaje);
+		}
+	}
+
+	public function putFoto($id){
+
+		if ($this->guardarFoto(Input::file('foto'), $id)) {
+			
+			$mensaje = "LA FOTO FUE ACTUALIZADA CON EXITO.";
+			return Redirect::to("trabajador/editar/".$id)->with('verde', $mensaje);
+		}else{
+
+			$mensaje = "LA FOTO DEBE TENER EXTENCION .jpg, INTENTELO NUEVAMENTE.";
+			return Redirect::to("trabajador/editar/".$id)->with('rojo', $mensaje);
+		}
 	}
 
 	public function getBorrar($id){
-		return "Por modificar";
+		$trabajador = Trabajador::find($id);
+		$empresa = $trabajador->empresa;
+		$persona = $trabajador->persona;
+		$documentos = $trabajador->documentos;
+		foreach ($documentos as $documento) {
+
+			File::delete('documentos/documentos/'.$documento->pivot->nombre);
+		}
+		if ($trabajador->foto != 'usuario.jpg') {
+			File::delete('documentos/fotos/'.$trabajador->foto);
+		}
+
+		$persona->delete();
+
+		$mensaje = "EL TRABAJADOR FUE BORRADO JUNTO A TODOS SUS DOCUMENTOS.";
+		return Redirect::to('trabajador/inicio/'.$empresa->ruc)->with('naranja', $mensaje);
 	}
 
 	private function guardarPersona($dni, $nombre, $apellidos, $direccion, $telefono){
@@ -133,8 +201,8 @@ class TrabajadorController extends BaseController{
 		$trabajador->empresa_ruc = $empresa_ruc;
 		$trabajador->inicio = $inicio;
 		$trabajador->fin = $fin;
-		$trabajador->cuenta = $cuenta;
-		$trabajador->banco = $banco;
+		$trabajador->cuenta = strtoupper($cuenta);
+		$trabajador->banco = strtoupper($banco);
 		$trabajador->foto = "usuario.jpg";
 		$trabajador->save();
 
@@ -159,30 +227,88 @@ class TrabajadorController extends BaseController{
 			}else{
 				return false;
 			}
+		}else{
+			return false;
 		}
 	}
 
-	private function guardarContrato($contrato, $trabajador_id){
+	private function guardarDocumento($archivo, $trabajador_id, $documento_id){
 
-		if ($contrato) {
+		if ($archivo) {
 			
-			$extencion = explode('.', trim($contrato->getClientOriginalName()));
+			$extencion = explode('.', trim($archivo->getClientOriginalName()));
 			$extencion = $extencion[count($extencion)-1];
 
 			if ($extencion == 'pdf' || $extencion == 'PDF') {
+
+				$documento = Documento::find($documento_id);
 				
-				$contrato->move("documentos/contratos", $trabajador_id.".".$extencion);
+				$archivo->move("documentos/documentos", $trabajador_id.$documento->nombre."."
+					.$extencion);
 
 				$trabajador = Trabajador::find($trabajador_id);
-				$trabajador->documentos()->attach(8, array('nombre'=>$trabajador->id.'contrato.'.$extencion));
+				if (!$trabajador->documentos()->find($documento_id)) {
+					
+					$trabajador->documentos()->attach($documento_id, array('nombre'=>$trabajador->id
+						.$documento->nombre.'.'.$extencion));
+				}
 				return true;
 			}else{
 				return false;
 			}
+		}else{
+			return false;
 		}
 	}
 
 	private function formatoFecha($fecha){
+
 		return substr($fecha, 6, 4)."-".substr($fecha, 3, 2)."-".substr($fecha, 0, 2);
+	}
+
+	private function actualizarPersona($id, $dni, $nombre, $apellidos, $direccion, $telefono){
+
+		if ($id == $dni) {
+			
+			$persona = Persona::find($id);
+			$persona->dni = $dni;
+			$persona->nombre = strtoupper($nombre);
+			$persona->apellidos = strtoupper($apellidos);
+			$persona->direccion = strtoupper($direccion);
+			$persona->telefono = strtoupper($telefono);
+			$persona->save();
+
+			return true;
+		}else{
+
+			$persona = Persona::find($dni);
+			if ($persona) {
+				
+				return false;
+			}else{
+
+				$persona = Persona::find($id);
+				$persona->dni = $dni;
+				$persona->nombre = strtoupper($nombre);
+				$persona->apellidos = strtoupper($apellidos);
+				$persona->direccion = strtoupper($direccion);
+				$persona->telefono = strtoupper($telefono);
+				$persona->save();
+
+				return true;
+			}
+		}
+	}
+
+	private function actualizarTrabajador($id, $inicio, $fin, $cuenta, $banco){
+
+		$trabajador = Trabajador::find($id);
+		$trabajador->inicio = $inicio;
+		$trabajador->fin = $fin;
+		$trabajador->cuenta = strtoupper($cuenta);
+		$trabajador->banco = strtoupper($banco);
+		$trabajador->save();
+
+		return Trabajador::find($trabajador->id);
 	}
 }

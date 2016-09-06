@@ -27,9 +27,7 @@
   <![endif]-->
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
-<!-- Site wrapper -->
 <div class="wrapper">
-
   <header class="main-header">
     <!-- Logo -->
     <a href="<?=URL::to('usuario/panel')?>" class="logo">
@@ -107,14 +105,8 @@
       </div>
     </nav>
   </header>
-
-  <!-- =============================================== -->
-
-  <!-- Left side column. contains the sidebar -->
   <aside class="main-sidebar">
-    <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
-      <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
           <img src="<?=URL::to('dist/img/user2-160x160.jpg')?>" class="img-circle" alt="User Image">
@@ -124,7 +116,6 @@
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
-      <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
         <li class="header">MENU ADMINISTRADOR</li>
         <li>
@@ -154,8 +145,21 @@
           </a>
           <ul class="treeview-menu">
             @foreach(Empresa::all() as $empresa)
-            <li><a href="<?=URL::to('trabajador/inicio/'.$empresa->ruc)?>"><i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
+            <li><a href="<?=URL::to('trabajador/inicio/'.$empresa->ruc)?>">
+              <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
             @endforeach
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-gear"></i> <span>Configuración</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="<?=URL::to('documento')?>"><i class="fa fa-circle-o"></i> 
+              Documentos</a></li>
           </ul>
         </li>
       </ul>

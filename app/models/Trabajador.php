@@ -16,6 +16,6 @@ class Trabajador extends Eloquent{
 
 	public function documentos(){
 		return $this->belongsToMany('Documento', 'documento_trabajador',
-			'trabajador_id', 'documento_id');
+			'trabajador_id', 'documento_id')->withPivot('nombre');
 	}
 }

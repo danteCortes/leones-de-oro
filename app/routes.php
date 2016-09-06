@@ -37,5 +37,7 @@ Route::group(array('before' => 'auth'), function(){
 	Route::controller('cliente', 'ClienteController');
 
 	Route::controller('trabajador', 'TrabajadorController');
+
+	Route::resource('documento', 'DocumentoController');
 });
 
