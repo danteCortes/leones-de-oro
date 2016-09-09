@@ -6,11 +6,6 @@ Cliente | Inicio
 
 @section('estilos')
 <link rel="stylesheet" href="<?=URL::to('plugins/datatables/dataTables.bootstrap.css')?>">
-<style type="text/css">
-	.mayuscula{
-		text-transform: uppercase;
-	}
-</style>
 @stop
 
 @section('contenido')

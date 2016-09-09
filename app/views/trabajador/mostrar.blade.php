@@ -4,6 +4,10 @@
 Trabajador | Ver
 @stop
 
+@section('estilos')
+<link rel="stylesheet" type="text/css" href="<?=URL::to('plugins/jQueryUI/jquery-ui.css')?>">
+@stop
+
 @section('contenido')
 <section class="content-header">
   	<h1>
@@ -93,31 +97,90 @@ Trabajador | Ver
 	    </div>
 	    <div class="col-md-6">
 	    	<div class="box box-primary">
-            <div class="box-header with-border">
-              <h3 class="box-title">Agregar Documento</h3>
-            </div>
-            {{Form::open(array('url'=>'trabajador/documentar', 'files'=>true))}}
-              	<div class="box-body">
-	                <div class="form-group">
-	                  	{{Form::label(null, 'Tipo:*', array('class'=>'control-label'))}}
-	                  	<select name="documento_id" class="form-control" required>
-	                  		<option value="">SELECCIONAR</option>
-	                  		@foreach(Documento::all() as $documento)
-	                  			<option value="{{$documento->id}}">{{$documento->nombre}}</option>
-	                  		@endforeach
-	                  	</select>
-	                </div>
-	                <div class="form-group">
-	                  	{{Form::label(null, 'Archivo:*', array('class'=>'control-label'))}}
-	                  	{{Form::file('archivo', array('required'=>''))}}
-	                </div>
-              	</div>
-              	<div class="box-footer">
-              		{{Form::hidden('trabajador_id', $trabajador->id)}}
-                	<button type="submit" class="btn btn-primary">Agregar</button>
-              	</div>
-            {{Form::close()}}
-          </div>
+	            <div class="box-header with-border">
+	              <h3 class="box-title">Agregar Documento</h3>
+	            </div>
+	            {{Form::open(array('url'=>'trabajador/documentar', 'files'=>true))}}
+	              	<div class="box-body">
+		                <div class="form-group">
+		                  	{{Form::label(null, 'Tipo:*', array('class'=>'control-label'))}}
+		                  	<select name="documento_id" class="form-control" required>
+		                  		<option value="">SELECCIONAR</option>
+		                  		@foreach(Documento::all() as $documento)
+		                  			<option value="{{$documento->id}}">{{$documento->nombre}}</option>
+		                  		@endforeach
+		                  	</select>
+		                </div>
+		                <div class="form-group">
+		                  	{{Form::label(null, 'Archivo:*', array('class'=>'control-label'))}}
+		                  	{{Form::file('archivo', array('required'=>''))}}
+		                </div>
+	              	</div>
+	              	<div class="box-footer">
+	              		{{Form::hidden('trabajador_id', $trabajador->id)}}
+	                	<button type="submit" class="btn btn-primary">Agregar</button>
+	              	</div>
+	            {{Form::close()}}
+          	</div>
+          	<div class="box box-primary">
+	            <div class="box-header with-border">
+	              <h3 class="box-title">Asignar Cargo y Cliente</h3>
+	            </div>
+	            {{Form::open(array('url'=>'trabajador/cargo'))}}
+	              	<div class="box-body">
+		                <div class="form-group">
+		                  	{{Form::label(null, 'RUC:', array('class'=>'control-label'))}}
+		                  	{{Form::text('ruc', null, array('class'=>'form-control input-sm'
+		                  	, 'id'=>'ruc', 'readonly'=>'', 'required'=>''))}}
+		                </div>
+		                <div class="form-group">
+		                  	{{Form::label(null, 'Cliente:*', array('class'=>'control-label'))}}
+		                  	{{Form::text('cliente', null, array('class'=>'form-control input-sm clientes mayuscula'
+		                  	,'required'=>''))}}
+		                </div>
+		                <div class="form-group">
+		                  	{{Form::label(null, 'Cargo:*', array('class'=>'control-label'))}}
+		                  	<select name="cargo" class="form-control" required>
+		                  		<option value="">SELECCIONAR</option>
+		                  		@foreach(Cargo::all() as $cargo)
+		                  			<option value="{{$cargo->id}}">{{$cargo->nombre}}</option>
+		                  		@endforeach
+		                  	</select>
+		                </div>
+		                <div class="form-group">
+		                  	{{Form::label(null, 'Unidad:', array('class'=>'control-label'))}}
+		                  	{{Form::text('unidad', null, array('class'=>'form-control input-sm mayuscula'))}}
+		                </div>
+	              	</div>
+	              	<div class="box-footer">
+	              		{{Form::hidden('trabajador_id', $trabajador->id)}}
+	                	<button type="submit" class="btn btn-primary">Agregar</button>
+	              	</div>
+	            {{Form::close()}}
+          	</div>
+	    </div>
+  	</div>
+  	<div class="row">
+	    <div class="col-md-12">
+	      	<div class="box">
+		        <div class="box-header">
+		          	<h3 class="box-title">Cargos</h3>
+		        </div>
+		        <div class="box-body no-padding">
+		          	<table class="table table-striped">
+		          		<tr>
+		          			<th>CLIENTE</th>
+		          			<th>CARGO</th>
+		          		</tr>
+		          		@foreach($trabajador->clientes as $cliente)
+			            <tr>
+			              	<th>{{$cliente->nombre}}</th>
+			              	<td>{{Cargo::find($cliente->pivot->cargo_id)->nombre}}</td>
+			            </tr>
+			            @endforeach
+		          	</table>
+		        </div>
+	      	</div>
 	    </div>
   	</div>
   	<div class="row">
@@ -133,13 +196,11 @@ Trabajador | Ver
 			            	<table class="table">
 			            		<tr>
 					              	<th>{{$documento->nombre}}</th>
-					              	<td><a href="<?=URL::to('documentos/documentos/'.$documento->pivot->nombre)?>" 
-					              		class="btn btn-warning btn-xs pull-right">Ver</a> </td>
 			            		</tr>
 			            		<tr>
-			            			<td colspan="2	">
+			            			<td>
 							            <div class="embed-responsive embed-responsive-16by9">
-										  <iframe class="embed-responsive-item" src="<?=URL::to('documentos/documentos/'.$documento->pivot->nombre)?>"></iframe>
+										  	<iframe class="embed-responsive-item" src="<?=URL::to('documentos/documentos/'.$documento->pivot->nombre)?>"></iframe>
 										</div>
 			            			</td>
 			            		</tr>
@@ -152,4 +213,40 @@ Trabajador | Ver
 	    </div>
   	</div>
 </section>
+@stop
+
+@section('scripts')
+<script src="<?=URL::to('plugins/jQueryUI/jquery-ui.min.js')?>" type="text/javascript"></script>
+<script>
+  	$(function(){
+	    var autocompletar = new Array();
+	    @foreach($clientes as $l)
+	       	autocompletar.push('{{$l->nombre}}');
+	    @endforeach
+	    $(".clientes").autocomplete({ //Usamos el ID de la caja de texto donde lo queremos
+	       	source: autocompletar //Le decimos que nuestra fuente es el arreglo
+	    });
+	    $(".clientes").focusout(function() {
+            $.ajax({
+                url: "<?=URL::to('trabajador/buscar-ruc')?>",
+                type: 'POST',
+                data: {nombre: $(".clientes").val()},
+                dataType: 'JSON',
+                beforeSend: function() {
+                   	$("#ruc").val('Buscando RUC...');
+                },
+                error: function() {
+                   	$("#ruc").val('Ha surgido un error.');
+                },
+                success: function(respuesta) {
+                   	if (respuesta) {
+                   		$("#ruc").val(respuesta);
+                   	} else {
+                      	$("#ruc").val('No se encontro ningun cliente con ese nombre.');
+                   	}
+                }
+            });
+        });
+  	});
+</script>
 @stop

@@ -40,4 +40,3 @@ Route::group(array('before' => 'auth'), function(){
 
 	Route::resource('documento', 'DocumentoController');
 });
-

@@ -21,7 +21,9 @@ class CrearTablaClienteTrabajador extends Migration {
 			$table->string('cliente_ruc', 11);
 			$table->foreign('cliente_ruc')->references('ruc')->on('clientes')
 				->onUpdate('cascade')->onDelete('cascade');
-			$table->string('cargo');
+			$table->integer('cargo_id')->unsigned();
+			$table->foreign('cargo_id')->references('id')->on('cargos')
+				->onUpdate('cascade')->onDelete('cascade');
 			$table->string('unidad')->nullable();
 		});
 	}

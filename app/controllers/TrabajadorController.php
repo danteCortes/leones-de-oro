@@ -103,8 +103,9 @@ class TrabajadorController extends BaseController{
 	public function getVer($id){
 		$trabajador = Trabajador::find($id);
 		$empresa = $trabajador->empresa;
+		$clientes = Cliente::all();
 		return View::make('trabajador.mostrar')->with('trabajador', $trabajador)
-			->with('empresa', $empresa);
+			->with('empresa', $empresa)->with('clientes', $clientes);
 	}
 
 	public function postDocumentar(){
@@ -162,23 +163,59 @@ class TrabajadorController extends BaseController{
 		}
 	}
 
-	public function getBorrar($id){
+	public function deleteBorrar($id){
+
 		$trabajador = Trabajador::find($id);
 		$empresa = $trabajador->empresa;
 		$persona = $trabajador->persona;
 		$documentos = $trabajador->documentos;
-		foreach ($documentos as $documento) {
+		if (Hash::check(Input::get('password'), Auth::user()->password)) {
+			
+			foreach ($documentos as $documento) {
 
-			File::delete('documentos/documentos/'.$documento->pivot->nombre);
+				File::delete('documentos/documentos/'.$documento->pivot->nombre);
+			}
+			if ($trabajador->foto != 'usuario.jpg') {
+				File::delete('documentos/fotos/'.$trabajador->foto);
+			}
+
+			$persona->delete();
+
+			$mensaje = "EL TRABAJADOR FUE BORRADO JUNTO A TODOS SUS DOCUMENTOS.";
+			return Redirect::to('trabajador/inicio/'.$empresa->ruc)->with('naranja', $mensaje);
+		}else{
+
+			$mensaje = "LA CONTRASEÑA INGRESADA ES INCORRECTA. VUELVA A INTENTARLO..";
+			return Redirect::to('trabajador/inicio/'.$empresa->ruc)->with('rojo', $mensaje);
 		}
-		if ($trabajador->foto != 'usuario.jpg') {
-			File::delete('documentos/fotos/'.$trabajador->foto);
+	}
+
+	public function postBuscarRuc(){
+		$nombre = Input::get('nombre');
+		foreach (Cliente::all() as $cliente) {
+			if ($cliente->nombre == $nombre) {
+				return Response::json($cliente->ruc);
+			}
 		}
+		return 0;
+	}
 
-		$persona->delete();
+	public function postCargo(){
 
-		$mensaje = "EL TRABAJADOR FUE BORRADO JUNTO A TODOS SUS DOCUMENTOS.";
-		return Redirect::to('trabajador/inicio/'.$empresa->ruc)->with('naranja', $mensaje);
+		$cliente = Cliente::find(Input::get('ruc'));
+		$trabajador = Trabajador::find(Input::get('trabajador_id'));
+		if ($cliente) {
+			
+			$cliente->trabajadores()->attach($trabajador->id, array('unidad'=>Input::get('unidad'),
+				'cargo_id'=>Input::get('cargo')));
+
+			$mensaje = "EL TRABAJADOR FUE ASIGNADO A ".$cliente->nombre.".";
+			return Redirect::to('trabajador/ver/'.$trabajador->id)->with('verde', $mensaje);
+		}else{
+
+			$mensaje = "HUBO UN ERROR CON EL CLIENTE, VUELVA A INTENTARLO";
+			return Redirect::to('trabajador/ver/'.$trabajador->id)->with('rojo', $mensaje);
+		}
 	}
 
 	private function guardarPersona($dni, $nombre, $apellidos, $direccion, $telefono){

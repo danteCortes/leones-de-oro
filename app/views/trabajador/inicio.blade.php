@@ -178,7 +178,40 @@ Trabajador | Inicio
 				              		<a href="<?=URL::to('trabajador/editar/'.$trabajador->id)?>" class="btn btn-info btn-xs">Editar</a>
 								</td>
 				              	<td>
-				              		<a href="<?=URL::to('trabajador/borrar/'.$trabajador->id)?>" class="btn btn-danger btn-xs">Borrar</a>
+				              		<button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#borrar{{$trabajador->id}}">
+								  	Borrar
+									</button>
+									<div class="modal fade modal-danger" id="borrar{{$trabajador->id}}" tabindex="-1" role="dialog"
+										aria-labelledby="myModalLabel" aria-hidden="true">
+									  	<div class="modal-dialog">
+										    <div class="modal-content">
+										      	<div class="modal-header">
+											        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											          <span aria-hidden="true">&times;</span></button>
+											        <h4 class="modal-title">Borrar Trabajador</h4>
+										      	</div>
+										      	{{Form::open(array('url'=>'trabajador/borrar/'.$trabajador->id, 'class'=>'', 'method'=>'delete'))}}
+											      	<div class="modal-body">
+										                <div class="form-group">
+										                	<label>Está a punto de eliminar al trabajador "{{$trabajador->persona->nombre}}". Algunos datos como
+                        									documentos, uniformes, herramientas, etc. asociados a este trabajador serán borrados.<br>
+                        									Le recomendamos cambiar los registros asociados a este trabajador antes de eliminarlo.</label>
+										                </div>
+										                <div class="form-group">
+										                  	<label>Para confirmar esta acción se necesita su contraseña, de lo contrario pulse cancelar para
+									                        declinar.</label>
+									                        {{Form::password('password', array('class'=>'form-control input-sm', 'placeholder'=>'PASSWORD',
+									                        'required'=>''))}}
+										                </div>
+											      	</div>
+											      	<div class="modal-footer clearfix">
+												        <button type="button" class="btn btn-outline" data-dismiss="modal">Cancelar</button>
+												        <button type="submit" class="btn btn-outline pull-left">Borrar</button>
+											      	</div>
+										      	{{Form::close()}}
+										    </div>
+									  	</div>
+									</div>
 				              	</td>
 				            </tr>
 			            @endforeach
