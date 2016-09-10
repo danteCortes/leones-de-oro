@@ -2,84 +2,51 @@
 
 class DocumentoController extends \BaseController {
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		//
+	public function index(){
+
+		$documentos = Documento::all();
+		return View::make('documento.inicio')->with('documentos', $documentos);
 	}
 
+	public function store(){
+		
+		$documento = new Documento;
+		$documento->nombre = strtoupper(Input::get('nombre'));
+		$documento->save();
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//
+		$mensaje = "NUEVO TIPO DE DOCUMENTO CREADO.";
+		return Redirect::to('documento')->with('verde', $mensaje);
 	}
 
+	public function destroy($id){
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		//
-	}
+		if (Hash::check(Input::get('password'), Auth::user()->password)) {
 
+			if ($id != 8) {
+				
+				$documento = Documento::find($id);
+				$documentos = $documento->trabajadores;
+				foreach ($documentos as $registro) {
+					
+					File::delete('documentos/documentos/'.$registro->pivot->nombre);
+				}
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
+				$documento->delete();
 
+				$mensaje = "SE BORRO EL TIPO DE DOCUMENTO";
+				return Redirect::to('documento')->with('naranja', $mensaje);
+			}else{
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
+				$mensaje = "ESTE DOCUMENTO ES OBLIGATORIO PARA TODOS LOS TRABAJADORES, NO SE 
+				PUEDE ELIMINAR.";
+				return Redirect::to('documento')->with('rojo', $mensaje);
+			}
+			
+		}else{
 
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
-
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
+			$mensaje = "LA CONTRASEÑA ES INCORRECTA, VUELVA A INTENTARLO.";
+			return Redirect::to('documento')->with('rojo', $mensaje);
+		}
 	}
 
 

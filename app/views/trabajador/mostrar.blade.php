@@ -74,6 +74,10 @@ Trabajador | Ver
 			              	<td>{{$trabajador->persona->telefono}}</td>
 			            </tr>
 			            <tr>
+			              	<th>Empresa</th>
+			              	<td>{{$trabajador->empresa->nombre}}</td>
+			            </tr>
+			            <tr>
 			              	<th>inicio</th>
 			              	<td>{{date('d-m-Y', strtotime($trabajador->inicio))}}</td>
 			            </tr>
@@ -153,7 +157,7 @@ Trabajador | Ver
 		                </div>
 	              	</div>
 	              	<div class="box-footer">
-	              		{{Form::hidden('trabajador_id', $trabajador->id)}}
+	              		{{Form::hidden('trabajador_id', $trabajador->id, array('id'=>'trabajador_id'))}}
 	                	<button type="submit" class="btn btn-primary">Agregar</button>
 	              	</div>
 	            {{Form::close()}}
@@ -230,7 +234,7 @@ Trabajador | Ver
             $.ajax({
                 url: "<?=URL::to('trabajador/buscar-ruc')?>",
                 type: 'POST',
-                data: {nombre: $(".clientes").val()},
+                data: {nombre: $(".clientes").val(), trabajador_id: $("#trabajador_id").val()},
                 dataType: 'JSON',
                 beforeSend: function() {
                    	$("#ruc").val('Buscando RUC...');

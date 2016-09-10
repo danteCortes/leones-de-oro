@@ -103,7 +103,7 @@ class TrabajadorController extends BaseController{
 	public function getVer($id){
 		$trabajador = Trabajador::find($id);
 		$empresa = $trabajador->empresa;
-		$clientes = Cliente::all();
+		$clientes = $empresa->clientes;
 		return View::make('trabajador.mostrar')->with('trabajador', $trabajador)
 			->with('empresa', $empresa)->with('clientes', $clientes);
 	}
@@ -192,7 +192,10 @@ class TrabajadorController extends BaseController{
 
 	public function postBuscarRuc(){
 		$nombre = Input::get('nombre');
-		foreach (Cliente::all() as $cliente) {
+		$trabajador = Trabajador::find(Input::get('trabajador_id'));
+		$empresa = $trabajador->empresa;
+		$clientes = $empresa->clientes;
+		foreach ($clientes as $cliente) {
 			if ($cliente->nombre == $nombre) {
 				return Response::json($cliente->ruc);
 			}

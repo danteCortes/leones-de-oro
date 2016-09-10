@@ -166,6 +166,8 @@
           <ul class="treeview-menu">
             <li><a href="<?=URL::to('documento')?>"><i class="fa fa-circle-o"></i> 
               Documentos</a></li>
+            <li><a href="<?=URL::to('cargo')?>"><i class="fa fa-circle-o"></i> 
+              Cargos</a></li>
           </ul>
         </li>
       </ul>
