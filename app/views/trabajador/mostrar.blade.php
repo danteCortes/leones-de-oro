@@ -152,7 +152,7 @@ Trabajador | Ver
 		                  	</select>
 		                </div>
 		                <div class="form-group">
-		                  	{{Form::label(null, 'Unidad:', array('class'=>'control-label'))}}
+		                  	{{Form::label(null, 'Pto de Trabajo:', array('class'=>'control-label'))}}
 		                  	{{Form::text('unidad', null, array('class'=>'form-control input-sm mayuscula'))}}
 		                </div>
 	              	</div>
@@ -175,11 +175,17 @@ Trabajador | Ver
 		          		<tr>
 		          			<th>CLIENTE</th>
 		          			<th>CARGO</th>
+		          			<th>PTO. TRABAJO</th>
+		          			<th>EDITAR</th>
+		          			<th>BORRAR</th>
 		          		</tr>
 		          		@foreach($trabajador->clientes as $cliente)
 			            <tr>
 			              	<th>{{$cliente->nombre}}</th>
 			              	<td>{{Cargo::find($cliente->pivot->cargo_id)->nombre}}</td>
+			              	<td>{{$cliente->pivot->unidad}}</td>
+			              	<td></td>
+			              	<td></td>
 			            </tr>
 			            @endforeach
 		          	</table>

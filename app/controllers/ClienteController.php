@@ -25,10 +25,20 @@ class ClienteController extends \BaseController {
 
 		$empresa = Empresa::find(Input::get('empresa'));
 
-		$empresa->clientes()->attach(Input::get('ruc'));
+		if($empresa->clientes()->where('ruc', '=', Input::get('ruc'))->first()){
+			
+			$mensaje = "EL CLIENTE YA EXISTE EN ESTA EMPRESA, VERIFIQUE EL RUC";
+			return Redirect::to('cliente/inicio/'.Input::get('empresa'))
+				->with('rojo', $mensaje);
+		}else{
+			
+			$empresa->clientes()->attach(Input::get('ruc'));
 
-		$mensaje = "EL CLIENTE FUE AGREGADO A LA LISTA DE CLIENTES CON EXITO.";
-		return Redirect::to('cliente/inicio/'.Input::get('empresa'))->with('verde', $mensaje);
+			$mensaje = "EL CLIENTE FUE AGREGADO A LA LISTA DE CLIENTES CON EXITO.";
+			return Redirect::to('cliente/inicio/'.Input::get('empresa'))
+				->with('verde', $mensaje);
+		}
+
 	}
 
 	public function getMostrar($ruc){
@@ -43,16 +53,42 @@ class ClienteController extends \BaseController {
 
 	public function putEditar($ruc){
 
-		$cliente = Cliente::find($ruc);
-		$cliente->ruc = Input::get('ruc');
-		$cliente->nombre = strtoupper(Input::get('nombre'));
-		$cliente->direccion = strtoupper(Input::get('direccion'));
-		$cliente->telefono = Input::get('telefono');
-		$cliente->contacto = strtoupper(Input::get('contacto'));
-		$cliente->save();
+		if ($ruc == Input::get('ruc')) {
+			
+			$cliente = Cliente::find($ruc);
+			$cliente->nombre = strtoupper(Input::get('nombre'));
+			$cliente->direccion = strtoupper(Input::get('direccion'));
+			$cliente->telefono = Input::get('telefono');
+			$cliente->contacto = strtoupper(Input::get('contacto'));
+			$cliente->save();
 
-		$mensaje = "EL CLIENTE FUE MODIFICADO CON EXITO.";
-		return Redirect::to('cliente/inicio/'.Input::get('empresa'))->with('naranja', $mensaje);
+			$mensaje = "EL CLIENTE FUE MODIFICADO CON EXITO.";
+			return Redirect::to('cliente/inicio/'.Input::get('empresa'))
+				->with('naranja', $mensaje);
+
+		}else{
+
+			$cliente = Cliente::find(Input::get('ruc'));
+			if ($cliente) {
+
+				$mensaje = "EL NUEVO RUC QUE DESEA INGRESAR YA ESTA EN USO CON OTRO CLIENTE.";
+				return Redirect::to('cliente/inicio/'.Input::get('empresa'))
+					->with('rojo', $mensaje);
+			}else{
+
+				$cliente = Cliente::find($ruc);
+				$cliente->ruc = Input::get('ruc');
+				$cliente->nombre = strtoupper(Input::get('nombre'));
+				$cliente->direccion = strtoupper(Input::get('direccion'));
+				$cliente->telefono = Input::get('telefono');
+				$cliente->contacto = strtoupper(Input::get('contacto'));
+				$cliente->save();
+
+				$mensaje = "EL CLIENTE FUE MODIFICADO CON EXITO.";
+				return Redirect::to('cliente/inicio/'.Input::get('empresa'))
+					->with('naranja', $mensaje);
+			}
+		}
 	}
 
 	public function deleteBorrar($ruc){

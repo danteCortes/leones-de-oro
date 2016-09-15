@@ -209,7 +209,7 @@ class TrabajadorController extends BaseController{
 		$trabajador = Trabajador::find(Input::get('trabajador_id'));
 		if ($cliente) {
 			
-			$cliente->trabajadores()->attach($trabajador->id, array('unidad'=>Input::get('unidad'),
+			$cliente->trabajadores()->attach($trabajador->id, array('unidad'=>strtoupper(Input::get('unidad')),
 				'cargo_id'=>Input::get('cargo')));
 
 			$mensaje = "EL TRABAJADOR FUE ASIGNADO A ".$cliente->nombre.".";

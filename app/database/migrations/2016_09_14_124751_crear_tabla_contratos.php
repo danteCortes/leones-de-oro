@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CrearTablaEmpresaPrenda extends Migration {
+class CrearTablaContratos extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,17 +12,19 @@ class CrearTablaEmpresaPrenda extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('empresa_prenda', function(Blueprint $table)
+		Schema::create('contratos', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->string('empresa_ruc', 11);
 			$table->foreign('empresa_ruc')->references('ruc')->on('empresas')
 				->onUpdate('cascade')->onDelete('cascade');
-			$table->integer('prenda_id')->unsigned();
-			$table->foreign('prenda_id')->references('id')->on('prendas')
+			$table->string('cliente_ruc', 11);
+			$table->foreign('cliente_ruc')->references('ruc')->on('clientes')
 				->onUpdate('cascade')->onDelete('cascade');
-			$table->integer('cantidad_p')->unsigned();
-			$table->integer('cantidad_s')->unsigned();
+			$table->date('inicio');
+			$table->date('fin');
+			$table->float('total');
+			$table->boolean('igv')->nullable();
 		});
 	}
 
@@ -33,7 +35,7 @@ class CrearTablaEmpresaPrenda extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('empresa_prenda');
+		Schema::drop('contratos');
 	}
 
 }

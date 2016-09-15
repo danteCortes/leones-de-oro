@@ -17,4 +17,8 @@ class Empresa extends Eloquent{
 	public function clientes(){
 		return $this->belongsToMany('Cliente', 'cliente_empresa', 'empresa_ruc', 'cliente_ruc');
 	}
+
+	public function contratos(){
+		return $this->hasMany('Contrato', 'empresa_ruc');
+	}
 }

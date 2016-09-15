@@ -1,0 +1,218 @@
+@extends('plantilla')
+
+@section('titulo')
+Contratos | Inicio
+@stop
+
+@section('estilos')
+<link rel="stylesheet" href="<?=URL::to('plugins/datatables/dataTables.bootstrap.css')?>">
+@stop
+
+@section('contenido')
+<section class="content-header">
+  	<h1>
+	    Contratos
+	    <small>inicio</small>
+  	</h1>
+  	<ol class="breadcrumb">
+	    <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+	    <li><a href="#">Contratos</a></li>
+	    <li class="active">Inicio</li>
+  	</ol>
+</section>
+<section class="content">
+	<div class="row">
+		<div class="col-xs-12">
+	      	<a class="btn btn-primary" href="<?=URL::to('contrato/nuevo/'.$empresa->ruc)?>">
+	        	<i class="fa fa-plus-square"></i> Nuevo Contrato
+	      	</a>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+	    	@if(Session::has('rojo'))
+		      	<div class="alert alert-danger alert-dismissable">
+		          	<i class="fa fa-info"></i>
+		          	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		          	<b>Alerta!</b> {{ Session::get('rojo')}}
+		      	</div>
+		  	@elseif(Session::has('verde'))
+		      	<div class="alert alert-success alert-dismissable">
+		          	<i class="fa fa-info"></i>
+		          	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		          	<b>Excelente!</b> {{ Session::get('verde')}}
+		      	</div>
+		  	@elseif(Session::has('naranja'))
+		      	<div class="alert alert-warning alert-dismissable">
+		          	<i class="fa fa-info"></i>
+		          	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		          	<b>Cuidado!</b> {{ Session::get('naranja')}}
+		      	</div>
+		  	@endif
+		</div>
+	</div>
+	<div class="row">
+		<div class="row">
+		    <div class="col-xs-12">
+		      	<div class="box">
+			        <div class="box-header">
+			          <h3 class="box-title">Contratos de {{$empresa->nombre}}</h3>
+			        </div>
+			        <div class="box-body">
+			          <table id="contratos" class="table table-bordered table-striped">
+			            <thead>
+				            <tr>
+				              	<th>RUC</th>
+				              	<th>Razón Social</th>
+				              	<th>Mostrar</th>
+				              	<th>Editar</th>
+				              	<th>Borrar</th>
+				            </tr>
+			            </thead>
+			            <tbody>
+			            	@foreach($contratos as $contrato)
+					            <tr>
+					              	<td>{{$contrato->cliente->ruc}}</td>
+					              	<td>{{$contrato->cliente->nombre}}</td>
+					              	<td><a href="<?=URL::to('contrato/mostrar/'.$contrato->id)?>" class="btn btn-warning btn-xs">Mostrar</a>
+					              	</td>
+					              	<td>
+					              		<button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#editar{{$contrato->ruc}}">
+									  	Editar
+										</button>
+										<div class="modal fade modal-info" id="editar{{$contrato->ruc}}" tabindex="-1" role="dialog">
+										  	<div class="modal-dialog document">
+											    <div class="modal-content">
+											      	<div class="modal-header">
+												        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												          <span aria-hidden="true">&times;</span></button>
+												        <h4 class="modal-title">Editar contrato</h4>
+											      	</div>
+											      	{{Form::open(array('url'=>'contrato/editar/'.$contrato->ruc, 'class'=>'form-horizontal', 'method'=>'put'))}}
+												      	<div class="modal-body">
+												      		<div class="row">
+												      			<div class="col-xs-12">
+												      				<div class="row">
+												      					<div class="col-xs-12">
+														                	{{Form::label(null, 'RUC:', array('class'=>'col-sm-2 control-label'))}}
+														                  	<div class="col-sm-10">
+														                  		{{Form::text('ruc', $contrato->ruc, array('class'=>'form-control input-sm ruc', 'placeholder'=>'RUC',
+														                  		'required'=>''))}}
+														                  	</div>
+												      					</div>
+												      				</div><br>
+											                  		<div class="row">
+												      					<div class="col-xs-12">
+														                  	{{Form::label(null, 'Nombre:', array('class'=>'col-sm-2 control-label'))}}
+														                  	<div class="col-sm-10">
+														                  		{{Form::text('nombre', $contrato->nombre, array('class'=>'form-control input-sm mayuscula', 'placeholder'=>'NOMBRE',
+														                  		'required'=>'', 'size'=>'80'))}}
+														                  	</div>
+												      					</div>
+												      				</div><br>
+												      				<div class="row">
+												      					<div class="col-xs-12">
+														                  	{{Form::label(null, 'Dirección*:', array('class'=>'col-sm-2 control-label'))}}
+														                  	<div class="col-sm-10">
+														                  		{{Form::text('direccion', $contrato->direccion, array('class'=>'form-control input-sm mayuscula', 'placeholder'=>'DIRECCION',
+														                  		'size'=>'80'))}}
+														                  	</div>
+												      					</div>
+												      				</div><br>
+													                <div class="row">
+													                	<div class="col-sm-12">
+														                  	{{Form::label(null, 'Teléfono:', array('class'=>'col-sm-2 control-label'))}}
+														                  	<div class="col-sm-10">
+														                  		{{Form::text('telefono', $contrato->telefono, array('class'=>'form-control input-sm mayuscula', 'placeholder'=>'TELEFONO'))}}
+														                  	</div>
+													                	</div>
+													                </div><br>
+													                <div class="row">
+													                	<div class="col-sm-12">
+														                  	{{Form::label(null, 'Contacto:', array('class'=>'col-sm-2 control-label'))}}
+														                  	<div class="col-sm-10">
+														                  		{{Form::text('contacto', $contrato->contacto, array('class'=>'form-control input-sm mayuscula', 'placeholder'=>'CONTACTO'
+														                  		, 'size'=>'80'))}}
+														                  	</div>
+													                	</div>
+													                </div>
+												      			</div>
+												      		</div>
+												      	</div>
+												      	<div class="modal-footer clearfix">
+												      		{{Form::hidden('empresa', $empresa->ruc)}}
+													        <button type="button" class="btn btn-outline" data-dismiss="modal">Cancelar</button>
+													        <button type="submit" class="btn btn-outline pull-left">Guardar</button>
+												      	</div>
+											      	{{Form::close()}}
+											    </div>
+										  	</div>
+										</div>
+									</td>
+					              	<td>
+					              		<button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#borrar{{$contrato->ruc}}">
+									  	Borrar
+										</button>
+										<div class="modal fade modal-danger" id="borrar{{$contrato->ruc}}" tabindex="-1" role="dialog"
+											aria-labelledby="myModalLabel" aria-hidden="true">
+										  	<div class="modal-dialog">
+											    <div class="modal-content">
+											      	<div class="modal-header">
+												        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												          <span aria-hidden="true">&times;</span></button>
+												        <h4 class="modal-title">Borrar contrato</h4>
+											      	</div>
+											      	{{Form::open(array('url'=>'contrato/borrar/'.$contrato->ruc, 'class'=>'', 'method'=>'delete'))}}
+												      	<div class="modal-body">
+											                <div class="form-group">
+											                	<label>Está a punto de eliminar la contrato "{{$contrato->nombre}}". Algunos datos como trabajadores,
+	                        									contratos, etc. asociados a este contrato serán borrados.<br>
+	                        									Le recomendamos cambiar los trabajadores asociados a este contrato antes de eliminarlo.</label>
+											                </div>
+											                <div class="form-group">
+											                  	<label>Para confirmar esta acción se necesita su contraseña, de lo contrario pulse cancelar para
+										                        declinar.</label>
+										                        {{Form::password('password', array('class'=>'form-control input-sm', 'placeholder'=>'PASSWORD',
+										                        'required'=>''))}}
+											                </div>
+												      	</div>
+												      	<div class="modal-footer clearfix">
+												      		{{Form::hidden('empresa', $empresa->ruc)}}
+													        <button type="button" class="btn btn-outline" data-dismiss="modal">Cancelar</button>
+													        <button type="submit" class="btn btn-outline pull-left">Borrar</button>
+												      	</div>
+											      	{{Form::close()}}
+											    </div>
+										  	</div>
+										</div>
+					              	</td>
+					            </tr>
+				            @endforeach
+			            </tbody>
+			          </table>
+			        </div>
+		      	</div>
+		    </div>
+	  	</div>
+	</div>
+</section>
+@stop
+
+@section('scripts')
+<script>
+  	$(function () {
+    	$('#contratos').dataTable({            
+            "oLanguage": {
+                "oPaginate": {
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior",                            
+                },
+                "sSearch": "Buscar" ,
+                "sInfo": " Mostrando _START_ a _END_ de _TOTAL_ registros",
+                "sLengthMenu": "Mostrar _MENU_ resultados por página",
+                "sInfoFiltered": " - filtrando de _MAX_ resultados"
+            }
+        });
+  	});
+</script>
+@stop

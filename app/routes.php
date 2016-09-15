@@ -41,4 +41,6 @@ Route::group(array('before' => 'auth'), function(){
 	Route::resource('documento', 'DocumentoController', array('only'=>array('index', 'store', 'destroy')));
 
 	Route::resource('cargo', 'CargoController', array('only'=>array('index', 'store', 'destroy')));
+
+	Route::controller('contrato', 'ContratoController');
 });
