@@ -144,7 +144,7 @@ Trabajador | Ver
 		                </div>
 		                <div class="form-group">
 		                  	{{Form::label(null, 'Cargo:*', array('class'=>'control-label'))}}
-		                  	<select name="cargo" class="form-control" required>
+		                  	<select name="cargo" class="form-control input-sm" required>
 		                  		<option value="">SELECCIONAR</option>
 		                  		@foreach(Cargo::all() as $cargo)
 		                  			<option value="{{$cargo->id}}">{{$cargo->nombre}}</option>
@@ -176,16 +176,51 @@ Trabajador | Ver
 		          			<th>CLIENTE</th>
 		          			<th>CARGO</th>
 		          			<th>PTO. TRABAJO</th>
-		          			<th>EDITAR</th>
 		          			<th>BORRAR</th>
 		          		</tr>
 		          		@foreach($trabajador->clientes as $cliente)
 			            <tr>
-			              	<th>{{$cliente->nombre}}</th>
-			              	<td>{{Cargo::find($cliente->pivot->cargo_id)->nombre}}</td>
-			              	<td>{{$cliente->pivot->unidad}}</td>
-			              	<td></td>
-			              	<td></td>
+		              	<th>{{$cliente->nombre}}</th>
+		              	<td>{{Cargo::find($cliente->pivot->cargo_id)->nombre}}</td>
+		              	<td>{{$cliente->pivot->unidad}}</td>
+		              	<td>
+		              		{{Form::button('Borrar', array('class'=>'btn btn-danger btn-xs', 'data-toggle'=>'modal'
+		              			, 'data-target'=>'#borrar'.$cliente->pivot->id))}}
+		              		<div class="modal fade modal-danger" id="borrar{{$cliente->pivot->id}}" tabindex="-1" role="dialog"
+												aria-labelledby="myModalLabel" aria-hidden="true">
+										  	<div class="modal-dialog">
+											    <div class="modal-content">
+										      	<div class="modal-header">
+											        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											          <span aria-hidden="true">&times;</span></button>
+											        <h4 class="modal-title">Borrar Cargo en {{$cliente->nombre}}</h4>
+										      	</div>
+										      	{{Form::open(array('url'=>'trabajador/cargo/'.$cliente->pivot->id,
+										      		'class'=>'form-horizontal', 'method'=>'delete'))}}
+											      	<div class="modal-body">
+								                <div class="form-group">
+								                	<p class="col-sm-12">PARA BORRAR EL CARGO DE ESTE TRABAJADOR EN {{$cliente->nombre}} DEBE INTRODUCIR
+								                		SU CONTRASEÑA PARA AUTORIZAR ESTE PROCESO.</p>
+								                </div>
+								                <div class="form-group">
+								                		{{Form::label(null, 'Contraseña:', array('class'=>'control-label col-sm-2'))}}
+								                  	<div class="col-sm-10">
+								                  		{{Form::password('password', array('class'=>'form-control input-sm',
+								                  			'required'=>''))}}
+								                  	</div>
+								                </div>
+											      	</div>
+											      	<div class="modal-footer clearfix">
+											      		{{Form::hidden('trabajador_id', $trabajador->id, array('id'=>'trabajador_id'))}}
+											      		{{Form::hidden('cliente_ruc', $cliente->ruc, array('id'=>'cliente_ruc'))}}
+												        <button type="button" class="btn btn-outline" data-dismiss="modal">Cancelar</button>
+												        <button type="submit" class="btn btn-outline pull-left">Guardar</button>
+											      	</div>
+										      	{{Form::close()}}
+											    </div>
+										  	</div>
+											</div>
+		              	</td>
 			            </tr>
 			            @endforeach
 		          	</table>

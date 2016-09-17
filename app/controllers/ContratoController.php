@@ -94,6 +94,14 @@ class ContratoController extends BaseController{
 		}
 	}
 
+	//Función para ver los contratos y sus caracteristicas como adendas y retenciones.
+	public function getMostrar($id){
+		//Buscamos el contrato por medio del argumento pasado $id y mostramos la vista mostrar
+		//contrato con los datos del contrato.
+		$contrato = Contrato::find($id);
+		return View::make('contrato.mostrar')->with('contrato', $contrato);
+	}
+
 	//funcion para darle formato a la fecha de dd-mm-yyyy a yyyy-mm-dd para 
 	//guardarlo en la base de datos.
 	private function formatoFecha($fecha){
