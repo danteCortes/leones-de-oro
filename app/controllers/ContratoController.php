@@ -102,6 +102,87 @@ class ContratoController extends BaseController{
 		return View::make('contrato.mostrar')->with('contrato', $contrato);
 	}
 
+	//Función para agregar una retención a un contrato.
+	public function postRetencion($id){
+		//Seleccionamos el contrato para relacionarlo con la retención.
+		$contrato = Contrato::find($id);
+		//Revisamos si el contrato ya tiene una retención.
+		if($contrato->retencion){
+			//si el contrato ya tine una retención, se actualizan los datos de la retención.
+			$retencion = $contrato->retencion;
+			$retencion->porcentaje = Input::get('porcentaje');
+			$retencion->partes = Input::get('partes');
+			$retencion->save();
+			//regresamos a la pagina de mostrar contrato con el mensje correspondiente.
+			$mensaje = "LA RETENCION DE ESTE CONTRATO FUE ACTUALIZADO.";
+			return Redirect::to('contrato/mostrar/'.$id)->with('naranja', $mensaje);
+		}else{
+			//si no tiene una retención 
+			//agregamos los datos de la retención a la tabla retenciones.
+			$retencion = new Retencion;
+			$retencion->contrato_id = $id;
+			$retencion->porcentaje = Input::get('porcentaje');
+			$retencion->partes = Input::get('partes');
+			$retencion->save();
+			//regresamos a la pagina de mostrar contrato con el mensje correspondiente.
+			$mensaje = "LA RETENCION FUE AGREGADA CON EXITO AL CONTRATO.";
+			return Redirect::to('contrato/mostrar/'.$id)->with('verde', $mensaje);
+		}
+	}
+
+	//Función para borrar la retención de un contrato.
+	public function deleteRetencion($id){
+		//Primero verificamos la retencion.
+		$retencion = Retencion::find($id);
+		//borramos la retención
+		$retencion->delete();
+		//regresamos a la vista de mostrar contrato con el mensaje respectivo.
+		$mensaje = "LA RETENCION FUE BORRADO CON EXITO DEL CONTRATO.";
+		return Redirect::to('contrato/mostrar/'.$id)->with('naranja', $mensaje);
+	}
+
+	//Función para editar un contrato.
+	public function putEditar($id){
+		//seleccionamos y editamo el contrto que vamos a editar.
+		$contrato = Contrato::find($id);
+		$contrato->inicio = $this->formatoFecha(Input::get('inicio'));
+		$contrato->fin = $this->formatoFecha(Input::get('fin'));
+		$contrato->total = Input::get('total');
+		$contrato->igv = Input::get('igv');
+		$contrato->save();
+
+		$mensaje = "EL CONTRATO FUE MODIFICADO SIN PROBLEMAS";
+		return Redirect::to('contrato/inicio/'.$contrato->empresa_ruc)->with('naranja', $mensaje);
+	}
+
+	//Funcion para borrar un contrato y todos sus documentos con que se relaciona.
+	public function deleteBorrar($id){
+		//Primero verificamos que el password ingresado pertenece al usuario logueado.
+		if (Hash::check(Input::get('password'), Auth::user()->password)) {
+			//si el password es correcto seleccionamos el contrato.
+			$contrato = Contrato::find($id);
+			//Luego seleccionamos la empresa a la que pertenece el contrato para regresar
+			//a su vista de contratos.
+			$empresa = $contrato->empresa;
+			//Seleccionamos los documentos del contrato.
+			$documentos = $contrato->documentos;
+			//Borramos cada documento del contrato.
+			foreach ($documentos as $documento) {
+				File::delete('documentos/contratos/'.$documento->pivot->nombre);
+			}
+			//Borramos el contrato junto a todos sus registros en la tabla pivote contrato_documento
+			$contrato->delete();
+			//Regresamos a la vista de contratos de la empresa con el mensaje respectivo.
+			$mensaje = "EL CONTRATO FUE BORRADO JUNTO A TODOS SUS DOCUMENTOS.";
+			return Redirect::to('contrato/inicio/'.$empresa->ruc)->with('naranja', $mensaje);
+		}else{
+			//Si el password no es correcto, regresamos a la vista de contratos de la empresa 
+			//con el mensaje respectivo.
+			$mensaje = "LA CONTRASEÑA INGRESADA ES INCORRECTA. VUELVA A INTENTARLO..";
+			return Redirect::to('contrato/inicio/'.$empresa->ruc)->with('rojo', $mensaje);
+		}
+	}
+
 	//funcion para darle formato a la fecha de dd-mm-yyyy a yyyy-mm-dd para 
 	//guardarlo en la base de datos.
 	private function formatoFecha($fecha){

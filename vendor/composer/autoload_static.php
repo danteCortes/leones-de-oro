@@ -235,6 +235,7 @@ class ComposerStaticInit2c92f31fa0a27173b5807b0cb9be3523
         'CrearTablaEmpresas' => __DIR__ . '/../..' . '/app/database/migrations/2016_08_23_204212_crear_tabla_empresas.php',
         'CrearTablaPersonas' => __DIR__ . '/../..' . '/app/database/migrations/2016_08_30_090629_crear_tabla_personas.php',
         'CrearTablaPrendas' => __DIR__ . '/../..' . '/app/database/migrations/2016_08_23_204312_crear_tabla_prendas.php',
+        'CrearTablaRetenciones' => __DIR__ . '/../..' . '/app/database/migrations/2016_09_17_104038_crear_tabla_retenciones.php',
         'CrearTablaTrabajadores' => __DIR__ . '/../..' . '/app/database/migrations/2016_08_30_144903_crear_tabla_trabajadores.php',
         'CrearTablaUsuarios' => __DIR__ . '/../..' . '/app/database/migrations/2016_08_30_153357_crear_tabla_usuarios.php',
         'Crypt_AES' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Crypt/AES.php',

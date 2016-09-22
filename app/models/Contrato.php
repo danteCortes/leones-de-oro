@@ -16,4 +16,8 @@ class Contrato extends Eloquent{
 		return $this->belongsToMany('Documento', 'contrato_documento',
 			'contrato_id', 'documento_id')->withPivot('nombre');
 	}
+
+	public function retencion(){
+		return $this->hasOne('Retencion');
+	}
 }

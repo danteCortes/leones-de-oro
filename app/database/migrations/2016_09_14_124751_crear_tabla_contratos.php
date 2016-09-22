@@ -23,7 +23,7 @@ class CrearTablaContratos extends Migration {
 				->onUpdate('cascade')->onDelete('cascade');
 			$table->date('inicio');
 			$table->date('fin');
-			$table->float('total');
+			$table->double('total', 15, 2);
 			$table->boolean('igv')->nullable();
 		});
 	}

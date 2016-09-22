@@ -51,6 +51,7 @@ return array(
     'CrearTablaEmpresas' => $baseDir . '/app/database/migrations/2016_08_23_204212_crear_tabla_empresas.php',
     'CrearTablaPersonas' => $baseDir . '/app/database/migrations/2016_08_30_090629_crear_tabla_personas.php',
     'CrearTablaPrendas' => $baseDir . '/app/database/migrations/2016_08_23_204312_crear_tabla_prendas.php',
+    'CrearTablaRetenciones' => $baseDir . '/app/database/migrations/2016_09_17_104038_crear_tabla_retenciones.php',
     'CrearTablaTrabajadores' => $baseDir . '/app/database/migrations/2016_08_30_144903_crear_tabla_trabajadores.php',
     'CrearTablaUsuarios' => $baseDir . '/app/database/migrations/2016_08_30_153357_crear_tabla_usuarios.php',
     'Crypt_AES' => $vendorDir . '/phpseclib/phpseclib/phpseclib/Crypt/AES.php',
