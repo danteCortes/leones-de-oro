@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CrearTablaContratos extends Migration {
+class CrearTablaAreaEmpresaUsuario extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,20 +12,18 @@ class CrearTablaContratos extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('contratos', function(Blueprint $table)
+		Schema::create('area_empresa_usuario', function(Blueprint $table)
 		{
 			$table->increments('id');
+			$table->integer('area_id')->unsigned();
+			$table->foreign('area_id')->references('id')->on('areas')
+				->onUpdate('cascade')->onDelete('cascade');
 			$table->string('empresa_ruc', 11);
 			$table->foreign('empresa_ruc')->references('ruc')->on('empresas')
 				->onUpdate('cascade')->onDelete('cascade');
-			$table->string('cliente_ruc', 11);
-			$table->foreign('cliente_ruc')->references('ruc')->on('clientes')
+			$table->integer('usuario_id')->unsigned();
+			$table->foreign('usuario_id')->references('id')->on('usuarios')
 				->onUpdate('cascade')->onDelete('cascade');
-			$table->date('inicio');
-			$table->date('fin');
-			$table->double('subtotal', 15, 2);
-			$table->double('igv', 15, 2);
-			$table->double('total', 15, 2);
 		});
 	}
 
@@ -36,7 +34,7 @@ class CrearTablaContratos extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('contratos');
+		Schema::drop('area_empresa_usuario');
 	}
 
 }

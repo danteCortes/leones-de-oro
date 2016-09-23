@@ -65,23 +65,21 @@ contrato | mostrar
             	<th>Fin</th>
             	<td>{{date('d-m-Y', strtotime($contrato->fin))}}</td>
             </tr>
-            <tr>
-            	<th>Monto</th>
-            	<td>
-            		S/. {{$contrato->total}}.00</td>
-            </tr>
             @if($contrato->igv)
+              <tr>
+                <th>Sub Total</th>
+                <td>S/. {{$contrato->subtotal}}.00</td>
+              </tr>
             	<tr>
               	<th>IGV</th>
-              	<td>
-              		@if(strpos(round($contrato->total*1.8/1.18)/10, '.') !== false)
-              			S/. {{round($contrato->total*1.8/1.18)/10}}0
-              		@else
-              			S/. {{round($contrato->total*1.8/1.18)/10}}.00
-              		@endif
-              	</td>
+              	<td>S/. {{$contrato->igv}}.00</td>
             	</tr>
             @endif
+            <tr>
+              <th>Total</th>
+              <td>
+                S/. {{$contrato->total}}.00</td>
+            </tr>
         	</table>
         </div>
     	</div>
@@ -136,10 +134,10 @@ contrato | mostrar
 	            	<th>{{$contrato->retencion->porcentaje}} %</th>
 	            	<td>{{$contrato->retencion->partes}}</td>
 	            	<td>
-	            		@if(strpos($contrato->total * $contrato->retencion->porcentaje / 100, '.') !== false)
-              			S/. {{$contrato->total * $contrato->retencion->porcentaje / 100}}0
+	            		@if(strpos($contrato->subtotal * $contrato->retencion->porcentaje / 100, '.') !== false)
+              			S/. {{$contrato->subtotal * $contrato->retencion->porcentaje / 100}}0
               		@else
-              			S/. {{$contrato->total * $contrato->retencion->porcentaje / 100}}.00
+              			S/. {{$contrato->subtotal * $contrato->retencion->porcentaje / 100}}.00
               		@endif</td>
 	            	<td>
 	            		{{Form::button('Borrar', array('class'=>'btn btn-danger btn-xs', 'data-toggle'=>'modal'

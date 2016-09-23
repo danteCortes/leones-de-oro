@@ -86,7 +86,11 @@ Trabajador | Ver
 		              	<td>{{date('d-m-Y', strtotime($trabajador->fin))}}</td>
 		            </tr>
 		            <tr>
-		              	<th>Nro Cuenta</th>
+		              	<th>Nro Cuenta
+		              		@if($trabajador->cci)
+		              			(CCI)
+		              		@endif
+		              	</th>
 		              	<td>{{$trabajador->cuenta}}</td>
 		            </tr>
 		            <tr>

@@ -9,7 +9,7 @@ class Persona extends Eloquent{
 	public $timestamps = false;
 
 	public function usuario(){
-		return $this->hasOne('Usuario');
+		return $this->hasOne('Usuario', 'persona_dni');
 	}
 
 	public function trabajador(){

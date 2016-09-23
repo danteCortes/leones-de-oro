@@ -18,9 +18,6 @@ class CrearTablaUsuarios extends Migration {
 			$table->string('persona_dni', 8);
 			$table->foreign('persona_dni')->references('dni')->on('personas')
 				->onUpdate('cascade')->onDelete('cascade');
-			$table->string('empresa_ruc', 11);
-			$table->foreign('empresa_ruc')->references('ruc')->on('empresas')
-				->onUpdate('cascade')->onDelete('cascade');
 			$table->string('password');
 			$table->rememberToken();
 			$table->tinyInteger('nivel');

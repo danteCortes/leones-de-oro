@@ -21,4 +21,9 @@ class Empresa extends Eloquent{
 	public function contratos(){
 		return $this->hasMany('Contrato', 'empresa_ruc');
 	}
+
+	public function usuarios(){
+		return $this->belongsToMany('Usuario', 'area_empresa_usuario', 'empresa_ruc', 'usuario_id')
+			->withPivot('area_id');
+	}
 }

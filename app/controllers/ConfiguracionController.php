@@ -13,21 +13,32 @@ class ConfiguracionController extends BaseController{
 	public function postUsuario(){
 
 		if (Input::get('password') == Input::get('confirmar')) {
-			$persona = new Persona;
-			$persona->dni = Input::get('dni');
-			$persona->nombre = strtoupper(Input::get('nombre'));
-			$persona->apellidos = strtoupper(Input::get('apellidos'));
-			$persona->direccion = strtoupper(Input::get('direccion'));
-			$persona->telefono = strtoupper(Input::get('telefono'));
-			$persona->save();
+			//Verificamos si la persona ya existe con ese dni.
+			$persona = Persona::find(Input::get('dni'));
+			if($persona){
+				//Si la persona existe guardamos sus datos como usuario.
+				$usuario = new Usuario;
+				$usuario->persona_dni = Input::get('dni');
+				$usuario->password = Hash::make(Input::get('password'));
+				$usuario->nivel = 0;
+				$usuario->save();
+			}else{
+				//Si no existe guardamos sus datos como persona y como usuario.
+				$persona = new Persona;
+				$persona->dni = Input::get('dni');
+				$persona->nombre = strtoupper(Input::get('nombre'));
+				$persona->apellidos = strtoupper(Input::get('apellidos'));
+				$persona->direccion = strtoupper(Input::get('direccion'));
+				$persona->telefono = strtoupper(Input::get('telefono'));
+				$persona->save();
 
-			$usuario = new Usuario;
-			$usuario->persona_dni = Input::get('dni');
-			$usuario->empresa_ruc = Input::get('empresa');
-			$usuario->password = Hash::make(Input::get('password'));
-			$usuario->nivel = 0;
-			$usuario->save();
-
+				$usuario = new Usuario;
+				$usuario->persona_dni = Input::get('dni');
+				$usuario->password = Hash::make(Input::get('password'));
+				$usuario->nivel = 0;
+				$usuario->save();
+			}
+			//Mostramos la vista de configuracion terminada.
 			return Redirect::to('configuracion/terminar/'.$usuario->id);
 			
 		}else{

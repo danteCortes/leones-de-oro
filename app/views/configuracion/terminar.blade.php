@@ -28,8 +28,7 @@
 		  			<h2>Felicitaciones</h2>
 			  		<p>
 			  			Sr. {{$usuario->persona->nombre}} {{$usuario->persona->apellidos}}, Ahora ya podrá
-			  			comenzar a utilizar su sistema de gestión para su empresa {{$usuario->empresa->nombre}}
-			  			y demás empresas que esten en este sistema.
+			  			comenzar a utilizar su sistema de gestión para todas sus empresas que esten en este sistema.
 			  			Recuerde que puede seguir creando más empresas para ser gestionada por este sistema, así 
 			  			como otros usuario a los que les dará niveles de acceso a este sistema.
 			  		</p>

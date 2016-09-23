@@ -43,4 +43,6 @@ Route::group(array('before' => 'auth'), function(){
 	Route::resource('cargo', 'CargoController', array('only'=>array('index', 'store', 'destroy')));
 
 	Route::controller('contrato', 'ContratoController');
+
+	Route::resource('memorandum', 'MemorandumController');
 });

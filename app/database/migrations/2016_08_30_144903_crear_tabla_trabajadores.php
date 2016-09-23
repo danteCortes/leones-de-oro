@@ -25,6 +25,7 @@ class CrearTablaTrabajadores extends Migration {
 			$table->date('fin');
 			$table->string('cuenta')->nullable();
 			$table->string('banco')->nullable();
+			$table->boolean('cci')->nullable();
 			$table->string('foto');
 		});
 	}

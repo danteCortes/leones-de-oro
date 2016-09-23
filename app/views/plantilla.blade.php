@@ -93,7 +93,7 @@
 
                 <p>
                   {{Auth::user()->persona->nombre}} - Administrador
-                  <small>{{Auth::user()->empresa->nombre}}<optgroup></optgroup></small>
+                  <small><optgroup></optgroup></small>
                 </p>
               </li>
               <!-- Menu Footer-->
@@ -127,6 +127,11 @@
         <li>
           <a href="<?=URL::to('empresa')?>">
             <i class="fa fa-bank"></i> <span>Empresas</span>
+          </a>
+        </li>
+        <li>
+          <a href="<?=URL::to('usuario/inicio')?>">
+            <i class="fa fa-user"></i> <span>Usuarios</span>
           </a>
         </li>
         <li class="treeview">
@@ -168,6 +173,18 @@
             <li><a href="<?=URL::to('contrato/inicio/'.$empresa->ruc)?>">
               <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
             @endforeach
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-gear"></i> <span>Documentos</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="<?=URL::to('')?>"><i class="fa fa-circle-o"></i> 
+              Memorandum</a></li>
           </ul>
         </li>
         <li class="treeview">

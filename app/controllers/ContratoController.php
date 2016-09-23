@@ -148,7 +148,13 @@ class ContratoController extends BaseController{
 		$contrato->inicio = $this->formatoFecha(Input::get('inicio'));
 		$contrato->fin = $this->formatoFecha(Input::get('fin'));
 		$contrato->total = Input::get('total');
-		$contrato->igv = Input::get('igv');
+		if(Input::get('igv')){
+			$contrato->subtotal = Input::get('total') - round(Input::get('total') * 0.18 * 10)/10;
+			$contrato->igv = round(Input::get('total') * 0.18 * 10)/10;
+		}else{
+			$contrato->subtotal = 0;
+			$contrato->igv = 0;
+		}
 		$contrato->save();
 
 		$mensaje = "EL CONTRATO FUE MODIFICADO SIN PROBLEMAS";
@@ -214,7 +220,13 @@ class ContratoController extends BaseController{
 		$contrato->inicio = $inicio;
 		$contrato->fin = $fin;
 		$contrato->total = $total;
-		$contrato->igv = $igv;
+		if($igv){
+			$contrato->subtotal = $total - round($total * 0.18 * 10)/10;
+			$contrato->igv = round($total * 0.18 * 10)/10;
+		}else{
+			$contrato->subtotal = 0;
+			$contrato->igv = 0;
+		}
 		$contrato->save();
 		return Contrato::find($contrato->id);
 	}

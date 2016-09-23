@@ -120,6 +120,20 @@ Trabajador | Editar
 			              			'class'=>'form-control input-sm mayuscula'))}}
 			              	</div>
 			            </div>
+			            <div class="form-group">
+			            	{{Form::label(null, 'CCI', array('class'=>'col-sm-2 control-label'))}}
+			              	<div class="col-sm-10">
+			              		<div class="checkbox">
+                 			<label>
+                 				@if($trabajador->cci)
+                 					{{Form::checkbox('cci', 1, true)}}
+                 				@else
+                 					{{Form::checkbox('cci', 1, false)}}
+                 				@endif
+                 			</label>
+                 		</div>
+			              	</div>
+			            </div>
 		          	</div>
 		          	<div class="box-footer">
 			            <button type="reset" class="btn btn-warning">Limpiar</button>

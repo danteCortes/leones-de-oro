@@ -13,7 +13,13 @@ class Usuario extends Eloquent implements UserInterface{
 		return $this->belongsTo('Persona', 'persona_dni');
 	}
 
-	public function empresa(){
-		return $this->belongsTo('Empresa', 'empresa_ruc');
+	public function empresas(){
+		return $this->belongsToMany('Empresa', 'area_empresa_usuario', 'usuario_id', 'empresa_ruc')
+			->withPivot('area_id');
+	}
+
+	public function areas(){
+		return $this->belongsToMany('Area', 'area_empresa_usuario', 'usuario_id', 'area_id')
+			->withPivot('empresa_ruc');
 	}
 }

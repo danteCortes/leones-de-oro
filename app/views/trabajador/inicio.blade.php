@@ -102,6 +102,16 @@ Trabajador | Inicio
 				                  	</div>
 				                </div>
 				                <div class="form-group">
+				                  	{{Form::label(null, 'CCI:', array('class'=>'col-sm-3 control-label'))}}
+				                  	<div class="col-sm-9">
+				                  		<div class="checkbox">
+				                  			<label>
+				                  				{{Form::checkbox('cci', 1)}}
+				                  			</label>
+				                  		</div>
+				                  	</div>
+				                </div>
+				                <div class="form-group">
 				                  	{{Form::label(null, 'Foto:', array('class'=>'col-sm-3 control-label'))}}
 				                  	<div class="col-sm-9">
 				                  		{{Form::file('foto')}}
