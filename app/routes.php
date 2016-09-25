@@ -48,7 +48,18 @@ Route::group(array('before' => 'auth'), function(){
 });
 
 Route::get('prueba', function(){
-	$usuario = Usuario::find(2);
-	$empresa = Empresa::find('20489468795');
-	return View::make('prueba');
+
+	$html = "
+	<html>
+    <head>
+      <meta charset='utf-8'>
+      <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+      <title>CAS</title>
+    </head>
+	<body>"
+            . "<p>Put your html here, or generate ñ it with your favourite "
+            . "templating system.</p>"
+            . "</body></html>";
+
+	return PDF::load($html, 'A4', 'portrait')->show();
 });

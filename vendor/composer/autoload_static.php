@@ -21,6 +21,7 @@ class ComposerStaticInit2c92f31fa0a27173b5807b0cb9be3523
         ),
         'P' => 
         array (
+            'Psr\\Log\\' => 8,
             'Patchwork\\' => 10,
         ),
         'M' => 
@@ -38,6 +39,10 @@ class ComposerStaticInit2c92f31fa0a27173b5807b0cb9be3523
         array (
             0 => __DIR__ . '/..' . '/symfony/event-dispatcher',
         ),
+        'Psr\\Log\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+        ),
         'Patchwork\\' => 
         array (
             0 => __DIR__ . '/..' . '/patchwork/utf8/src/Patchwork',
@@ -54,6 +59,13 @@ class ComposerStaticInit2c92f31fa0a27173b5807b0cb9be3523
             'Whoops' => 
             array (
                 0 => __DIR__ . '/..' . '/filp/whoops/src',
+            ),
+        ),
+        'T' => 
+        array (
+            'Thujohn\\Pdf' => 
+            array (
+                0 => __DIR__ . '/..' . '/thujohn/pdf/src',
             ),
         ),
         'S' => 
@@ -117,10 +129,6 @@ class ComposerStaticInit2c92f31fa0a27173b5807b0cb9be3523
         ),
         'P' => 
         array (
-            'Psr\\Log\\' => 
-            array (
-                0 => __DIR__ . '/..' . '/psr/log',
-            ),
             'Predis' => 
             array (
                 0 => __DIR__ . '/..' . '/predis/predis/lib',
@@ -236,7 +244,7 @@ class ComposerStaticInit2c92f31fa0a27173b5807b0cb9be3523
         'CrearTablaEmpresaPrenda' => __DIR__ . '/../..' . '/app/database/migrations/2016_08_25_111252_crear_tabla_empresa_prenda.php',
         'CrearTablaEmpresaPrendaTrabajadorUsuario' => __DIR__ . '/../..' . '/app/database/migrations/2016_09_13_032300_crear_tabla_empresa_prenda_trabajador_usuario.php',
         'CrearTablaEmpresas' => __DIR__ . '/../..' . '/app/database/migrations/2016_08_23_204212_crear_tabla_empresas.php',
-        'CrearTablaMemorandums' => __DIR__ . '/../..' . '/app/database/migrations/2016_09_23_072540_crear_tabla_memorandums.php',
+        'CrearTablaMemorandums' => __DIR__ . '/../..' . '/app/database/migrations/2016_09_24_110218_crear_tabla_memorandums.php',
         'CrearTablaPersonas' => __DIR__ . '/../..' . '/app/database/migrations/2016_08_30_090629_crear_tabla_personas.php',
         'CrearTablaPrendas' => __DIR__ . '/../..' . '/app/database/migrations/2016_08_23_204312_crear_tabla_prendas.php',
         'CrearTablaRetenciones' => __DIR__ . '/../..' . '/app/database/migrations/2016_09_17_104038_crear_tabla_retenciones.php',
@@ -2143,6 +2151,9 @@ class ComposerStaticInit2c92f31fa0a27173b5807b0cb9be3523
         'System_SSH_Agent' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/System/SSH/Agent.php',
         'System_SSH_Agent_Identity' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/System/SSH/Agent.php',
         'TestCase' => __DIR__ . '/../..' . '/app/tests/TestCase.php',
+        'Thujohn\\Pdf\\Pdf' => __DIR__ . '/..' . '/thujohn/pdf/src/Thujohn/Pdf/Pdf.php',
+        'Thujohn\\Pdf\\PdfFacade' => __DIR__ . '/..' . '/thujohn/pdf/src/Thujohn/Pdf/PdfFacade.php',
+        'Thujohn\\Pdf\\PdfServiceProvider' => __DIR__ . '/..' . '/thujohn/pdf/src/Thujohn/Pdf/PdfServiceProvider.php',
         'Trabajador' => __DIR__ . '/../..' . '/app/models/Trabajador.php',
         'TrabajadorController' => __DIR__ . '/../..' . '/app/controllers/TrabajadorController.php',
         'User' => __DIR__ . '/../..' . '/app/models/User.php',

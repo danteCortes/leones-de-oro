@@ -18,12 +18,35 @@ Memorandum | Nuevo
 </section>
 <section class="content">
   <div class="row">
+    <div class="col-xs-12">
+      @if(Session::has('rojo'))
+        <div class="alert alert-danger alert-dismissable">
+          <i class="fa fa-info"></i>
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <b>Alerta!</b> {{ Session::get('rojo')}}
+        </div>
+      @elseif(Session::has('verde'))
+        <div class="alert alert-success alert-dismissable">
+          <i class="fa fa-info"></i>
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <b>Excelente!</b> {{ Session::get('verde')}}
+        </div>
+      @elseif(Session::has('naranja'))
+        <div class="alert alert-warning alert-dismissable">
+          <i class="fa fa-info"></i>
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <b>Cuidado!</b> {{ Session::get('naranja')}}
+        </div>
+      @endif
+    </div>
+  </div>
+  <div class="row">
     <div class="col-md-12">
       <div class="box box-info">
         <div class="box-header">
           <h3 class="box-title">MEMORANDUM Nº <label id="nro">
             @if(Memorandum::where('empresa_ruc', '=', $empresa->ruc)->orderBy('numero', 'desc')->first())
-              {{Memorandum::where('empresa_ruc', '=', $empresa->ruc)->orderBy('numero', 'desc')->first()->numero}}
+              {{Memorandum::where('empresa_ruc', '=', $empresa->ruc)->orderBy('numero', 'desc')->first()->numero+1}}
             @else
               1
             @endif
@@ -32,7 +55,8 @@ Memorandum | Nuevo
             <small>Redactar</small>
           </h3>
         </div>
-        {{Form::open(array('url'=>'', 'class'=>'form-horizontal'))}}
+        {{Form::open(array('url'=>'memorandum/nuevo', 'class'=>'form-horizontal', 
+          'method'=>'post', 'id'=>'formulario'))}}
 	        <div class="box-body">
 	        	<div class="form-group">
 	        		{{Form::label(null, 'DE*:', array('class'=>'control-label col-xs-2'))}}
@@ -58,26 +82,27 @@ Memorandum | Nuevo
 	        		{{Form::label(null, 'ASUNTO*:', array('class'=>'control-label col-xs-2'))}}
 	        		<div class="col-xs-10">
 	        			{{Form::text('asunto', null, array('class'=>'form-control input-sm mayuscula'
-	        				,'placeholder'=>'DESTINATARIO', 'required'=>''))}}
+	        				,'placeholder'=>'ASUNTO', 'required'=>''))}}
 	        		</div>
 	        	</div>
 	        	<div class="form-group">
 	        		{{Form::label(null, 'FECHA*:', array('class'=>'control-label col-xs-2'))}}
 	        		<div class="col-xs-10">
 	        			{{Form::text('fecha', null, array('class'=>'form-control input-sm mayuscula'
-	        				,'placeholder'=>'DESTINATARIO', 'required'=>''))}}
+	        				,'placeholder'=>'FECHA', 'required'=>''))}}
 	        		</div>
 	        	</div>
 	        </div>
 	        <div class="box-body">
 	          	<div class="form-group">
 	          		<div class="col-xs-12">
-    	            <textarea id="editor1" name="editor1" rows="10" cols="80" placeholder="Contenido..." required>
+    	            <textarea id="contenido" name="contenido" rows="10" cols="80" placeholder="Contenido..." required="">
     	            	Contenido...
     	            </textarea>
 	          		</div>
 	          	</div>
-              {{Form::button('Guardar', array('class'=>'btn btn-primary', 'type'=>'submit'))}}
+              {{Form::button('Guardar', array('class'=>'btn btn-primary', 'type'=>'submit', 
+                'id'=>'guardar', 'target'=>'_blank'))}}
 	        </div>
 	        {{Form::hidden('empresa_ruc', $empresa->ruc, array('id'=>'empresa_ruc'))}}
         {{Form::close()}}
@@ -94,7 +119,7 @@ Memorandum | Nuevo
   $(function () {
     // Replace the <textarea id="editor1"> with a CKEditor
     // instance, using default configuration.
-    CKEDITOR.replace('editor1');
+    CKEDITOR.replace('contenido');
     $('#usuario').change(function(){
     	$.ajax({
     		url: "<?=URL::to('memorandum/area')?>",

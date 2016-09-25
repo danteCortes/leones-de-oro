@@ -61,8 +61,8 @@ Memorandum | Inicio
 		          <table id="memorandums" class="table table-bordered table-striped">
 		            <thead>
 			            <tr>
-			              	<th>RUC</th>
-			              	<th>Razón Social</th>
+			              	<th>Memorandum</th>
+			              	<th>Remitente</th>
 			              	<th>Mostrar</th>
 			              	<th>Editar</th>
 			              	<th>Borrar</th>
@@ -71,8 +71,9 @@ Memorandum | Inicio
 		            <tbody>
 		            	@foreach($memorandums as $memorandum)
 				            <tr>
-				              	<td>{{$memorandum->ruc}}</td>
-				              	<td>{{$memorandum->nombre}}</td>
+				              	<td>{{$memorandum->codigo}}</td>
+				              	<td>{{Usuario::find($memorandum->remite)->persona->nombre}}
+				              		{{Usuario::find($memorandum->remite)->persona->apellidos}}</td>
 				              	<td><a href="<?=URL::to('memorandum/mostrar/'.$memorandum->ruc)?>" class="btn btn-warning btn-xs">Mostrar</a>
 				              	</td>
 				              	<td>

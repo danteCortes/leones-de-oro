@@ -31,7 +31,8 @@ class CrearTablaMemorandums extends Migration {
 			$table->string('asunto');
 			$table->string('codigo');
 			$table->integer('numero')->unsigned();
-			$table->date('fecha');
+      $table->string('fecha');
+			$table->date('redaccion');
 			$table->string('contenido', 1024);
 		});
 	}

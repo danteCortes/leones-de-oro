@@ -2,7 +2,7 @@
 
 class Memorandum extends Eloquent{
 
-	public $timestamp = false;
+	public $timestamps = false;
 
 	public function usuario(){
 		return $this->belongsTo('Usuario');
