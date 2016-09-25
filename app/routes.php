@@ -44,5 +44,11 @@ Route::group(array('before' => 'auth'), function(){
 
 	Route::controller('contrato', 'ContratoController');
 
-	Route::resource('memorandum', 'MemorandumController');
+	Route::controller('memorandum', 'MemorandumController');
+});
+
+Route::get('prueba', function(){
+	$usuario = Usuario::find(2);
+	$empresa = Empresa::find('20489468795');
+	return View::make('prueba');
 });

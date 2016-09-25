@@ -1,86 +1,33 @@
 <?php
 
-class MemorandumController extends \BaseController {
+class MemorandumController extends BaseController {
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		//
+	public function getInicio($ruc){
+
+		$empresa = Empresa::find($ruc);
+		if($empresa){
+			$memorandums = Memorandum::where('empresa_ruc', '=', $ruc)->get();
+			return View::make('memorandum.inicio')->with('memorandums', $memorandums)
+				->with('empresa', $empresa);
+		}else{
+			return Redirect::to('usuario/panel');
+		}
 	}
 
+	public function getNuevo($ruc){
+		$empresa = Empresa::find($ruc);
+		if($empresa){
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//
+			return View::make('memorandum.nuevo')->with('empresa', $empresa);
+		}else{
+			return Redirect::to('usuario/panel');
+		}
 	}
 
-
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		//
+	public function postArea(){
+		$usuario = Usuario::find(Input::get('usuario_id'));
+		$empresa = Empresa::find(Input::get('empresa_ruc'));
+		$area = Area::find($empresa->usuarios()->find($usuario->id)->area_id);
+		return Response::json($area);
 	}
-
-
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
-
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
-
-
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
-
-
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
-
-
 }

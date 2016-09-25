@@ -462,6 +462,7 @@ return array(
     'LlenarTablaEmpresas' => $baseDir . '/app/database/migrations/2016_08_23_204213_llenar_tabla_empresas.php',
     'LlenarTablaPrendas' => $baseDir . '/app/database/migrations/2016_08_23_205006_llenar_tabla_prendas.php',
     'Math_BigInteger' => $vendorDir . '/phpseclib/phpseclib/phpseclib/Math/BigInteger.php',
+    'Memorandum' => $baseDir . '/app/models/Memorandum.php',
     'MemorandumController' => $baseDir . '/app/controllers/MemorandumController.php',
     'Monolog\\ErrorHandler' => $vendorDir . '/monolog/monolog/src/Monolog/ErrorHandler.php',
     'Monolog\\Formatter\\ChromePHPFormatter' => $vendorDir . '/monolog/monolog/src/Monolog/Formatter/ChromePHPFormatter.php',

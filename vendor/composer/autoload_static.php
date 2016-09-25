@@ -646,6 +646,7 @@ class ComposerStaticInit2c92f31fa0a27173b5807b0cb9be3523
         'LlenarTablaEmpresas' => __DIR__ . '/../..' . '/app/database/migrations/2016_08_23_204213_llenar_tabla_empresas.php',
         'LlenarTablaPrendas' => __DIR__ . '/../..' . '/app/database/migrations/2016_08_23_205006_llenar_tabla_prendas.php',
         'Math_BigInteger' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/Math/BigInteger.php',
+        'Memorandum' => __DIR__ . '/../..' . '/app/models/Memorandum.php',
         'MemorandumController' => __DIR__ . '/../..' . '/app/controllers/MemorandumController.php',
         'Monolog\\ErrorHandler' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/ErrorHandler.php',
         'Monolog\\Formatter\\ChromePHPFormatter' => __DIR__ . '/..' . '/monolog/monolog/src/Monolog/Formatter/ChromePHPFormatter.php',
