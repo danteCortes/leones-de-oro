@@ -94,7 +94,7 @@ return array(
 	*/
 
 	'providers' => array(
-		'Thujohn\Pdf\PdfServiceProvider',
+		'Barryvdh\DomPDF\ServiceProvider',
 		'Illuminate\Foundation\Providers\ArtisanServiceProvider',
 		'Illuminate\Auth\AuthServiceProvider',
 		'Illuminate\Cache\CacheServiceProvider',
@@ -149,7 +149,7 @@ return array(
 	*/
 
 	'aliases' => array(
-		'PDF' 			  => 'Thujohn\Pdf\PdfFacade',
+		'PDF' 			  => 'Barryvdh\DomPDF\Facade',
 		'App'             => 'Illuminate\Support\Facades\App',
 		'Artisan'         => 'Illuminate\Support\Facades\Artisan',
 		'Auth'            => 'Illuminate\Support\Facades\Auth',

@@ -1628,5 +1628,6 @@
         $(".ruc").inputmask("99999999999", {"clearIncomplete": true, "placeholder": ""});
         $(".precio").inputmask("999999999.00", {"clearIncomplete": false, "placeholder": ""});
         $(".porcentaje").inputmask("99", {"clearIncomplete": false, "placeholder": ""});
+        $(".numero").inputmask("9999", {"clearIncomplete": false, "placeholder": ""});
     }
 })(jQuery);

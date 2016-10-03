@@ -63,6 +63,8 @@ Memorandum | Inicio
 			            <tr>
 			              	<th>Memorandum</th>
 			              	<th>Remitente</th>
+			              	<th>Trabajador</th>
+			              	<th>Razón</th>
 			              	<th>Mostrar</th>
 			              	<th>Editar</th>
 			              	<th>Borrar</th>
@@ -70,23 +72,33 @@ Memorandum | Inicio
 		            </thead>
 		            <tbody>
 		            	@foreach($memorandums as $memorandum)
-				            <tr>
-				              	<td>{{$memorandum->codigo}}</td>
-				              	<td>{{Usuario::find($memorandum->remite)->persona->nombre}}
-				              		{{Usuario::find($memorandum->remite)->persona->apellidos}}</td>
-				              	<td><a href="<?=URL::to('memorandum/mostrar/'.$memorandum->ruc)?>" class="btn btn-warning btn-xs">Mostrar</a>
-				              	</td>
-				              	<td>
-				              		<button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#editar{{$memorandum->ruc}}">
-								  	Editar
-									</button>
-								</td>
-				              	<td>
-				              		<button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#borrar{{$memorandum->ruc}}">
-								  	Borrar
-									</button>
-				              	</td>
-				            </tr>
+		            		@if($memorandum->usuario)
+					            <tr>
+					              	<td>{{$memorandum->codigo}}</td>
+					              	<td>{{Usuario::find($memorandum->remite)->persona->nombre}}</td>
+					              	<td>{{Trabajador::find($memorandum->trabajador_id)->persona->nombre}}
+					              		{{Trabajador::find($memorandum->trabajador_id)->persona->apellidos}}</td>
+					              	<td>
+					              		@if($memorandum->razon == 1)
+					              			SANCION
+					              		@elseif($memorandum->razon == 2)
+					              			AMONESTACIÓN
+					              		@endif
+					              	</td>
+					              	<td><a href="<?=URL::to('memorandum/mostrar/'.$memorandum->id)?>" class="btn btn-warning btn-xs">Mostrar</a>
+					              	</td>
+					              	<td>
+					              		<a class="btn btn-primary btn-xs" href="<?=URL::to('memorandum/editar/'.$memorandum->id)?>">
+										        	Editar
+										      	</a>
+													</td>
+					              	<td>
+					              		<button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#borrar{{$memorandum->ruc}}">
+													  	Borrar
+														</button>
+					              	</td>
+					            </tr>
+				            @endif
 			            @endforeach
 		            </tbody>
 		          </table>
