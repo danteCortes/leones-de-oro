@@ -18,10 +18,11 @@ class CrearTablaVariables extends Migration {
       $table->string('empresa_ruc', 11);
       $table->foreign('empresa_ruc')->references('ruc')->on('empresas')
         ->onUpdate('cascade')->onDelete('cascade');
-      $table->string('anio');
-      $table->integer('inicio_memorandum')->unsigned();
-      $table->integer('inicio_carta')->unsigned();
-      $table->integer('inicio_informe')->unsigned();
+      $table->string('nombre_anio')->unsigned();
+      $table->integer('inicio_memorandum')->unsigned()->unsigned();
+      $table->integer('inicio_carta')->unsigned()->unsigned();
+      $table->integer('inicio_informe')->unsigned()->unsigned();
+      $table->integer('anio', 4);
     });
   }
 

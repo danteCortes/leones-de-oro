@@ -49,8 +49,14 @@ Memorandum | Nuevo
       <div class="box box-info">
         <div class="box-header">
           <h3 class="box-title">MEMORANDUM Nº <label id="nro">
-              @if(Memorandum::where('empresa_ruc', '=', $empresa->ruc)->orderBy('numero', 'desc')->first())
-                {{Memorandum::where('empresa_ruc', '=', $empresa->ruc)->orderBy('numero', 'desc')->first()->numero+1}}
+            @if(Variable::where('empresa_ruc', '=', $empresa->ruc)->where('anio', '=', date('Y'))->first())
+              @if(Variable::where('empresa_ruc', '=', $empresa->ruc)->where('anio', '=', date('Y'))->first()->inicio_memorandum)
+                @if(Memorandum::where('empresa_ruc', '=', $empresa->ruc)->where('redaccion', 'like', '%'.date('Y').'%')
+                  ->orderBy('numero', 'desc')->first())
+                  {{Memorandum::where('empresa_ruc', '=', $empresa->ruc)->orderBy('numero', 'desc')->first()->numero+1}}
+                @else
+                  {{Variable::where('empresa_ruc', '=', $empresa->ruc)->where('anio', '=', date('Y'))->first()->inicio_memorandum}}
+                @endif
               @else
                 {{Form::button('Configurar Numeración', array('class'=>'btn btn-primary btn-xs',
                   'data-toggle'=>'modal', 'data-target'=>'#modal'))}}
@@ -63,7 +69,7 @@ Memorandum | Nuevo
                         </button>
                         <h4 class="modal-title">Ingrese numeración inicial</h4>
                       </div>
-                      {{Form::open(array('url'=>'#', 'class'=>'form-horizontal'))}}
+                      {{Form::open(array('url'=>'memorandum/numeracion', 'class'=>'form-horizontal'))}}
                         <div class="modal-body">
                           <div class="form-group">
                             {{Form::label(null, 'Numeración*:', array('class'=>'control-label col-sm-6'))}}
@@ -76,13 +82,45 @@ Memorandum | Nuevo
                         <div class="modal-footer">
                           {{Form::hidden('empresa_ruc', $empresa->ruc, array('id'=>'empresa_ruc'))}}
                           <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                          <button type="button" class="btn btn-primary" id="numeracion">Guardar</button>
+                          <button type="submit" class="btn btn-primary" id="numeracion">Guardar</button>
                         </div>
                       {{Form::close()}}
                     </div>
                   </div>
                 </div>
               @endif
+            @else
+              {{Form::button('Configurar Numeración', array('class'=>'btn btn-primary btn-xs',
+                'data-toggle'=>'modal', 'data-target'=>'#modal'))}}
+              <div class="modal fade bs-example-modal-sm" id="modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-sm" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                      <h4 class="modal-title">Ingrese numeración inicial</h4>
+                    </div>
+                    {{Form::open(array('url'=>'carta/numeracion', 'class'=>'form-horizontal'))}}
+                      <div class="modal-body">
+                        <div class="form-group">
+                          {{Form::label(null, 'Numeración*:', array('class'=>'control-label col-sm-6'))}}
+                          <div class="col-sm-6">
+                            {{Form::text('numero', null, array('class'=>'form-control input-sm numero', 
+                            'id'=>'numero', 'required'=>''))}}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        {{Form::hidden('empresa_ruc', $empresa->ruc, array('id'=>'empresa_ruc'))}}
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary" id="numeracion">Guardar</button>
+                      </div>
+                    {{Form::close()}}
+                  </div>
+                </div>
+              </div>
+            @endif
             </label> - {{date('Y')}}/<label id="codigo">X</label>/{{$empresa->nombre}}	
             <small>Redactar</small>
           </h3>
@@ -193,26 +231,6 @@ Memorandum | Nuevo
          	}
         }
     	});
-    });
-
-    //Configuramos la numeracíon inicial para una empresa.
-    $("#numeracion").click(function(){
-      if($("#numero").val() != ''){
-        $.ajax({
-          url: "<?=URL::to('memorandum/numeracion')?>",
-          type: 'POST',
-          data:{numero: $("#numero").val(), empresa_ruc: $("#empresa_ruc").val()},
-          dataType: 'JSON',
-          error: function(){
-            alert("hubo un error en la conexión con el controlador");
-          },
-          complete: function(){
-            location.reload();
-          }
-        });
-      }else{
-        alert('ingrese un numero');
-      }
     });
 
     //autocompletar los trabajadores

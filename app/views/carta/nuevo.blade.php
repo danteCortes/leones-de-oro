@@ -49,8 +49,14 @@ Carta | Nuevo
       <div class="box box-info">
         <div class="box-header">
           <h3 class="box-title">CARTA Nº <label id="nro">
-              @if(Carta::where('empresa_ruc', '=', $empresa->ruc)->orderBy('numero', 'desc')->first())
-                {{Carta::where('empresa_ruc', '=', $empresa->ruc)->orderBy('numero', 'desc')->first()->numero+1}}
+            @if(Variable::where('empresa_ruc', '=', $empresa->ruc)->where('anio', '=', date('Y'))->first())
+              @if(Variable::where('empresa_ruc', '=', $empresa->ruc)->where('anio', '=', date('Y'))->first()->inicio_carta)
+                @if(Carta::where('empresa_ruc', '=', $empresa->ruc)->where('redaccion', 'like', '%'.date('Y').'%')
+                  ->orderBy('numero', 'desc')->first())
+                  {{Carta::where('empresa_ruc', '=', $empresa->ruc)->orderBy('numero', 'desc')->first()->numero+1}}
+                @else
+                  {{Variable::where('empresa_ruc', '=', $empresa->ruc)->where('anio', '=', date('Y'))->first()->inicio_carta}}
+                @endif
               @else
                 {{Form::button('Configurar Numeración', array('class'=>'btn btn-primary btn-xs',
                   'data-toggle'=>'modal', 'data-target'=>'#modal'))}}
@@ -63,7 +69,7 @@ Carta | Nuevo
                         </button>
                         <h4 class="modal-title">Ingrese numeración inicial</h4>
                       </div>
-                      {{Form::open(array('url'=>'#', 'class'=>'form-horizontal'))}}
+                      {{Form::open(array('url'=>'carta/numeracion', 'class'=>'form-horizontal'))}}
                         <div class="modal-body">
                           <div class="form-group">
                             {{Form::label(null, 'Numeración*:', array('class'=>'control-label col-sm-6'))}}
@@ -76,19 +82,120 @@ Carta | Nuevo
                         <div class="modal-footer">
                           {{Form::hidden('empresa_ruc', $empresa->ruc, array('id'=>'empresa_ruc'))}}
                           <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                          <button type="button" class="btn btn-primary" id="numeracion">Guardar</button>
+                          <button type="submit" class="btn btn-primary" id="numeracion">Guardar</button>
                         </div>
                       {{Form::close()}}
                     </div>
                   </div>
                 </div>
               @endif
+            @else
+              {{Form::button('Configurar Numeración', array('class'=>'btn btn-primary btn-xs',
+                'data-toggle'=>'modal', 'data-target'=>'#modal'))}}
+              <div class="modal fade bs-example-modal-sm" id="modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-sm" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                      <h4 class="modal-title">Ingrese numeración inicial</h4>
+                    </div>
+                    {{Form::open(array('url'=>'carta/numeracion', 'class'=>'form-horizontal'))}}
+                      <div class="modal-body">
+                        <div class="form-group">
+                          {{Form::label(null, 'Numeración*:', array('class'=>'control-label col-sm-6'))}}
+                          <div class="col-sm-6">
+                            {{Form::text('numero', null, array('class'=>'form-control input-sm numero', 
+                            'id'=>'numero', 'required'=>''))}}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        {{Form::hidden('empresa_ruc', $empresa->ruc, array('id'=>'empresa_ruc'))}}
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary" id="numeracion">Guardar</button>
+                      </div>
+                    {{Form::close()}}
+                  </div>
+                </div>
+              </div>
+            @endif
             </label> - {{date('Y')}}/<label id="codigo">X</label>/{{$empresa->nombre}}  
             <small>Redactar</small>
+          </h3><br>
+          <h3 class="box-title">
+              @if(Variable::where('empresa_ruc', '=', $empresa->ruc)->where('anio', '=', date('Y'))->first())
+                @if(Variable::where('empresa_ruc', '=', $empresa->ruc)->where('anio', '=', date('Y'))->first()->nombre_anio)
+                  {{Variable::where('empresa_ruc', '=', $empresa->ruc)->where('anio', '=', date('Y'))->first()->nombre_anio}}
+                @else
+                  {{Form::button('Ingresar Nombre del Año', array('class'=>'btn btn-warning btn-xs',
+                    'data-toggle'=>'modal', 'data-target'=>'#modalanio'))}}
+                  <div class="modal fade" id="modalanio" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                          <h4 class="modal-title">Ingrese nombre del Año</h4>
+                        </div>
+                        {{Form::open(array('url'=>'carta/anio', 'class'=>'form-horizontal'))}}
+                          <div class="modal-body">
+                            <div class="form-group">
+                              {{Form::label(null, 'Nombre*:', array('class'=>'control-label col-sm-2'))}}
+                              <div class="col-sm-10">
+                                {{Form::text('nombre', '', array('class'=>'form-control input-sm mayuscula', 
+                                'required'=>'', 'placeholder'=>'NOMBRE DEL AÑO'))}}
+                              </div>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            {{Form::hidden('empresa_ruc', $empresa->ruc, array('id'=>'empresa_ruc'))}}
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                          </div>
+                        {{Form::close()}}
+                      </div>
+                    </div>
+                  </div>
+                @endif
+              @else
+                {{Form::button('Ingresar Nombre del Año', array('class'=>'btn btn-warning btn-xs',
+                  'data-toggle'=>'modal', 'data-target'=>'#modalanio'))}}
+                <div class="modal fade" id="modalanio" tabindex="-1" role="dialog">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title">Ingrese nombre del Año</h4>
+                      </div>
+                      {{Form::open(array('url'=>'carta/anio', 'class'=>'form-horizontal'))}}
+                        <div class="modal-body">
+                          <div class="form-group">
+                            {{Form::label(null, 'Nombre*:', array('class'=>'control-label col-sm-2'))}}
+                            <div class="col-sm-10">
+                              {{Form::text('nombre', '', array('class'=>'form-control input-sm mayuscula', 
+                              'required'=>'', 'placeholder'=>'NOMBRE DEL AÑO'))}}
+                            </div>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          {{Form::hidden('empresa_ruc', $empresa->ruc, array('id'=>'empresa_ruc'))}}
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                          <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+                      {{Form::close()}}
+                    </div>
+                  </div>
+                </div>
+              @endif
           </h3>
         </div>
-        {{Form::open(array('url'=>'memorandum/nuevo', 'class'=>'form-horizontal', 
-          'method'=>'post', 'id'=>'formulario'))}}
+        {{Form::open(array('url'=>'carta/nuevo', 'class'=>'form-horizontal', 
+          'method'=>'post'))}}
           <div class="box-body">
             <div class="form-group">
               {{Form::label(null, 'DE*:', array('class'=>'control-label col-xs-2'))}}
@@ -104,11 +211,17 @@ Carta | Nuevo
               </div>
             </div>
             <div class="form-group">
-              {{Form::label(null, 'A*:', array('class'=>'control-label col-xs-2'))}}
+              {{Form::label(null, 'SEÑORES*:', array('class'=>'control-label col-xs-2'))}}
               <div class="col-xs-10">
                 {{Form::text('destinatario','' , array('class'=>'form-control input-sm mayuscula'
-                  ,'placeholder'=>'DESTINATARIO', 'required'=>'', 'id'=>'trabajador'))}}
-                {{Form::label(null, '', array('class'=>'control-label', 'id'=>'trabajador_dni'))}}
+                  ,'placeholder'=>'DESTINATARIO', 'required'=>''))}}
+              </div>
+            </div>
+            <div class="form-group">
+              {{Form::label(null, 'LUGAR*:', array('class'=>'control-label col-xs-2'))}}
+              <div class="col-xs-10">
+                {{Form::text('lugar','' , array('class'=>'form-control input-sm mayuscula'
+                  ,'placeholder'=>'LUGAR', 'required'=>''))}}
               </div>
             </div>
             <div class="form-group">
@@ -123,21 +236,6 @@ Carta | Nuevo
               <div class="col-xs-10">
                 {{Form::text('fecha', '', array('class'=>'form-control input-sm mayuscula'
                   ,'placeholder'=>'FECHA', 'required'=>'', 'id'=>'fecha'))}}
-              </div>
-            </div>
-            <div class="form-group">
-              {{Form::label(null, 'ASUNTO:', array('class'=>'control-label col-xs-2'))}}
-              <div class="col-xs-10">
-                <div class="radio">
-                  <label>
-                      <input type="radio" name="razon" value="1" checked>Sanción
-                  </label>
-                </div>
-                <div class="radio">
-                  <label>
-                      <input type="radio" name="razon" value="2">Amonestación
-                  </label>
-                </div>
               </div>
             </div>
           </div>
@@ -155,7 +253,6 @@ Carta | Nuevo
                 class="btn btn-warning pull-right">Atras</a>
           </div>
           {{Form::hidden('empresa_ruc', $empresa->ruc, array('id'=>'empresa_ruc'))}}
-          {{Form::hidden('trabajador_id', '', array('id'=>'trabajador_id'))}}
         {{Form::close()}}
       </div>
     </div>
@@ -175,7 +272,7 @@ Carta | Nuevo
     // instance, using default configuration.
     CKEDITOR.replace('contenido');
 
-    //Rescata el area del remitente y el código del memorandum
+    //Rescata el area del remitente y el código de la carta
     $('#usuario').change(function(){
       $.ajax({
         url: "<?=URL::to('memorandum/area')?>",
@@ -199,59 +296,6 @@ Carta | Nuevo
       });
     });
 
-    //Configuramos la numeracíon inicial para una empresa.
-    $("#numeracion").click(function(){
-      if($("#numero").val() != ''){
-        $.ajax({
-          url: "<?=URL::to('memorandum/numeracion')?>",
-          type: 'POST',
-          data:{numero: $("#numero").val(), empresa_ruc: $("#empresa_ruc").val()},
-          dataType: 'JSON',
-          error: function(){
-            alert("hubo un error en la conexión con el controlador");
-          },
-          complete: function(){
-            location.reload();
-          }
-        });
-      }else{
-        alert('ingrese un numero');
-      }
-    });
-
-    //autocompletar los trabajadores
-    var arreglo = new Array();
-    @foreach($trabajadores as $trabajador)
-        arreglo.push('{{$trabajador->persona->nombre}} {{$trabajador->persona->apellidos}}');
-    @endforeach
-    $("#trabajador").autocomplete({ //Usamos el ID de la caja de texto donde lo queremos
-        source: arreglo //Le decimos que nuestra fuente es el arreglo
-    });
-
-    //verificamos si el trabajador existe.
-    $("#trabajador").focus(function(){
-      $("#trabajador_dni").text("");
-      $("#trabajador_id").val('');
-    });
-    $("#trabajador").focusout(function(){
-      $.ajax({
-        url: "<?=URL::to('memorandum/trabajador')?>",
-        type: 'POST',
-        data: {trabajador_nombre_apellidos: $("#trabajador").val(), empresa_ruc: $("#empresa_ruc").val()},
-        error: function(){
-          alert("hubo un error en la conexión con el controlador");
-        },
-        success: function(respuesta){
-          if(respuesta != 0){
-            $("#trabajador_dni").text("DNI: " + respuesta['persona']['dni']);
-            $("#trabajador_id").val(respuesta['id']);
-          }else{
-            $("#trabajador_dni").text("Este trabajador no existe en esta empresa");
-            $("#trabajador_id").val('');
-          }
-        }
-      });
-    });
   });
 </script>
 @stop

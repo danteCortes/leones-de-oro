@@ -124,7 +124,7 @@ Memorandum | Editar
                 class="btn btn-warning pull-right">Atras</a>
 	        </div>
 	        {{Form::hidden('empresa_ruc', $empresa->ruc, array('id'=>'empresa_ruc'))}}
-          {{Form::hidden('trabajador_id', '', array('id'=>'trabajador_id'))}}
+          {{Form::hidden('trabajador_id', $memorandum->trabajador_id, array('id'=>'trabajador_id'))}}
         {{Form::close()}}
       </div>
     </div>

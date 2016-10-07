@@ -40,18 +40,37 @@ class MemorandumController extends BaseController{
         ->with('rojo', $mensaje);
     }
 
+    if(VariabLe::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+      ->where('anio', '=', date('Y'))->first()){
+
+      if(!VariabLe::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+      ->where('anio', '=', date('Y'))->first()->inicio_memorandum){
+
+        $mensaje = "NO SE CONFIGURO LA NUMERACION DE LOS MEMORANDUMS, RECUERDE QUE ESTO SOLO 
+        SE HACE UNA VEZ AL AÑO. INTENTE NUEVAMENTE.";
+        return Redirect::to('memorandum/nuevo/'.Input::get('empresa_ruc'))
+          ->with('rojo', $mensaje);
+      }else{
+        if(Memorandum::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+          ->orderBy('numero', 'desc')->first()){
+          $nro = Memorandum::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+            ->orderBy('numero', 'desc')->first()->numero + 1;
+        }else{
+          $nro = VariabLe::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+            ->where('anio', '=', date('Y'))->first()->inicio_memorandum;
+        }
+      }
+    }else{
+      $mensaje = "NO SE CONFIGURO EL NOMBRE DEL AÑO, RECUERDE QUE ESTO SOLO SE HACE UNA VEZ AL 
+      AÑO. INTENTE NUEVAMENTE.";
+      return Redirect::to('memorandum/nuevo/'.Input::get('empresa_ruc'))
+        ->with('rojo', $mensaje);
+    }
+
     $remite = Usuario::find(Input::get('remite'));
     $empresa = Empresa::find(Input::get('empresa_ruc'));
     $usuario = Usuario::find(Auth::user()->id);
     $area = Area::find($remite->empresas()->find($empresa->ruc)->area_id);
-
-    if(Memorandum::where('empresa_ruc', '=', $empresa->ruc)->orderBy('numero', 'desc')
-      ->first()){
-      $nro = Memorandum::where('empresa_ruc', '=', $empresa->ruc)->orderBy('numero', 'desc')
-        ->first()->numero + 1;
-    }else{
-      $nro = 1;
-    }
 
     $codigo = 'MEMORANDUM Nº '.$nro.'-'.date('Y').'/'.$area->abreviatura.'/'.$empresa->nombre;
     
@@ -61,11 +80,11 @@ class MemorandumController extends BaseController{
     $memorandum->area_id = $area->id;
     $memorandum->empresa_ruc = $empresa->ruc;
     $memorandum->trabajador_id = Input::get('trabajador_id');
-    $memorandum->asunto = strtoupper(Input::get('asunto'));
+    $memorandum->asunto = mb_strtoupper(Input::get('asunto'));
     $memorandum->tipo_memorandum_id = Input::get('razon');
     $memorandum->codigo = $codigo;
     $memorandum->numero = $nro;
-    $memorandum->fecha = strtoupper(Input::get('fecha'));
+    $memorandum->fecha = mb_strtoupper(Input::get('fecha'));
     $memorandum->redaccion = date('Y-m-d');
     $memorandum->contenido = Input::get('contenido');
     $memorandum->save();
@@ -155,20 +174,23 @@ class MemorandumController extends BaseController{
 
   public function postNumeracion(){
 
-    $memorandum = new Memorandum;
-    $memorandum->empresa_ruc = Input::get('empresa_ruc');
-    $memorandum->asunto = '';
-    $memorandum->codigo = '';
-    $memorandum->numero = Input::get('numero')-1;
-    $memorandum->fecha = '';
-    $memorandum->redaccion = date('Y-m-d');
-    $memorandum->contenido = '';
+    $variable = Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+      ->where('anio', '=', date('Y'))->first();
 
-    if($memorandum->save()){
-      return 1;
+    if($variable){
+      //actualizamos el registro con el nuevo dato.
+      $variable->inicio_memorandum = Input::get('numero');
+      $variable->save();
     }else{
-      return 0;
+      //Creamos un nuevo registro con el año y la empresa
+      $variable = new Variable;
+      $variable->empresa_ruc = Input::get('empresa_ruc');
+      $variable->inicio_memorandum = Input::get('numero');
+      $variable->anio = date('Y');
+      $variable->save();
     }
+
+    return Redirect::to('memorandum/nuevo/'.Input::get('empresa_ruc'));
   }
 
   public function postTrabajador(){
