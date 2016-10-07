@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CrearTablaMemorandums extends Migration {
+class CrearTablaCartas extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,30 +12,30 @@ class CrearTablaMemorandums extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('memorandums', function(Blueprint $table)
+		Schema::create('cartas', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->integer('usuario_id')->unsigned()->nullable();
 			$table->foreign('usuario_id')->references('id')->on('usuarios')
 				->onUpdate('cascade')->onDelete('set null');
+			$table->string('empresa_ruc', 11);
+			$table->foreign('empresa_ruc')->references('ruc')->on('empresas')
+				->onUpdate('cascade')->onDelete('cascade');
 			$table->integer('remite')->unsigned()->nullable();
 			$table->foreign('remite')->references('id')->on('usuarios')
 				->onUpdate('cascade')->onDelete('set null');
 			$table->integer('area_id')->unsigned()->nullable();
 			$table->foreign('area_id')->references('id')->on('areas')
 				->onUpdate('cascade')->onDelete('set null');
-			$table->string('empresa_ruc', 11);
-			$table->foreign('empresa_ruc')->references('ruc')->on('empresas')
-				->onUpdate('cascade')->onDelete('cascade');
-			$table->integer('trabajador_id')->unsigned()->nullable();
-			$table->foreign('trabajador_id')->references('id')->on('trabajadores')
-				->onUpdate('cascade')->onDelete('cascade');
-			$table->string('asunto');
-			$table->string('codigo');
+			$table->string('anio');
+			$table->string('fecha');
 			$table->integer('numero')->unsigned();
-      $table->string('fecha');
-			$table->date('redaccion');
+			$table->string('codigo');
+			$table->string('destinatario');
+			$table->string('lugar');
+			$table->string('asunto');
 			$table->string('contenido', 1024);
+			$table->date('redaccion');
 		});
 	}
 
@@ -46,7 +46,7 @@ class CrearTablaMemorandums extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('memorandums');
+		Schema::drop('cartas');
 	}
 
 }

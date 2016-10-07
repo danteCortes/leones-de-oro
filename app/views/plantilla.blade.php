@@ -191,6 +191,20 @@
         </li>
         <li class="treeview">
           <a href="#">
+            <i class="fa fa-file-text"></i> <span>Cartas</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            @foreach(Empresa::all() as $empresa)
+            <li><a href="<?=URL::to('carta/inicio/'.$empresa->ruc)?>">
+              <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
+            @endforeach
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
             <i class="fa fa-gear"></i> <span>Configuración</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -201,6 +215,12 @@
               Documentos</a></li>
             <li><a href="<?=URL::to('cargo')?>"><i class="fa fa-circle-o"></i> 
               Cargos</a></li>
+            <li><a href="<?=URL::to('area')?>"><i class="fa fa-circle-o"></i> 
+              Areas</a></li>
+            <li><a href="<?=URL::to('tipoMemorandum')?>"><i class="fa fa-circle-o"></i> 
+              Tipo Memorandums</a></li>
+            <li><a href="<?=URL::to('')?>"><i class="fa fa-circle-o"></i> 
+              Numeraciones</a></li>
           </ul>
         </li>
       </ul>

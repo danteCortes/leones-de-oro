@@ -33,6 +33,4 @@ class CargoController extends \BaseController {
 			return Redirect::to('cargo')->with('rojo', $mensaje);
 		}
 	}
-
-
 }

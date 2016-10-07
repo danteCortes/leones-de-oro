@@ -60,8 +60,8 @@ Memorandum | Editar
 	        		{{Form::label(null, 'DE*:', array('class'=>'control-label col-xs-2'))}}
 	        		<div class="col-xs-5">
 	        			<select name="remite" class="form-control input-sm" required id="usuario">
-                  <option value="{{$memorandum->usuario_id}}">{{$memorandum->usuario->persona
-                    ->nombre}} {{$memorandum->usuario->persona->apellidos}} (ACTUAL)</option>
+                  <option value="{{$memorandum->remite}}">{{$memorandum->remitente->persona
+                    ->nombre}} {{$memorandum->remitente->persona->apellidos}} (ACTUAL)</option>
 	        				<option value="">SELECIONAR</option>
 	        				@foreach($empresa->usuarios as $usuario)
 	        					<option value="{{$usuario->id}}">{{$usuario->persona->nombre}} 
@@ -97,26 +97,15 @@ Memorandum | Editar
 	        		</div>
 	        	</div>
             <div class="form-group">
-              {{Form::label(null, 'ASUNTO:', array('class'=>'control-label col-xs-2'))}}
-              <div class="col-xs-10">
-                <div class="radio">
-                  <label>
-                    @if($memorandum->razon == 1)
-                      <input type="radio" name="razon" value="1" checked>Sanción (actual)
-                    @else
-                      <input type="radio" name="razon" value="1">Sanción
-                    @endif
-                  </label>
-                </div>
-                <div class="radio">
-                  <label>
-                    @if($memorandum->razon == 2)
-                      <input type="radio" name="razon" value="2" checked>Amonestación (actual)
-                    @else
-                      <input type="radio" name="razon" value="2">Amonestación
-                    @endif
-                  </label>
-                </div>
+              {{Form::label(null, 'RAZON*:', array('class'=>'control-label col-xs-2'))}}
+              <div class="col-xs-5">
+                <select name="razon" class="form-control input-sm" required>
+                  <option value="{{$memorandum->tipo_memorandum_id}}">{{$memorandum->tipoMemorandum->nombre}} (ACTUAL)</option>
+                  <option value="">SELECIONAR</option>
+                  @foreach(TipoMemorandum::all() as $tipo)
+                    <option value="{{$tipo->id}}">{{$tipo->nombre}}</option>
+                  @endforeach
+                </select>
               </div>
             </div>
 	        </div>

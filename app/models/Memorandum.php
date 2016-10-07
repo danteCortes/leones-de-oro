@@ -23,4 +23,8 @@ class Memorandum extends Eloquent{
 	public function trabajador(){
 		return $this->belongsTo('Trabajador');
 	}
+
+	public function tipoMemorandum(){
+		return $this->belongsTo('TipoMemorandum');
+	}
 }

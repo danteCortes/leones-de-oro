@@ -57,8 +57,11 @@ Memorandum | Ver
         </div>
         <div class="box-footer">
         	<a href="<?=URL::to('memorandum/inicio/'.$memorandum->empresa_ruc)?>" class="btn btn-primary">
-        		Atras
+        		Ver Memorandums
         	</a>
+            <a href="<?=URL::to('trabajador/ver/'.$memorandum->trabajador_id)?>" class="btn btn-warning">
+                Ver Trabajador
+            </a>
         </div>
     	</div>
     	</div>
