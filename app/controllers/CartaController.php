@@ -206,7 +206,7 @@ class CartaController extends BaseController{
   }
 
   public function getEditar($id){
-    $carta = carta::find($id);
+    $carta = Carta::find($id);
     return View::make('carta.editar')->with('carta', $carta);
   }
 
@@ -314,7 +314,7 @@ class CartaController extends BaseController{
         '.pdf');
       $carta->delete();
 
-      $mensaje = "EL carta FUE ELIMINADO CORRECTAMENTE.";
+      $mensaje = "LA CARTA FUE ELIMINADO CORRECTAMENTE.";
       return Redirect::to('carta/inicio/'.$ruc)->with('naranja', $mensaje);
     }else{
       $mensaje = "LA CONTRASEÑA ES INCORRECTA, INTENTE NUEVAMENTE.";

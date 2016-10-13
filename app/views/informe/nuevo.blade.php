@@ -1,7 +1,7 @@
 @extends('plantilla')
 
 @section('titulo')
-Carta | Nuevo
+Informe | Nuevo
 @stop
 
 @section('estilos')
@@ -11,12 +11,12 @@ Carta | Nuevo
 @section('contenido')
 <section class="content-header">
   <h1>
-    Carta
+    Informe
     <small>Nuevo</small>
   </h1>
   <ol class="breadcrumb">
     <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-    <li><a href="#">Carta</a></li>
+    <li><a href="#">Informe</a></li>
     <li class="active">Nuevo</li>
   </ol>
 </section>
@@ -48,14 +48,14 @@ Carta | Nuevo
     <div class="col-md-12">
       <div class="box box-info">
         <div class="box-header">
-          <h3 class="box-title">CARTA Nº <label id="nro">
+          <h3 class="box-title">INFORME Nº <label id="nro">
             @if(Variable::where('empresa_ruc', '=', $empresa->ruc)->where('anio', '=', date('Y'))->first())
-              @if(Variable::where('empresa_ruc', '=', $empresa->ruc)->where('anio', '=', date('Y'))->first()->inicio_carta)
-                @if(Carta::where('empresa_ruc', '=', $empresa->ruc)->where('redaccion', 'like', '%'.date('Y').'%')
+              @if(Variable::where('empresa_ruc', '=', $empresa->ruc)->where('anio', '=', date('Y'))->first()->inicio_informe)
+                @if(Informe::where('empresa_ruc', '=', $empresa->ruc)->where('redaccion', 'like', '%'.date('Y').'%')
                   ->orderBy('numero', 'desc')->first())
-                  {{Carta::where('empresa_ruc', '=', $empresa->ruc)->orderBy('numero', 'desc')->first()->numero+1}}
+                  {{Informe::where('empresa_ruc', '=', $empresa->ruc)->orderBy('numero', 'desc')->first()->numero+1}}
                 @else
-                  {{Variable::where('empresa_ruc', '=', $empresa->ruc)->where('anio', '=', date('Y'))->first()->inicio_carta}}
+                  {{Variable::where('empresa_ruc', '=', $empresa->ruc)->where('anio', '=', date('Y'))->first()->inicio_informe}}
                 @endif
               @else
                 {{Form::button('Configurar Numeración', array('class'=>'btn btn-primary btn-xs',
@@ -69,7 +69,7 @@ Carta | Nuevo
                         </button>
                         <h4 class="modal-title">Ingrese numeración inicial</h4>
                       </div>
-                      {{Form::open(array('url'=>'carta/numeracion', 'class'=>'form-horizontal'))}}
+                      {{Form::open(array('url'=>'informe/numeracion', 'class'=>'form-horizontal'))}}
                         <div class="modal-body">
                           <div class="form-group">
                             {{Form::label(null, 'Numeración*:', array('class'=>'control-label col-sm-6'))}}
@@ -101,7 +101,7 @@ Carta | Nuevo
                       </button>
                       <h4 class="modal-title">Ingrese numeración inicial</h4>
                     </div>
-                    {{Form::open(array('url'=>'carta/numeracion', 'class'=>'form-horizontal'))}}
+                    {{Form::open(array('url'=>'informe/numeracion', 'class'=>'form-horizontal'))}}
                       <div class="modal-body">
                         <div class="form-group">
                           {{Form::label(null, 'Numeración*:', array('class'=>'control-label col-sm-6'))}}
@@ -140,7 +140,7 @@ Carta | Nuevo
                           </button>
                           <h4 class="modal-title">Ingrese nombre del Año</h4>
                         </div>
-                        {{Form::open(array('url'=>'carta/anio', 'class'=>'form-horizontal'))}}
+                        {{Form::open(array('url'=>'informe/anio', 'class'=>'form-horizontal'))}}
                           <div class="modal-body">
                             <div class="form-group">
                               {{Form::label(null, 'Nombre*:', array('class'=>'control-label col-sm-2'))}}
@@ -172,7 +172,7 @@ Carta | Nuevo
                         </button>
                         <h4 class="modal-title">Ingrese nombre del Año</h4>
                       </div>
-                      {{Form::open(array('url'=>'carta/anio', 'class'=>'form-horizontal'))}}
+                      {{Form::open(array('url'=>'informe/anio', 'class'=>'form-horizontal'))}}
                         <div class="modal-body">
                           <div class="form-group">
                             {{Form::label(null, 'Nombre*:', array('class'=>'control-label col-sm-2'))}}
@@ -194,7 +194,7 @@ Carta | Nuevo
               @endif
           </h3>
         </div>
-        {{Form::open(array('url'=>'carta/nuevo', 'class'=>'form-horizontal', 
+        {{Form::open(array('url'=>'informe/nuevo', 'class'=>'form-horizontal', 
           'method'=>'post'))}}
           <div class="box-body">
             <div class="form-group">
@@ -211,17 +211,17 @@ Carta | Nuevo
               </div>
             </div>
             <div class="form-group">
-              {{Form::label(null, 'SEÑORES*:', array('class'=>'control-label col-xs-2'))}}
+              {{Form::label(null, 'SEÑOR*:', array('class'=>'control-label col-xs-2'))}}
               <div class="col-xs-10">
                 {{Form::text('destinatario','' , array('class'=>'form-control input-sm mayuscula'
                   ,'placeholder'=>'DESTINATARIO', 'required'=>''))}}
               </div>
             </div>
             <div class="form-group">
-              {{Form::label(null, 'LUGAR*:', array('class'=>'control-label col-xs-2'))}}
+              {{Form::label(null, 'CARGO*:', array('class'=>'control-label col-xs-2'))}}
               <div class="col-xs-10">
-                {{Form::text('lugar','' , array('class'=>'form-control input-sm mayuscula'
-                  ,'placeholder'=>'LUGAR', 'required'=>''))}}
+                {{Form::text('cargo','' , array('class'=>'form-control input-sm mayuscula'
+                  ,'placeholder'=>'CARGO', 'required'=>''))}}
               </div>
             </div>
             <div class="form-group">
@@ -249,7 +249,7 @@ Carta | Nuevo
               </div>
               {{Form::button('Guardar', array('class'=>'btn btn-primary', 'type'=>'submit', 
                 'id'=>'guardar'))}}
-              <a href="<?=URL::to('carta/inicio/'.$empresa->ruc)?>"
+              <a href="<?=URL::to('informe/inicio/'.$empresa->ruc)?>"
                 class="btn btn-warning pull-right">Atras</a>
           </div>
           {{Form::hidden('empresa_ruc', $empresa->ruc, array('id'=>'empresa_ruc'))}}

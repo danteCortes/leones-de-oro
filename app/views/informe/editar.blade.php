@@ -1,7 +1,7 @@
 @extends('plantilla')
 
 @section('titulo')
-Carta | Editar
+Informe | Editar
 @stop
 
 @section('estilos')
@@ -11,12 +11,12 @@ Carta | Editar
 @section('contenido')
 <section class="content-header">
   <h1>
-    Carta
+    Informe
     <small>Editar</small>
   </h1>
   <ol class="breadcrumb">
     <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-    <li><a href="#">Carta</a></li>
+    <li><a href="#">Informe</a></li>
     <li class="active">Editar</li>
   </ol>
 </section>
@@ -48,55 +48,55 @@ Carta | Editar
     <div class="col-md-12">
       <div class="box box-info">
         <div class="box-header">
-          <h3 class="box-title">CARTA Nº {{$carta->numero}}-{{date('Y', strtotime($carta->redaccion))}}/
-            <label id="codigo">{{$carta->area->abreviatura}}</label>/{{$carta->empresa->nombre}}
+          <h3 class="box-title">INFORME Nº {{$informe->numero}}-{{date('Y', strtotime($informe->redaccion))}}/
+            <label id="codigo">{{$informe->area->abreviatura}}</label>/{{$informe->empresa->nombre}}
             <small>Editar</small>
           </h3><br>
-          <h3 class="box-title">{{$carta->anio}}
+          <h3 class="box-title">{{$informe->anio}}
           </h3>
         </div>
-        {{Form::open(array('url'=>'carta/editar/'.$carta->id, 'class'=>'form-horizontal', 
+        {{Form::open(array('url'=>'informe/editar/'.$informe->id, 'class'=>'form-horizontal', 
           'method'=>'put'))}}
           <div class="box-body">
             <div class="form-group">
               {{Form::label(null, 'DE*:', array('class'=>'control-label col-xs-2'))}}
               <div class="col-xs-5">
                 <select name="remite" class="form-control input-sm" required id="usuario">
-                  <option value="{{$carta->remite}}">{{$carta->remitente->persona->nombre}}
-                    {{$carta->remitente->persona->apellidos}} (ACTUAL)</option>
+                  <option value="{{$informe->remite}}">{{$informe->remitente->persona->nombre}}
+                    {{$informe->remitente->persona->apellidos}} (ACTUAL)</option>
                   <option value="">SELECIONAR</option>
-                  @foreach($carta->empresa->usuarios as $usuario)
+                  @foreach($informe->empresa->usuarios as $usuario)
                     <option value="{{$usuario->id}}">{{$usuario->persona->nombre}} {{$usuario->persona->apellidos}}</option>
                   @endforeach
                 </select>
-                {{Form::label(null, $carta->area->nombre, array('class'=>'control-label', 'id'=>'area'))}}
+                {{Form::label(null, $informe->area->nombre, array('class'=>'control-label', 'id'=>'area'))}}
               </div>
             </div>
             <div class="form-group">
               {{Form::label(null, 'SEÑORES*:', array('class'=>'control-label col-xs-2'))}}
               <div class="col-xs-10">
-                {{Form::text('destinatario', $carta->destinatario, array('class'=>'form-control input-sm mayuscula'
+                {{Form::text('destinatario', $informe->destinatario, array('class'=>'form-control input-sm mayuscula'
                   ,'placeholder'=>'DESTINATARIO', 'required'=>''))}}
               </div>
             </div>
             <div class="form-group">
-              {{Form::label(null, 'LUGAR*:', array('class'=>'control-label col-xs-2'))}}
+              {{Form::label(null, 'CARGO*:', array('class'=>'control-label col-xs-2'))}}
               <div class="col-xs-10">
-                {{Form::text('lugar', $carta->lugar, array('class'=>'form-control input-sm mayuscula'
-                  ,'placeholder'=>'LUGAR', 'required'=>''))}}
+                {{Form::text('cargo', $informe->cargo, array('class'=>'form-control input-sm mayuscula'
+                  ,'placeholder'=>'CARGO', 'required'=>''))}}
               </div>
             </div>
             <div class="form-group">
               {{Form::label(null, 'ASUNTO*:', array('class'=>'control-label col-xs-2'))}}
               <div class="col-xs-10">
-                {{Form::text('asunto', $carta->asunto, array('class'=>'form-control input-sm mayuscula'
+                {{Form::text('asunto', $informe->asunto, array('class'=>'form-control input-sm mayuscula'
                   ,'placeholder'=>'ASUNTO', 'required'=>'', 'id'=>'asunto'))}}
               </div>
             </div>
             <div class="form-group">
               {{Form::label(null, 'FECHA*:', array('class'=>'control-label col-xs-2'))}}
               <div class="col-xs-10">
-                {{Form::text('fecha', $carta->fecha, array('class'=>'form-control input-sm mayuscula'
+                {{Form::text('fecha', $informe->fecha, array('class'=>'form-control input-sm mayuscula'
                   ,'placeholder'=>'FECHA', 'required'=>'', 'id'=>'fecha'))}}
               </div>
             </div>
@@ -105,14 +105,14 @@ Carta | Editar
               <div class="form-group">
                 <div class="col-xs-12">
                   <textarea id="contenido" name="contenido" rows="10" cols="80" placeholder="Contenido..." required="">
-                      {{$carta->contenido}}
+                      {{$informe->contenido}}
                   </textarea>
                 </div>
               </div>
-              {{Form::hidden('empresa_ruc', $carta->empresa->ruc, array('id'=>'empresa_ruc'))}}
+              {{Form::hidden('empresa_ruc', $informe->empresa->ruc, array('id'=>'empresa_ruc'))}}
               {{Form::button('Guardar', array('class'=>'btn btn-primary', 'type'=>'submit', 
                 'id'=>'guardar'))}}
-              <a href="<?=URL::to('carta/inicio/'.$carta->empresa_ruc)?>"
+              <a href="<?=URL::to('informe/inicio/'.$informe->empresa_ruc)?>"
                 class="btn btn-warning pull-right">Atras</a>
           </div>
         {{Form::close()}}

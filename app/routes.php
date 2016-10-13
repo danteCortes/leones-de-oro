@@ -40,4 +40,6 @@ Route::group(array('before' => 'auth'), function(){
 	Route::resource('tipoMemorandum', 'TipoMemorandumController', array('only'=>array('index', 'store', 'destroy')));
 
 	Route::controller('carta', 'CartaController');
+
+	Route::controller('informe', 'InformeController');
 });

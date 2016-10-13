@@ -1,0 +1,346 @@
+<?php
+
+class InformeController extends BaseController{
+
+  public function getInicio($ruc){
+
+    $empresa = Empresa::find($ruc);
+    if($empresa){
+      $informes = Informe::where('empresa_ruc', '=', $ruc)->get();
+      return View::make('informe.inicio')->with('informes', $informes)
+        ->with('empresa', $empresa);
+    }else{
+      return Redirect::to('usuario/panel');
+    }
+  }
+
+  public function getNuevo($ruc){
+    $empresa = Empresa::find($ruc);
+    if($empresa){
+      $informe = new Informe;
+      return View::make('informe.nuevo')->with('empresa', $empresa)->with('informe', $informe);
+    }else{
+      return Redirect::to('usuario/panel');
+    }
+  }
+
+  public function postAnio(){
+    $variable = Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+      ->where('anio', '=', date('Y'))->first();
+
+    if($variable){
+      //actualizamos el registro con el nuevo dato.
+      $variable->nombre_anio = mb_strtoupper(Input::get('nombre'));
+      $variable->save();
+    }else{
+      //Creamos un nuevo registro con el año y la empresa
+      $variable = new Variable;
+      $variable->empresa_ruc = Input::get('empresa_ruc');
+      $variable->nombre_anio = mb_strtoupper(Input::get('nombre'));
+      $variable->anio = date('Y');
+      $variable->save();
+    }
+    return Redirect::to('informe/nuevo/'.Input::get('empresa_ruc'));
+  }
+
+  public function postNumeracion(){
+    $variable = Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+      ->where('anio', '=', date('Y'))->first();
+
+    if($variable){
+      //actualizamos el registro con el nuevo dato.
+      $variable->inicio_informe = Input::get('numero');
+      $variable->save();
+    }else{
+      //Creamos un nuevo registro con el año y la empresa
+      $variable = new Variable;
+      $variable->empresa_ruc = Input::get('empresa_ruc');
+      $variable->inicio_informe = Input::get('numero');
+      $variable->anio = date('Y');
+      $variable->save();
+    }
+    return Redirect::to('informe/nuevo/'.Input::get('empresa_ruc'));
+  }
+
+  public function postNuevo(){
+    if(Input::get('contenido') == ''){
+      $mensaje = "EL CONTENIDO DE LA CARTA NO DEBE SER VACIO. INTENTE NUEVAMENTE.";
+      return Redirect::to('informe/nuevo/'.Input::get('empresa_ruc'))
+        ->with('rojo', $mensaje);
+    }
+
+    if(VariabLe::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+      ->where('anio', '=', date('Y'))->first()){
+
+      if(!VariabLe::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+        ->where('anio', '=', date('Y'))->first()->anio){
+
+        $mensaje = "NO SE CONFIGURO EL NOMBRE DEL AÑO, RECUERDE QUE ESTO SOLO SE HACE UNA VEZ AL 
+        AÑO. INTENTE NUEVAMENTE.";
+        return Redirect::to('informe/nuevo/'.Input::get('empresa_ruc'))
+          ->with('rojo', $mensaje);
+      }else{
+        $anio = VariabLe::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+        ->where('anio', '=', date('Y'))->first()->nombre_anio;
+      }
+
+      if(!VariabLe::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+      ->where('anio', '=', date('Y'))->first()->inicio_informe){
+
+        $mensaje = "NO SE CONFIGURO LA NUMERACION DE LOS INFORMES, RECUERDE QUE ESTO SOLO SE HACE UNA VEZ AL 
+        AÑO. INTENTE NUEVAMENTE.";
+        return Redirect::to('informe/nuevo/'.Input::get('empresa_ruc'))
+          ->with('rojo', $mensaje);
+      }else{
+        if(Informe::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+          ->orderBy('numero', 'desc')->first()){
+          $nro = Informe::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+            ->orderBy('numero', 'desc')->first()->numero + 1;
+        }else{
+          $nro = VariabLe::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+            ->where('anio', '=', date('Y'))->first()->inicio_informe;
+        }
+      }
+    }else{
+      $mensaje = "NO SE CONFIGURO EL NOMBRE DEL AÑO, RECUERDE QUE ESTO SOLO SE HACE UNA VEZ AL 
+      AÑO. INTENTE NUEVAMENTE.";
+      return Redirect::to('informe/nuevo/'.Input::get('empresa_ruc'))
+        ->with('rojo', $mensaje);
+    }
+
+    $remite = Usuario::find(Input::get('remite'));
+    $empresa = Empresa::find(Input::get('empresa_ruc'));
+    $usuario = Usuario::find(Auth::user()->id);
+    $area = Area::find($remite->empresas()->find($empresa->ruc)->area_id);
+
+    $codigo = 'INFORME Nº '.$nro.'-'.date('Y').'/'.$area->abreviatura.'/'.$empresa->nombre;
+    
+    $informe = new Informe;
+    $informe->usuario_id = Auth::user()->id;
+    $informe->empresa_ruc = $empresa->ruc;
+    $informe->remite = $remite->id;
+    $informe->area_id = $area->id;
+    $informe->anio = $anio;
+    $informe->fecha = mb_strtoupper(Input::get('fecha'));
+    $informe->numero = $nro;
+    $informe->codigo = $codigo;
+    $informe->destinatario = mb_strtoupper(Input::get('destinatario'));
+    $informe->cargo = mb_strtoupper(Input::get('cargo'));
+    $informe->asunto = mb_strtoupper(Input::get('asunto'));
+    $informe->contenido = Input::get('contenido');
+    $informe->redaccion = date('Y-m-d');
+    $informe->save();
+
+    $html = "
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta http-equiv='Content-Type' content='text/html; charset=ISO-8859-1'>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+        <title>".$informe->codigo."</title>
+        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' 
+          name='viewport'>
+      </head>
+      <body>
+        <style type='text/css'>
+          .borde{
+           border: 1px solid #000;
+           padding-left: 10px;
+           margin-left: 30%;
+          }
+          *{
+            font-size: 9pt;
+            font-family: Cambria, Georgia, serif;
+          }
+          @page{
+            margin-top: 5cm;
+            margin-left: 3cm;
+            margin-right: 2.5cm;
+            margin-bottom: 3cm;
+          }
+        </style>
+        <h1 class='titulo' align='center'>".$informe->anio."</h1><br>
+        <p align='left'>".$informe->codigo."</p>
+        <table>
+          <tr valign=top>
+            <td height=30><b>PARA</b></td>
+            <td>:".$informe->destinatario."<br>".
+            $informe->cargo."</td>
+          </tr>
+          <tr valign=top>
+            <td width=100 height=50><b>DE</b></td>
+            <td>:".Usuario::find($informe->remite)->persona->nombre." ".
+              Usuario::find($informe->remite)->persona->apellidos."<br> <b>".
+              Area::find(Empresa::find($informe->empresa_ruc)->usuarios()->find($informe->remite)
+                ->area_id)->nombre."</b></td>
+          </tr>
+          <tr valign=top>
+            <td height=30><b>ASUNTO</b></td>
+            <td>:".$informe->asunto."</td>
+          </tr>
+          <tr valign=top>
+            <td height=30><b>FECHA</b></td>
+            <td>:".$informe->fecha."</td>
+          </tr>
+        </table><hr>
+        <p width=300>".$informe->contenido."
+        </p>
+        <p>Atte.</p><br><br><br><br><br><p align='center'>
+        ___________________________<br>".
+        Usuario::find($informe->remite)->persona->nombre."<br>".
+        Usuario::find($informe->remite)->persona->apellidos."<br>".
+        Area::find(Empresa::find($informe->empresa_ruc)->usuarios()->find($informe->remite)
+          ->area_id)->nombre."</p>
+      </body>
+    </html>
+    ";
+
+    define('BUDGETS_DIR', public_path('documentos/informes/'.$empresa->ruc));
+
+    if (!is_dir(BUDGETS_DIR)){
+        mkdir(BUDGETS_DIR, 0755, true);
+    }
+
+    $nombre = $informe->numero;
+    $ruta = BUDGETS_DIR.'/'.$nombre.'.pdf';
+
+    $pdf = PDF::loadHtml($html);
+    $pdf->setPaper('a4')->save($ruta);
+
+    $mensaje = "EL INFORME SE GUARDO PERFECTAMENTE. AHORA PUEDE IMPRIMIRLO.";
+    return Redirect::to('informe/mostrar/'.$informe->id)->with('verde', $mensaje);
+  }
+
+  public function getMostrar($id){
+    $informe = Informe::find($id);
+    return View::make('informe.mostrar')->with('informe', $informe);
+  }
+
+  public function getEditar($id){
+    $informe = Informe::find($id);
+    return View::make('informe.editar')->with('informe', $informe);
+  }
+
+  public function putEditar($id){
+    if(Input::get('contenido') == ''){
+      $mensaje = "EL CONTENIDO DE LA CARTA NO DEBE SER VACIO. INTENTE NUEVAMENTE.";
+      return Redirect::to('informe/nuevo/'.Input::get('empresa_ruc'))
+        ->with('rojo', $mensaje);
+    }
+    $informe = Informe::find($id);
+
+    $remite = Usuario::find(Input::get('remite'));
+    $empresa = $informe->empresa;
+    $usuario = Usuario::find(Auth::user()->id);
+    $area = Area::find($remite->empresas()->find($empresa->ruc)->area_id);
+
+    $codigo = 'INFORME Nº '.$informe->numero.'-'.date('Y', strtotime($informe->redaccion))
+    .'/'.$area->abreviatura.'/'.$empresa->nombre;
+
+    $informe->usuario_id = Auth::user()->id;
+    $informe->remite = $remite->id;
+    $informe->area_id = $area->id;
+    $informe->fecha = mb_strtoupper(Input::get('fecha'));
+    $informe->codigo = $codigo;
+    $informe->destinatario = mb_strtoupper(Input::get('destinatario'));
+    $informe->cargo = mb_strtoupper(Input::get('cargo'));
+    $informe->asunto = mb_strtoupper(Input::get('asunto'));
+    $informe->contenido = Input::get('contenido');
+    $informe->save();
+
+    $html = "
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta http-equiv='Content-Type' content='text/html; charset=ISO-8859-1'>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+        <title>".$informe->codigo."</title>
+        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' 
+          name='viewport'>
+      </head>
+      <body>
+        <style type='text/css'>
+          .borde{
+           border: 1px solid #000;
+           padding-left: 10px;
+           margin-left: 30%;
+          }
+          *{
+            font-size: 9pt;
+            font-family: Cambria, Georgia, serif;
+          }
+          @page{
+            margin-top: 5cm;
+            margin-left: 3cm;
+            margin-right: 2.5cm;
+            margin-bottom: 3cm;
+          }
+        </style>
+        <h1 class='titulo' align='center'>".$informe->anio."</h1><br>
+        <p align='left'>".$informe->codigo."</p>
+        <table>
+          <tr valign=top>
+            <td height=30><b>PARA</b></td>
+            <td>:".$informe->destinatario."<br>".
+            $informe->cargo."</td>
+          </tr>
+          <tr valign=top>
+            <td width=100 height=50><b>DE</b></td>
+            <td>:".Usuario::find($informe->remite)->persona->nombre." ".
+              Usuario::find($informe->remite)->persona->apellidos."<br> <b>".
+              Area::find(Empresa::find($informe->empresa_ruc)->usuarios()->find($informe->remite)
+                ->area_id)->nombre."</b></td>
+          </tr>
+          <tr valign=top>
+            <td height=30><b>ASUNTO</b></td>
+            <td>:".$informe->asunto."</td>
+          </tr>
+          <tr valign=top>
+            <td height=30><b>FECHA</b></td>
+            <td>:".$informe->fecha."</td>
+          </tr>
+        </table><hr>
+        <p width=300>".$informe->contenido."
+        </p>
+        <p>Atte.</p><br><br><br><br><br><p align='center'>
+        ___________________________<br>".
+        Usuario::find($informe->remite)->persona->nombre."<br>".
+        Usuario::find($informe->remite)->persona->apellidos."<br>".
+        Area::find(Empresa::find($informe->empresa_ruc)->usuarios()->find($informe->remite)
+          ->area_id)->nombre."</p>
+      </body>
+    </html>
+    ";
+
+    define('BUDGETS_DIR', public_path('documentos/informes/'.$empresa->ruc));
+
+    if (!is_dir(BUDGETS_DIR)){
+        mkdir(BUDGETS_DIR, 0755, true);
+    }
+
+    $nombre = $informe->numero;
+    $ruta = BUDGETS_DIR.'/'.$nombre.'.pdf';
+
+    $pdf = PDF::loadHtml($html);
+    $pdf->setPaper('a4')->save($ruta);
+
+    $mensaje = "EL INFORME SE ACTUALIZO PERFECTAMENTE. AHORA PUEDE IMPRIMIRLO.";
+    return Redirect::to('informe/mostrar/'.$informe->id)->with('verde', $mensaje);
+  }
+
+  public function deleteBorrar($id){
+    $informe = Informe::find($id);
+    $ruc = $informe->empresa_ruc;
+    if(Hash::check(Input::get('password'), Auth::user()->password)){
+      File::delete('documentos/informes/'.$informe->empresa_ruc.'/'.$informe->numero.
+        '.pdf');
+      $informe->delete();
+
+      $mensaje = "EL INFORME FUE ELIMINADO CORRECTAMENTE.";
+      return Redirect::to('informe/inicio/'.$ruc)->with('naranja', $mensaje);
+    }else{
+      $mensaje = "LA CONTRASEÑA ES INCORRECTA, INTENTE NUEVAMENTE.";
+      return Redirect::to('informe/inicio/'.$informe->empresa_ruc)->with('rojo', $mensaje);
+    }
+  }
+}
