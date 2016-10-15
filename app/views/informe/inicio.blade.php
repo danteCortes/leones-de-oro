@@ -74,7 +74,7 @@ Informe | Inicio
                 @if($informe->usuario_id)
                   <tr>
                     <td>{{$informe->codigo}}</td>
-                    <td>{{Usuario::find($informe->remite)->persona->nombre}}</td>
+                    <td>{{$informe->remite}}</td>
                     <td>{{$informe->destinatario}}</td>
                     <td><a href="<?=URL::to('informe/mostrar/'.$informe->id)?>" class="btn btn-warning btn-xs">Mostrar</a>
                     </td>

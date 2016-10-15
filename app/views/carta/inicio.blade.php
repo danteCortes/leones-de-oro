@@ -62,7 +62,6 @@ Carta | Inicio
             <thead>
               <tr>
                 <th>Carta</th>
-                <th>Remitente</th>
                 <th>Destinatario</th>
                 <th>Mostrar</th>
                 <th>Editar</th>
@@ -74,7 +73,6 @@ Carta | Inicio
                 @if($carta->usuario_id)
                   <tr>
                     <td>{{$carta->codigo}}</td>
-                    <td>{{Usuario::find($carta->remite)->persona->nombre}}</td>
                     <td>{{$carta->destinatario}}</td>
                     <td><a href="<?=URL::to('carta/mostrar/'.$carta->id)?>" class="btn btn-warning btn-xs">Mostrar</a>
                     </td>

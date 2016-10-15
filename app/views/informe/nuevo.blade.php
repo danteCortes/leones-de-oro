@@ -121,7 +121,7 @@ Informe | Nuevo
                 </div>
               </div>
             @endif
-            </label> - {{date('Y')}}/<label id="codigo">X</label>/{{$empresa->nombre}}  
+            </label> - {{date('Y')}}/{{$empresa->nombre}}  
             <small>Redactar</small>
           </h3><br>
           <h3 class="box-title">
@@ -198,20 +198,7 @@ Informe | Nuevo
           'method'=>'post'))}}
           <div class="box-body">
             <div class="form-group">
-              {{Form::label(null, 'DE*:', array('class'=>'control-label col-xs-2'))}}
-              <div class="col-xs-5">
-                <select name="remite" class="form-control input-sm" required id="usuario">
-                  <option value="">SELECIONAR</option>
-                  @foreach($empresa->usuarios as $usuario)
-                    <option value="{{$usuario->id}}">{{$usuario->persona->nombre}} 
-                      {{$usuario->persona->apellidos}}</option>
-                  @endforeach
-                </select>
-                {{Form::label(null, '', array('class'=>'control-label', 'id'=>'area'))}}
-              </div>
-            </div>
-            <div class="form-group">
-              {{Form::label(null, 'SEÑOR*:', array('class'=>'control-label col-xs-2'))}}
+              {{Form::label(null, 'PARA*:', array('class'=>'control-label col-xs-2'))}}
               <div class="col-xs-10">
                 {{Form::text('destinatario','' , array('class'=>'form-control input-sm mayuscula'
                   ,'placeholder'=>'DESTINATARIO', 'required'=>''))}}
@@ -220,8 +207,22 @@ Informe | Nuevo
             <div class="form-group">
               {{Form::label(null, 'CARGO*:', array('class'=>'control-label col-xs-2'))}}
               <div class="col-xs-10">
-                {{Form::text('cargo','' , array('class'=>'form-control input-sm mayuscula'
-                  ,'placeholder'=>'CARGO', 'required'=>''))}}
+                {{Form::text('cargo_destinatario','' , array('class'=>'form-control input-sm mayuscula'
+                  ,'placeholder'=>'CARGO DESTINATARIO', 'required'=>''))}}
+              </div>
+            </div>
+            <div class="form-group">
+              {{Form::label(null, 'DE*:', array('class'=>'control-label col-xs-2'))}}
+              <div class="col-xs-10">
+                {{Form::text('remite','' , array('class'=>'form-control input-sm mayuscula'
+                  ,'placeholder'=>'REMITENTE', 'required'=>''))}}
+              </div>
+            </div>
+            <div class="form-group">
+              {{Form::label(null, 'CARGO*:', array('class'=>'control-label col-xs-2'))}}
+              <div class="col-xs-10">
+                {{Form::text('cargo_remite','' , array('class'=>'form-control input-sm mayuscula'
+                  ,'placeholder'=>'CARGO REMITENTE', 'required'=>''))}}
               </div>
             </div>
             <div class="form-group">
@@ -271,30 +272,6 @@ Informe | Nuevo
     // Replace the <textarea id="editor1"> with a CKEditor
     // instance, using default configuration.
     CKEDITOR.replace('contenido');
-
-    //Rescata el area del remitente y el código de la carta
-    $('#usuario').change(function(){
-      $.ajax({
-        url: "<?=URL::to('memorandum/area')?>",
-        type: 'POST',
-        data:{usuario_id: $("#usuario").val(), empresa_ruc: $("#empresa_ruc").val()},
-        dataType: 'JSON',
-        beforeSend: function() {
-          $("#area").text('Buscando area...');
-        },
-        error: function() {
-            $("#area").text('Ha surgido un error.');
-        },
-        success: function(respuesta) {
-          if (respuesta) {
-            $("#area").text(respuesta['nombre']);
-            $("#codigo").text(respuesta['abreviatura']);
-          } else {
-            $("#area").text('El usuario no tiene un area definida.');
-          }
-        }
-      });
-    });
 
   });
 </script>

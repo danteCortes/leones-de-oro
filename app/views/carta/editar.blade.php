@@ -49,7 +49,7 @@ Carta | Editar
       <div class="box box-info">
         <div class="box-header">
           <h3 class="box-title">CARTA Nº {{$carta->numero}}-{{date('Y', strtotime($carta->redaccion))}}/
-            <label id="codigo">{{$carta->area->abreviatura}}</label>/{{$carta->empresa->nombre}}
+            {{$carta->empresa->nombre}}
             <small>Editar</small>
           </h3><br>
           <h3 class="box-title">{{$carta->anio}}
@@ -58,20 +58,6 @@ Carta | Editar
         {{Form::open(array('url'=>'carta/editar/'.$carta->id, 'class'=>'form-horizontal', 
           'method'=>'put'))}}
           <div class="box-body">
-            <div class="form-group">
-              {{Form::label(null, 'DE*:', array('class'=>'control-label col-xs-2'))}}
-              <div class="col-xs-5">
-                <select name="remite" class="form-control input-sm" required id="usuario">
-                  <option value="{{$carta->remite}}">{{$carta->remitente->persona->nombre}}
-                    {{$carta->remitente->persona->apellidos}} (ACTUAL)</option>
-                  <option value="">SELECIONAR</option>
-                  @foreach($carta->empresa->usuarios as $usuario)
-                    <option value="{{$usuario->id}}">{{$usuario->persona->nombre}} {{$usuario->persona->apellidos}}</option>
-                  @endforeach
-                </select>
-                {{Form::label(null, $carta->area->nombre, array('class'=>'control-label', 'id'=>'area'))}}
-              </div>
-            </div>
             <div class="form-group">
               {{Form::label(null, 'SEÑORES*:', array('class'=>'control-label col-xs-2'))}}
               <div class="col-xs-10">
@@ -87,10 +73,17 @@ Carta | Editar
               </div>
             </div>
             <div class="form-group">
-              {{Form::label(null, 'ASUNTO*:', array('class'=>'control-label col-xs-2'))}}
+              {{Form::label(null, 'ASUNTO:', array('class'=>'control-label col-xs-2'))}}
               <div class="col-xs-10">
                 {{Form::text('asunto', $carta->asunto, array('class'=>'form-control input-sm mayuscula'
-                  ,'placeholder'=>'ASUNTO', 'required'=>'', 'id'=>'asunto'))}}
+                  ,'placeholder'=>'ASUNTO', 'id'=>'asunto'))}}
+              </div>
+            </div>
+            <div class="form-group">
+              {{Form::label(null, 'REFERENCIA:', array('class'=>'control-label col-xs-2'))}}
+              <div class="col-xs-10">
+                {{Form::text('referencia', $carta->referencia, array('class'=>'form-control input-sm mayuscula'
+                  ,'placeholder'=>'REFERENCIA', 'id'=>'referencia'))}}
               </div>
             </div>
             <div class="form-group">
@@ -134,28 +127,41 @@ Carta | Editar
     // instance, using default configuration.
     CKEDITOR.replace('contenido');
 
-    //Rescata el area del remitente y el código de la carta
-    $('#usuario').change(function(){
-      $.ajax({
-        url: "<?=URL::to('memorandum/area')?>",
-        type: 'POST',
-        data:{usuario_id: $("#usuario").val(), empresa_ruc: $("#empresa_ruc").val()},
-        dataType: 'JSON',
-        beforeSend: function() {
-          $("#area").text('Buscando area...');
-        },
-        error: function() {
-            $("#area").text('Ha surgido un error.');
-        },
-        success: function(respuesta) {
-          if (respuesta) {
-            $("#area").text(respuesta['nombre']);
-            $("#codigo").text(respuesta['abreviatura']);
-          } else {
-            $("#area").text('El usuario no tiene un area definida.');
-          }
-        }
-      });
+    if($("#referencia").val() != ""){
+      $("#asunto").prop('readonly', true);
+    }else{
+      if($("#asunto").val() != ""){
+        $("#referencia").prop('readonly', true);
+      }
+    }
+
+    //desactiva el input text 
+    $("#asunto").keypress(function(){
+      if($("#referencia").val() == ""){
+        $("#referencia").prop('readonly', true);
+      }
+    });
+
+    $("#asunto").blur(function(){
+      if($("#asunto").val() == ""){
+        $("#referencia").prop('readonly', false);
+      }else{
+        $("#referencia").prop('readonly', true);
+      }
+    });
+
+    $("#referencia").keypress(function(){
+      if($("#asunto").val() == ""){
+        $("#asunto").prop('readonly', true);
+      }
+    });
+
+    $("#referencia").blur(function(){
+      if($("#referencia").val() == ""){
+        $("#asunto").prop('readonly', false);
+      }else{
+        $("#asunto").prop('readonly', true);
+      }
     });
 
   });

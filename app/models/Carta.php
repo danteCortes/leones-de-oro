@@ -11,12 +11,4 @@ class Carta extends Eloquent{
   public function empresa(){
     return $this->belongsTo('Empresa', 'empresa_ruc');
   }
-
-  public function remitente(){
-    return $this->belongsTo('Usuario', 'remite');
-  }
-
-  public function area(){
-    return $this->belongsTo('Area');
-  }
 }

@@ -69,10 +69,10 @@ class CartaController extends BaseController{
         ->with('rojo', $mensaje);
     }
 
-    if(VariabLe::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+    if(Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
       ->where('anio', '=', date('Y'))->first()){
 
-      if(!VariabLe::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+      if(!Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
         ->where('anio', '=', date('Y'))->first()->anio){
 
         $mensaje = "NO SE CONFIGURO EL NOMBRE DEL AÑO, RECUERDE QUE ESTO SOLO SE HACE UNA VEZ AL 
@@ -80,11 +80,11 @@ class CartaController extends BaseController{
         return Redirect::to('carta/nuevo/'.Input::get('empresa_ruc'))
           ->with('rojo', $mensaje);
       }else{
-        $anio = VariabLe::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+        $anio = Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
         ->where('anio', '=', date('Y'))->first()->nombre_anio;
       }
 
-      if(!VariabLe::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+      if(!Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
       ->where('anio', '=', date('Y'))->first()->inicio_carta){
 
         $mensaje = "NO SE CONFIGURO LA NUMERACION DE LAS CARTAS, RECUERDE QUE ESTO SOLO SE HACE UNA VEZ AL 
@@ -97,7 +97,7 @@ class CartaController extends BaseController{
           $nro = Carta::where('empresa_ruc', '=', Input::get('empresa_ruc'))
             ->orderBy('numero', 'desc')->first()->numero + 1;
         }else{
-          $nro = VariabLe::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+          $nro = Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
             ->where('anio', '=', date('Y'))->first()->inicio_carta;
         }
       }
@@ -108,18 +108,14 @@ class CartaController extends BaseController{
         ->with('rojo', $mensaje);
     }
 
-    $remite = Usuario::find(Input::get('remite'));
     $empresa = Empresa::find(Input::get('empresa_ruc'));
     $usuario = Usuario::find(Auth::user()->id);
-    $area = Area::find($remite->empresas()->find($empresa->ruc)->area_id);
 
-    $codigo = 'CARTA Nº '.$nro.'-'.date('Y').'/'.$area->abreviatura.'/'.$empresa->nombre;
+    $codigo = 'CARTA Nº '.$nro.'-'.date('Y').'/'.$empresa->nombre;
 
     $carta = new Carta;
     $carta->usuario_id = Auth::user()->id;
     $carta->empresa_ruc = $empresa->ruc;
-    $carta->remite = $remite->id;
-    $carta->area_id = $area->id;
     $carta->anio = $anio;
     $carta->fecha = mb_strtoupper(Input::get('fecha'));
     $carta->numero = $nro;
@@ -127,6 +123,7 @@ class CartaController extends BaseController{
     $carta->destinatario = mb_strtoupper(Input::get('destinatario'));
     $carta->lugar = mb_strtoupper(Input::get('lugar'));
     $carta->asunto = mb_strtoupper(Input::get('asunto'));
+    $carta->referencia = mb_strtoupper(Input::get('referencia'));
     $carta->contenido = Input::get('contenido');
     $carta->redaccion = date('Y-m-d');
     $carta->save();
@@ -162,24 +159,19 @@ class CartaController extends BaseController{
         <h1 class='titulo' align='center'>".$carta->anio."</h1><br>
         <p align='right'>".$carta->fecha."</p>
         <p>".$carta->codigo."</p>
-        <p>Remite:<br>".
-          Usuario::find($carta->remite)->persona->nombre." ".
-          Usuario::find($carta->remite)->persona->apellidos."<br>".
-          Area::find(Empresa::find($carta->empresa_ruc)->usuarios()
-          ->find($carta->remite)->area_id)->nombre."</p>
         <p>Señores:<br>".
           $carta->destinatario."<br>".
-          $carta->lugar."</p>
-        <p>ASUNTO: ".
-          $carta->asunto."</p>
-        <p width=300>".$carta->contenido."
+          $carta->lugar."</p>";
+        if($carta->asunto){
+          $html .= "<p>ASUNTO: ".
+            $carta->asunto."</p>";
+        }elseif($carta->referencia){
+          $html .= "<p>REFERENCIA: ".
+            $carta->referencia."</p>";
+        }
+        $html .= "<p width=300>".$carta->contenido."
         </p>
-        <p>Atte.</p><br><br><br><br><br><p align='center'>
-        ___________________________<br>".
-        Usuario::find($carta->remite)->persona->nombre."<br>".
-        Usuario::find($carta->remite)->persona->apellidos."<br>".
-        Area::find(Empresa::find($carta->empresa_ruc)->usuarios()->find($carta->remite)
-          ->area_id)->nombre."</p>
+        <p>Atte.
       </body>
     </html>
     ";
@@ -218,22 +210,19 @@ class CartaController extends BaseController{
     }
     $carta = Carta::find($id);
 
-    $remite = Usuario::find(Input::get('remite'));
     $empresa = $carta->empresa;
     $usuario = Usuario::find(Auth::user()->id);
-    $area = Area::find($remite->empresas()->find($empresa->ruc)->area_id);
 
     $codigo = 'CARTA Nº '.$carta->numero.'-'.date('Y', strtotime($carta->redaccion))
-    .'/'.$area->abreviatura.'/'.$empresa->nombre;
+    .'/'.$empresa->nombre;
 
     $carta->usuario_id = Auth::user()->id;
-    $carta->remite = $remite->id;
-    $carta->area_id = $area->id;
     $carta->fecha = mb_strtoupper(Input::get('fecha'));
     $carta->codigo = $codigo;
     $carta->destinatario = mb_strtoupper(Input::get('destinatario'));
     $carta->lugar = mb_strtoupper(Input::get('lugar'));
     $carta->asunto = mb_strtoupper(Input::get('asunto'));
+    $carta->referencia = mb_strtoupper(Input::get('referencia'));
     $carta->contenido = Input::get('contenido');
     $carta->save();
 
@@ -268,24 +257,19 @@ class CartaController extends BaseController{
         <h1 class='titulo' align='center'>".$carta->anio."</h1><br>
         <p align='right'>".$carta->fecha."</p>
         <p>".$carta->codigo."</p>
-        <p>Remite:<br>".
-          Usuario::find($carta->remite)->persona->nombre." ".
-          Usuario::find($carta->remite)->persona->apellidos."<br>".
-          Area::find(Empresa::find($carta->empresa_ruc)->usuarios()
-          ->find($carta->remite)->area_id)->nombre."</p>
         <p>Señores:<br>".
           $carta->destinatario."<br>".
-          $carta->lugar."</p>
-        <p>ASUNTO: ".
-          $carta->asunto."</p>
-        <p width=300>".$carta->contenido."
+          $carta->lugar."</p>";
+        if($carta->asunto){
+          $html .= "<p>ASUNTO: ".
+            $carta->asunto."</p>";
+        }elseif($carta->referencia){
+          $html .= "<p>REFERENCIA: ".
+            $carta->referencia."</p>";
+        }
+        $html .= "<p width=300>".$carta->contenido."
         </p>
-        <p>Atte.</p><br><br><br><br><br><p align='center'>
-        ___________________________<br>".
-        Usuario::find($carta->remite)->persona->nombre."<br>".
-        Usuario::find($carta->remite)->persona->apellidos."<br>".
-        Area::find(Empresa::find($carta->empresa_ruc)->usuarios()->find($carta->remite)
-          ->area_id)->nombre."</p>
+        <p>Atte.</p>
       </body>
     </html>
     ";

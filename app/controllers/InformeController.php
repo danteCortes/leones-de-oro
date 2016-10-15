@@ -69,10 +69,10 @@ class InformeController extends BaseController{
         ->with('rojo', $mensaje);
     }
 
-    if(VariabLe::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+    if(Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
       ->where('anio', '=', date('Y'))->first()){
 
-      if(!VariabLe::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+      if(!Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
         ->where('anio', '=', date('Y'))->first()->anio){
 
         $mensaje = "NO SE CONFIGURO EL NOMBRE DEL AÑO, RECUERDE QUE ESTO SOLO SE HACE UNA VEZ AL 
@@ -80,11 +80,11 @@ class InformeController extends BaseController{
         return Redirect::to('informe/nuevo/'.Input::get('empresa_ruc'))
           ->with('rojo', $mensaje);
       }else{
-        $anio = VariabLe::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+        $anio = Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
         ->where('anio', '=', date('Y'))->first()->nombre_anio;
       }
 
-      if(!VariabLe::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+      if(!Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
       ->where('anio', '=', date('Y'))->first()->inicio_informe){
 
         $mensaje = "NO SE CONFIGURO LA NUMERACION DE LOS INFORMES, RECUERDE QUE ESTO SOLO SE HACE UNA VEZ AL 
@@ -97,7 +97,7 @@ class InformeController extends BaseController{
           $nro = Informe::where('empresa_ruc', '=', Input::get('empresa_ruc'))
             ->orderBy('numero', 'desc')->first()->numero + 1;
         }else{
-          $nro = VariabLe::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+          $nro = Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
             ->where('anio', '=', date('Y'))->first()->inicio_informe;
         }
       }
@@ -108,24 +108,22 @@ class InformeController extends BaseController{
         ->with('rojo', $mensaje);
     }
 
-    $remite = Usuario::find(Input::get('remite'));
     $empresa = Empresa::find(Input::get('empresa_ruc'));
     $usuario = Usuario::find(Auth::user()->id);
-    $area = Area::find($remite->empresas()->find($empresa->ruc)->area_id);
 
-    $codigo = 'INFORME Nº '.$nro.'-'.date('Y').'/'.$area->abreviatura.'/'.$empresa->nombre;
+    $codigo = 'INFORME Nº '.$nro.'-'.date('Y').'/'.$empresa->nombre;
     
     $informe = new Informe;
     $informe->usuario_id = Auth::user()->id;
     $informe->empresa_ruc = $empresa->ruc;
-    $informe->remite = $remite->id;
-    $informe->area_id = $area->id;
+    $informe->remite = mb_strtoupper(Input::get('remite'));
+    $informe->cargo_remite = mb_strtoupper(Input::get('cargo_remite'));
     $informe->anio = $anio;
     $informe->fecha = mb_strtoupper(Input::get('fecha'));
     $informe->numero = $nro;
     $informe->codigo = $codigo;
     $informe->destinatario = mb_strtoupper(Input::get('destinatario'));
-    $informe->cargo = mb_strtoupper(Input::get('cargo'));
+    $informe->cargo_destinatario = mb_strtoupper(Input::get('cargo_destinatario'));
     $informe->asunto = mb_strtoupper(Input::get('asunto'));
     $informe->contenido = Input::get('contenido');
     $informe->redaccion = date('Y-m-d');
@@ -165,14 +163,12 @@ class InformeController extends BaseController{
           <tr valign=top>
             <td height=30><b>PARA</b></td>
             <td>:".$informe->destinatario."<br>".
-            $informe->cargo."</td>
+            $informe->cargo_destinatario."</td>
           </tr>
           <tr valign=top>
             <td width=100 height=50><b>DE</b></td>
-            <td>:".Usuario::find($informe->remite)->persona->nombre." ".
-              Usuario::find($informe->remite)->persona->apellidos."<br> <b>".
-              Area::find(Empresa::find($informe->empresa_ruc)->usuarios()->find($informe->remite)
-                ->area_id)->nombre."</b></td>
+            <td>:".$informe->remite."<br>".
+            $informe->cargo_remite."</td>
           </tr>
           <tr valign=top>
             <td height=30><b>ASUNTO</b></td>
@@ -185,12 +181,7 @@ class InformeController extends BaseController{
         </table><hr>
         <p width=300>".$informe->contenido."
         </p>
-        <p>Atte.</p><br><br><br><br><br><p align='center'>
-        ___________________________<br>".
-        Usuario::find($informe->remite)->persona->nombre."<br>".
-        Usuario::find($informe->remite)->persona->apellidos."<br>".
-        Area::find(Empresa::find($informe->empresa_ruc)->usuarios()->find($informe->remite)
-          ->area_id)->nombre."</p>
+        <p>Atte.</p>
       </body>
     </html>
     ";
@@ -229,21 +220,19 @@ class InformeController extends BaseController{
     }
     $informe = Informe::find($id);
 
-    $remite = Usuario::find(Input::get('remite'));
     $empresa = $informe->empresa;
     $usuario = Usuario::find(Auth::user()->id);
-    $area = Area::find($remite->empresas()->find($empresa->ruc)->area_id);
 
     $codigo = 'INFORME Nº '.$informe->numero.'-'.date('Y', strtotime($informe->redaccion))
-    .'/'.$area->abreviatura.'/'.$empresa->nombre;
+    .'/'.$empresa->nombre;
 
     $informe->usuario_id = Auth::user()->id;
-    $informe->remite = $remite->id;
-    $informe->area_id = $area->id;
+    $informe->remite = mb_strtoupper(Input::get('remite'));
+    $informe->cargo_remite = mb_strtoupper(Input::get('cargo_remite'));
     $informe->fecha = mb_strtoupper(Input::get('fecha'));
     $informe->codigo = $codigo;
     $informe->destinatario = mb_strtoupper(Input::get('destinatario'));
-    $informe->cargo = mb_strtoupper(Input::get('cargo'));
+    $informe->cargo_destinatario = mb_strtoupper(Input::get('cargo_destinatario'));
     $informe->asunto = mb_strtoupper(Input::get('asunto'));
     $informe->contenido = Input::get('contenido');
     $informe->save();
@@ -282,14 +271,12 @@ class InformeController extends BaseController{
           <tr valign=top>
             <td height=30><b>PARA</b></td>
             <td>:".$informe->destinatario."<br>".
-            $informe->cargo."</td>
+            $informe->cargo_destinatario."</td>
           </tr>
           <tr valign=top>
-            <td width=100 height=50><b>DE</b></td>
-            <td>:".Usuario::find($informe->remite)->persona->nombre." ".
-              Usuario::find($informe->remite)->persona->apellidos."<br> <b>".
-              Area::find(Empresa::find($informe->empresa_ruc)->usuarios()->find($informe->remite)
-                ->area_id)->nombre."</b></td>
+            <td height=30><b>PARA</b></td>
+            <td>:".$informe->remite."<br>".
+            $informe->cargo_remite."</td>
           </tr>
           <tr valign=top>
             <td height=30><b>ASUNTO</b></td>
@@ -302,21 +289,12 @@ class InformeController extends BaseController{
         </table><hr>
         <p width=300>".$informe->contenido."
         </p>
-        <p>Atte.</p><br><br><br><br><br><p align='center'>
-        ___________________________<br>".
-        Usuario::find($informe->remite)->persona->nombre."<br>".
-        Usuario::find($informe->remite)->persona->apellidos."<br>".
-        Area::find(Empresa::find($informe->empresa_ruc)->usuarios()->find($informe->remite)
-          ->area_id)->nombre."</p>
+        <p>Atte.</p>
       </body>
     </html>
     ";
 
     define('BUDGETS_DIR', public_path('documentos/informes/'.$empresa->ruc));
-
-    if (!is_dir(BUDGETS_DIR)){
-        mkdir(BUDGETS_DIR, 0755, true);
-    }
 
     $nombre = $informe->numero;
     $ruta = BUDGETS_DIR.'/'.$nombre.'.pdf';

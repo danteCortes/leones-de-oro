@@ -48,8 +48,8 @@ Informe | Editar
     <div class="col-md-12">
       <div class="box box-info">
         <div class="box-header">
-          <h3 class="box-title">INFORME Nº {{$informe->numero}}-{{date('Y', strtotime($informe->redaccion))}}/
-            <label id="codigo">{{$informe->area->abreviatura}}</label>/{{$informe->empresa->nombre}}
+          <h3 class="box-title">INFORME Nº {{$informe->numero}}-{{date('Y', strtotime($informe->redaccion))}}
+            /{{$informe->empresa->nombre}}
             <small>Editar</small>
           </h3><br>
           <h3 class="box-title">{{$informe->anio}}
@@ -59,21 +59,7 @@ Informe | Editar
           'method'=>'put'))}}
           <div class="box-body">
             <div class="form-group">
-              {{Form::label(null, 'DE*:', array('class'=>'control-label col-xs-2'))}}
-              <div class="col-xs-5">
-                <select name="remite" class="form-control input-sm" required id="usuario">
-                  <option value="{{$informe->remite}}">{{$informe->remitente->persona->nombre}}
-                    {{$informe->remitente->persona->apellidos}} (ACTUAL)</option>
-                  <option value="">SELECIONAR</option>
-                  @foreach($informe->empresa->usuarios as $usuario)
-                    <option value="{{$usuario->id}}">{{$usuario->persona->nombre}} {{$usuario->persona->apellidos}}</option>
-                  @endforeach
-                </select>
-                {{Form::label(null, $informe->area->nombre, array('class'=>'control-label', 'id'=>'area'))}}
-              </div>
-            </div>
-            <div class="form-group">
-              {{Form::label(null, 'SEÑORES*:', array('class'=>'control-label col-xs-2'))}}
+              {{Form::label(null, 'PARA*:', array('class'=>'control-label col-xs-2'))}}
               <div class="col-xs-10">
                 {{Form::text('destinatario', $informe->destinatario, array('class'=>'form-control input-sm mayuscula'
                   ,'placeholder'=>'DESTINATARIO', 'required'=>''))}}
@@ -82,8 +68,22 @@ Informe | Editar
             <div class="form-group">
               {{Form::label(null, 'CARGO*:', array('class'=>'control-label col-xs-2'))}}
               <div class="col-xs-10">
-                {{Form::text('cargo', $informe->cargo, array('class'=>'form-control input-sm mayuscula'
-                  ,'placeholder'=>'CARGO', 'required'=>''))}}
+                {{Form::text('cargo_destinatario', $informe->cargo_destinatario, array('class'=>'form-control input-sm mayuscula'
+                  ,'placeholder'=>'CARGO DESTINATARIO', 'required'=>''))}}
+              </div>
+            </div>
+            <div class="form-group">
+              {{Form::label(null, 'DE*:', array('class'=>'control-label col-xs-2'))}}
+              <div class="col-xs-10">
+                {{Form::text('remite', $informe->remite, array('class'=>'form-control input-sm mayuscula'
+                  ,'placeholder'=>'REMITENTE', 'required'=>''))}}
+              </div>
+            </div>
+            <div class="form-group">
+              {{Form::label(null, 'CARGO*:', array('class'=>'control-label col-xs-2'))}}
+              <div class="col-xs-10">
+                {{Form::text('cargo_remite', $informe->cargo_remite, array('class'=>'form-control input-sm mayuscula'
+                  ,'placeholder'=>'CARGO REMITENTE', 'required'=>''))}}
               </div>
             </div>
             <div class="form-group">

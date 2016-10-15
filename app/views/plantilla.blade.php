@@ -233,8 +233,6 @@
               Areas</a></li>
             <li><a href="<?=URL::to('tipoMemorandum')?>"><i class="fa fa-circle-o"></i> 
               Tipo Memorandums</a></li>
-            <li><a href="<?=URL::to('')?>"><i class="fa fa-circle-o"></i> 
-              Numeraciones</a></li>
           </ul>
         </li>
       </ul>
