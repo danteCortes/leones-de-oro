@@ -42,4 +42,6 @@ Route::group(array('before' => 'auth'), function(){
 	Route::controller('carta', 'CartaController');
 
 	Route::controller('informe', 'InformeController');
+
+	Route::controller('costo', 'CostoController');
 });

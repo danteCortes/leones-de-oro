@@ -305,35 +305,35 @@ Trabajador | Ver
 @section('scripts')
 <script src="<?=URL::to('plugins/jQueryUI/jquery-ui.min.js')?>" type="text/javascript"></script>
 <script>
-    $(function(){
-      var autocompletar = new Array();
-      @foreach($clientes as $l)
-          autocompletar.push('{{$l->nombre}}');
-      @endforeach
-      $(".clientes").autocomplete({ //Usamos el ID de la caja de texto donde lo queremos
-          source: autocompletar //Le decimos que nuestra fuente es el arreglo
-      });
-      $(".clientes").focusout(function() {
-            $.ajax({
-                url: "<?=URL::to('trabajador/buscar-ruc')?>",
-                type: 'POST',
-                data: {nombre: $(".clientes").val(), trabajador_id: $("#trabajador_id").val()},
-                dataType: 'JSON',
-                beforeSend: function() {
-                    $("#ruc").val('Buscando RUC...');
-                },
-                error: function() {
-                    $("#ruc").val('Ha surgido un error.');
-                },
-                success: function(respuesta) {
-                    if (respuesta) {
-                      $("#ruc").val(respuesta);
-                    } else {
-                        $("#ruc").val('No se encontro ningun cliente con ese nombre.');
-                    }
-                }
-            });
-        });
+  $(function(){
+    var autocompletar = new Array();
+    @foreach($clientes as $l)
+      autocompletar.push('{{$l->nombre}}');
+    @endforeach
+    $(".clientes").autocomplete({ //Usamos el ID de la caja de texto donde lo queremos
+      source: autocompletar //Le decimos que nuestra fuente es el arreglo
     });
+    $(".clientes").focusout(function() {
+      $.ajax({
+        url: "<?=URL::to('trabajador/buscar-ruc')?>",
+        type: 'POST',
+        data: {nombre: $(".clientes").val(), trabajador_id: $("#trabajador_id").val()},
+        dataType: 'JSON',
+        beforeSend: function() {
+          $("#ruc").val('Buscando RUC...');
+        },
+        error: function() {
+          $("#ruc").val('Ha surgido un error.');
+        },
+        success: function(respuesta) {
+          if (respuesta) {
+            $("#ruc").val(respuesta);
+          } else {
+            $("#ruc").val('No se encontro ningun cliente con ese nombre.');
+          }
+        }
+      });
+    });
+  });
 </script>
 @stop

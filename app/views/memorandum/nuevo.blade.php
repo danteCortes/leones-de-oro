@@ -101,7 +101,7 @@ Memorandum | Nuevo
                       </button>
                       <h4 class="modal-title">Ingrese numeración inicial</h4>
                     </div>
-                    {{Form::open(array('url'=>'carta/numeracion', 'class'=>'form-horizontal'))}}
+                    {{Form::open(array('url'=>'memorandum/numeracion', 'class'=>'form-horizontal'))}}
                       <div class="modal-body">
                         <div class="form-group">
                           {{Form::label(null, 'Numeración*:', array('class'=>'control-label col-sm-6'))}}
