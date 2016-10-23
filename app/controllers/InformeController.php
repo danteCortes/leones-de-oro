@@ -181,7 +181,7 @@ class InformeController extends BaseController{
         </table><hr>
         <p width=300>".$informe->contenido."
         </p>
-        <p>Atte.</p>
+        <p align='center'>Atentamente,</p>
       </body>
     </html>
     ";
@@ -289,7 +289,7 @@ class InformeController extends BaseController{
         </table><hr>
         <p width=300>".$informe->contenido."
         </p>
-        <p>Atte.</p>
+        <p align='center'>Atentamente,</p>
       </body>
     </html>
     ";

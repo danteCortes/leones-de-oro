@@ -171,7 +171,7 @@ class CartaController extends BaseController{
         }
         $html .= "<p width=300>".$carta->contenido."
         </p>
-        <p>Atte.
+        <p align='center'>Atentamente,
       </body>
     </html>
     ";
@@ -269,7 +269,7 @@ class CartaController extends BaseController{
         }
         $html .= "<p width=300>".$carta->contenido."
         </p>
-        <p>Atte.</p>
+        <p align='center'>Atentamente,</p>
       </body>
     </html>
     ";

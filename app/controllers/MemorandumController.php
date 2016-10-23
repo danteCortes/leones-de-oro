@@ -40,10 +40,10 @@ class MemorandumController extends BaseController{
         ->with('rojo', $mensaje);
     }
 
-    if(VariabLe::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+    if(Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
       ->where('anio', '=', date('Y'))->first()){
 
-      if(!VariabLe::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+      if(!Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
       ->where('anio', '=', date('Y'))->first()->inicio_memorandum){
 
         $mensaje = "NO SE CONFIGURO LA NUMERACION DE LOS MEMORANDUMS, RECUERDE QUE ESTO SOLO 
@@ -56,7 +56,7 @@ class MemorandumController extends BaseController{
           $nro = Memorandum::where('empresa_ruc', '=', Input::get('empresa_ruc'))
             ->orderBy('numero', 'desc')->first()->numero + 1;
         }else{
-          $nro = VariabLe::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+          $nro = Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
             ->where('anio', '=', date('Y'))->first()->inicio_memorandum;
         }
       }
@@ -141,7 +141,7 @@ class MemorandumController extends BaseController{
         </table><hr>
         <p width=300>".$memorandum->contenido."
         </p>
-        <p>Atte.</p><br><br><br><br><br><p align='center'>
+        <p align='center'>Atentamente,</p><br><br><br><br><br><p align='center'>
         ___________________________<br>".
         Usuario::find($memorandum->remite)->persona->nombre."<br>".
         Usuario::find($memorandum->remite)->persona->apellidos."<br>".
@@ -295,7 +295,7 @@ class MemorandumController extends BaseController{
         </table><hr>
         <p width=300>".$memorandum->contenido."
         </p>
-        <p>Atte.</p><br><br><br><br><br><p align='center'>
+        <p align='center'>Atentamente,</p><br><br><br><br><br><p align='center'>
         ___________________________<br>".
         Usuario::find($memorandum->remite)->persona->nombre."<br>".
         Usuario::find($memorandum->remite)->persona->apellidos."<br>".
