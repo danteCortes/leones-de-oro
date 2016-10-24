@@ -26,6 +26,194 @@ class MemorandumController extends BaseController{
     }
   }
 
+  public function getNuevoMultiple($ruc){
+    $empresa = Empresa::find($ruc);
+    if($empresa){
+      $trabajadores = $empresa->trabajadores;
+      $clientes = $empresa->clientes;
+      $memorandum = new Memorandum;
+      return View::make('memorandum.nuevoMultiple')->with('empresa', $empresa)
+        ->with('trabajadores', $trabajadores)->with('memorandum', $memorandum)
+        ->with('clientes', $clientes);
+    }else{
+      return Redirect::to('usuario/panel');
+    }
+  }
+
+  public function postAgregarTrabajador(){
+    $empresa = Empresa::find(Input::get('empresa_ruc'));
+    $trabajadores = $empresa->trabajadores;
+
+    foreach($trabajadores as $trabajador){
+      
+      if(Input::get('trabajador_nombre_apellidos') == $trabajador->persona->nombre." ".
+        $trabajador->persona->apellidos){
+        return $trabajador;
+      }
+    }
+    return 0;
+  }
+
+  public function postNuevoMultiple(){
+    if(Input::get('contenido') == ''){
+      $mensaje = "EL CONTENIDO DEL MEMORANDUM NO DEBE SER VACIO. INTENTE NUEVAMENTE.";
+      return Redirect::to('memorandum/nuevo/'.Input::get('empresa_ruc'))
+        ->with('rojo', $mensaje);
+    }
+
+    if(Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+      ->where('anio', '=', date('Y'))->first()){
+
+      if(!Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+      ->where('anio', '=', date('Y'))->first()->inicio_memorandum){
+
+        $mensaje = "NO SE CONFIGURO LA NUMERACION DE LOS MEMORANDUMS, RECUERDE QUE ESTO SOLO 
+        SE HACE UNA VEZ AL AÑO. INTENTE NUEVAMENTE.";
+        return Redirect::to('memorandum/nuevo/'.Input::get('empresa_ruc'))
+          ->with('rojo', $mensaje);
+      }else{
+        if(Memorandum::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+          ->orderBy('numero', 'desc')->first()){
+          $nro = Memorandum::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+            ->orderBy('numero', 'desc')->first()->numero + 1;
+        }else{
+          $nro = Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+            ->where('anio', '=', date('Y'))->first()->inicio_memorandum;
+        }
+      }
+    }else{
+      $mensaje = "NO SE CONFIGURO EL NOMBRE DEL AÑO, RECUERDE QUE ESTO SOLO SE HACE UNA VEZ AL 
+      AÑO. INTENTE NUEVAMENTE.";
+      return Redirect::to('memorandum/nuevo/'.Input::get('empresa_ruc'))
+        ->with('rojo', $mensaje);
+    }
+
+    $remite = Usuario::find(Input::get('remite'));
+    $empresa = Empresa::find(Input::get('empresa_ruc'));
+    $usuario = Usuario::find(Auth::user()->id);
+    $area = Area::find($remite->empresas()->find($empresa->ruc)->area_id);
+
+    $codigo = 'MEMORANDUM MULTIPLE Nº '.$nro.'-'.date('Y').'/'.$area->abreviatura.'/'
+      .$empresa->nombre;
+    $trabajadores = [];
+
+    if (Input::get('todos') != null) {
+      foreach ($empresa->trabajadores as $trabajador) {
+        array_push($trabajadores, $trabajador);
+      }
+    }elseif (Input::get('cliente') != null) {
+      $cliente = Cliente::find(Input::get('cliente'));
+      foreach ($cliente->trabajadores as $trabajador) {
+        array_push($trabajadores, $trabajador);
+      }
+    }
+    
+    foreach ($empresa->trabajadores as $trabajador) {
+      if(Input::get('trabajador'.$trabajador->persona_dni) == $trabajador->persona_dni){
+        array_push($trabajadores, $trabajador);
+      }
+    }
+
+    if (count($trabajadores) == 0) {
+      $mensaje = "DEBE SELECCIONAR AL MENOS UN TRABAJADOR PARA, EMITIR UN MEMORANDUM";
+      return Redirect::to('memorandum/nuevo-multiple/'.$empresa->ruc)->with('rojo', $mensaje);
+    }
+
+    $memorandum = new Memorandum;
+    $memorandum->usuario_id = Auth::user()->id;
+    $memorandum->remite = $remite->id;
+    $memorandum->area_id = $area->id;
+    $memorandum->empresa_ruc = $empresa->ruc;
+    $memorandum->asunto = mb_strtoupper(Input::get('asunto'));
+    $memorandum->tipo_memorandum_id = Input::get('razon');
+    $memorandum->codigo = $codigo;
+    $memorandum->numero = $nro;
+    $memorandum->fecha = mb_strtoupper(Input::get('fecha'));
+    $memorandum->redaccion = date('Y-m-d');
+    $memorandum->contenido = Input::get('contenido');
+    $memorandum->save();
+
+    foreach($trabajadores as $trabajador){
+      $trabajador->memorandums()->attach($memorandum->id);
+    }
+
+    $html = "
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta http-equiv='Content-Type' content='text/html; charset=ISO-8859-1'>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+        <title>".$memorandum->codigo."</title>
+        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' 
+          name='viewport'>
+      </head>
+      <body>
+        <style type='text/css'>
+          .titulo{
+            font-size: 20px;
+            font-family: monospace;
+          }
+          .borde{
+           border: 1px solid #000;
+           padding-left: 10px;
+           margin-left: 30%;
+          }
+          .cuerpo{
+            font-size: 14px;
+            font-family: monospace;
+          }
+        </style>
+        <img src='documentos/membretes/".$memorandum->empresa_ruc.".jpg' width=100%>
+        <h1 class='titulo' align='left'>".$memorandum->codigo."</h1><br>
+        <table>
+          <tr valign=top>
+            <td width=100 height=50><b>DE</b></td>
+            <td>:".Usuario::find($memorandum->remite)->persona->nombre." ".
+              Usuario::find($memorandum->remite)->persona->apellidos."<br> <b>".
+              Area::find(Empresa::find($memorandum->empresa_ruc)->usuarios()->find($memorandum->remite)
+                ->area_id)->nombre."</b></td>
+          </tr>
+          <tr valign=top>
+            <td height=30><b>A</b></td>
+            <td>:MEMORANDUM MULTIPLE</td>
+          </tr>
+          <tr valign=top>
+            <td height=30><b>ASUNTO</b></td>
+            <td>:".$memorandum->asunto."</td>
+          </tr>
+          <tr valign=top>
+            <td height=30><b>FECHA</b></td>
+            <td>:".$memorandum->fecha."</td>
+          </tr>
+        </table><hr>
+        <p width=300>".$memorandum->contenido."
+        </p>
+        <p align='center'>Atentamente,</p><br><br><br><br><br><p align='center'>
+        ___________________________<br>".
+        Usuario::find($memorandum->remite)->persona->nombre."<br>".
+        Usuario::find($memorandum->remite)->persona->apellidos."<br>".
+        Area::find(Empresa::find($memorandum->empresa_ruc)->usuarios()->find($memorandum->remite)
+          ->area_id)->nombre."</p>
+      </body>
+    </html>
+    ";
+
+    define('BUDGETS_DIR', public_path('documentos/memorandums/'.$empresa->ruc));
+
+    if (!is_dir(BUDGETS_DIR)){
+        mkdir(BUDGETS_DIR, 0755, true);
+    }
+
+    $nombre = $memorandum->numero;
+    $ruta = BUDGETS_DIR.'/'.$nombre.'.pdf';
+
+    $pdf = PDF::loadHtml($html);
+    $pdf->setPaper('a4')->save($ruta);
+
+    $mensaje = "EL MEMORANDUM SE GUARDO PERFECTAMENTE. AHORA PUEDE IMPRIMIRLO.";
+    return Redirect::to('memorandum/mostrar/'.$memorandum->id)->with('verde', $mensaje);
+  }
+
   public function postArea(){
     $usuario = Usuario::find(Input::get('usuario_id'));
     $empresa = Empresa::find(Input::get('empresa_ruc'));
@@ -79,7 +267,6 @@ class MemorandumController extends BaseController{
     $memorandum->remite = $remite->id;
     $memorandum->area_id = $area->id;
     $memorandum->empresa_ruc = $empresa->ruc;
-    $memorandum->trabajador_id = Input::get('trabajador_id');
     $memorandum->asunto = mb_strtoupper(Input::get('asunto'));
     $memorandum->tipo_memorandum_id = Input::get('razon');
     $memorandum->codigo = $codigo;
@@ -88,6 +275,8 @@ class MemorandumController extends BaseController{
     $memorandum->redaccion = date('Y-m-d');
     $memorandum->contenido = Input::get('contenido');
     $memorandum->save();
+
+    $memorandum->trabajadores()->attach(Input::get('trabajador_id'));
 
     $html = "
     <!DOCTYPE html>
@@ -127,8 +316,8 @@ class MemorandumController extends BaseController{
           </tr>
           <tr valign=top>
             <td height=30><b>A</b></td>
-            <td>:".Trabajador::find($memorandum->trabajador_id)->persona->nombre." ".
-            Trabajador::find($memorandum->trabajador_id)->persona->apellidos."</td>
+            <td>:".Trabajador::find($memorandum->trabajadores()->find(Input::get('trabajador_id'))->trabajador_id)->persona->nombre." ".
+            Trabajador::find($memorandum->trabajadores()->find(Input::get('trabajador_id'))->trabajador_id)->persona->apellidos."</td>
           </tr>
           <tr valign=top>
             <td height=30><b>ASUNTO</b></td>
@@ -215,6 +404,16 @@ class MemorandumController extends BaseController{
       ->with('empresa', $empresa)->with('trabajadores', $trabajadores);
   }
 
+  public function getEditarMultiple($id){
+    $memorandum = Memorandum::find($id);
+    $empresa = $memorandum->empresa;
+    $trabajadores = $empresa->trabajadores;
+    $clientes = $empresa->clientes;
+    return View::make('memorandum.editarMultiple')->with('memorandum', $memorandum)
+      ->with('empresa', $empresa)->with('trabajadores', $trabajadores)
+      ->with('clientes', $clientes);
+  }
+
   public function putEditar($id){
     if(Input::get('contenido') == ''){
       $mensaje = "EL CONTENIDO DEL MEMORANDUM NO DEBE SER VACIO. INTENTE NUEVAMENTE.";
@@ -235,13 +434,19 @@ class MemorandumController extends BaseController{
     $memorandum->usuario_id = Auth::user()->id;
     $memorandum->remite = $remite->id;
     $memorandum->area_id = $area->id;
-    $memorandum->trabajador_id = Input::get('trabajador_id');
     $memorandum->asunto = strtoupper(Input::get('asunto'));
     $memorandum->tipo_memorandum_id = Input::get('razon');
     $memorandum->codigo = $codigo;
     $memorandum->fecha = strtoupper(Input::get('fecha'));
     $memorandum->contenido = Input::get('contenido');
     $memorandum->save();
+
+    foreach ($memorandum->trabajadores as $trabajador) {
+      $memorandum->trabajadores()->updateExistingPivot($trabajador->id, 
+        array('trabajador_id'=>Input::get('trabajador_id')));
+    };
+
+    //return Trabajador::find($memorandum->trabajadores()->find(Input::get('trabajador_id'))->trabajador_id)->persona;
 
     $html = "
     <!DOCTYPE html>
@@ -281,8 +486,8 @@ class MemorandumController extends BaseController{
           </tr>
           <tr valign=top>
             <td height=30><b>A</b></td>
-            <td>:".Trabajador::find($memorandum->trabajador_id)->persona->nombre." ".
-            Trabajador::find($memorandum->trabajador_id)->persona->apellidos."</td>
+            <td>:".Trabajador::find($memorandum->trabajadores()->find(Input::get('trabajador_id'))->trabajador_id)->persona->nombre." ".
+            Trabajador::find($memorandum->trabajadores()->find(Input::get('trabajador_id'))->trabajador_id)->persona->apellidos."</td>
           </tr>
           <tr valign=top>
             <td height=30><b>ASUNTO</b></td>

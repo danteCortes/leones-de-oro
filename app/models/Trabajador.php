@@ -25,6 +25,6 @@ class Trabajador extends Eloquent{
 	}
 
 	public function memorandums(){
-		return $this->hasMany('Memorandum');
+		return $this->belongsToMany('Memorandum');
 	}
 }

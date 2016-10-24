@@ -60,9 +60,13 @@ Memorandum | Ver
             Ver Memorandums
           </a>
           @if(Auth::user()->nivel == 0)
-          <a href="<?=URL::to('trabajador/ver/'.$memorandum->trabajador_id)?>" class="btn btn-warning">
-            Ver Trabajador
-          </a>
+            @if(count($memorandum->trabajadores) == 1)
+              @foreach($memorandum->trabajadores as $trabajador)
+              <a href="<?=URL::to('trabajador/ver/'.$trabajador->id)?>" class="btn btn-warning">
+                Ver Trabajador
+              </a>
+              @endforeach
+            @endif
           @endif
         </div>
       </div>

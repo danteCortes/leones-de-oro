@@ -20,8 +20,8 @@ class Memorandum extends Eloquent{
 		return $this->belongsTo('Area');
 	}
 
-	public function trabajador(){
-		return $this->belongsTo('Trabajador');
+	public function trabajadores(){
+		return $this->belongsToMany('Trabajador');
 	}
 
 	public function tipoMemorandum(){

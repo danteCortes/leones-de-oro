@@ -27,9 +27,6 @@ class CrearTablaMemorandums extends Migration {
       $table->string('empresa_ruc', 11);
       $table->foreign('empresa_ruc')->references('ruc')->on('empresas')
           ->onUpdate('cascade')->onDelete('cascade');
-      $table->integer('trabajador_id')->unsigned()->nullable();
-      $table->foreign('trabajador_id')->references('id')->on('trabajadores')
-          ->onUpdate('cascade')->onDelete('cascade');
       $table->string('asunto');
       $table->integer('tipo_memorandum_id')->unsigned()->nullable();
       $table->foreign('tipo_memorandum_id')->references('id')->on('tipo_memorandums')

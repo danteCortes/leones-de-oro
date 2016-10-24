@@ -49,8 +49,8 @@ Memorandum | Editar
       <div class="box box-info">
         <div class="box-header">
           <h3 class="box-title">MEMORANDUM Nº <label id="nro">{{$memorandum->numero}}
-            </label> - {{date('Y')}}/<label id="codigo">{{$memorandum->area->abreviatura}}</label>
-            /{{$empresa->nombre}}<small>Editar</small>
+            </label> - {{date('Y', strtotime($memorandum->redaccion))}}/<label id="codigo">
+            {{$memorandum->area->abreviatura}}</label>/{{$empresa->nombre}}<small>Editar</small>
           </h3>
         </div>
         {{Form::open(array('url'=>'memorandum/editar/'.$memorandum->id, 'class'=>'form-horizontal',
@@ -75,11 +75,13 @@ Memorandum | Editar
 	        	<div class="form-group">
 	        		{{Form::label(null, 'A*:', array('class'=>'control-label col-xs-2'))}}
 	        		<div class="col-xs-10">
-	        			{{Form::text('destinatario', $memorandum->trabajador->persona->nombre.' '.
-                  $memorandum->trabajador->persona->apellidos, array('class'=>'form-control input-sm
+                @foreach($memorandum->trabajadores as $trabajador)
+	        			{{Form::text('destinatario', $trabajador->persona->nombre.' '.
+                  $trabajador->persona->apellidos, array('class'=>'form-control input-sm
                   mayuscula', 'placeholder'=>'DESTINATARIO', 'required'=>'', 'id'=>'trabajador'))}}
-                {{Form::label(null, 'DNI: '.$memorandum->trabajador->persona_dni, 
+                {{Form::label(null, 'DNI: '.$trabajador->persona_dni, 
                   array('class'=>'control-label', 'id'=>'trabajador_dni'))}}
+                @endforeach
 	        		</div>
 	        	</div>
 	        	<div class="form-group">
