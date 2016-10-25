@@ -54,8 +54,8 @@ Memorandum | Editar
             <small>Editar</small>
           </h3>
         </div>
-        {{Form::open(array('url'=>'memorandum/nuevo-multiple', 'class'=>'form-horizontal', 
-          'method'=>'put', 'id'=>'formulario'))}}
+        {{Form::open(array('url'=>'memorandum/editar-multiple/'.$memorandum->id, 'class'=>
+          'form-horizontal', 'method'=>'put', 'id'=>'formulario'))}}
           <div class="box-body">
             <div class="form-group">
               {{Form::label(null, 'DE*:', array('class'=>'control-label col-xs-2'))}}
@@ -102,7 +102,7 @@ Memorandum | Editar
                 {{Form::button('Agregar', array('id'=>'btnAgregar', 
                   'class'=>'btn btn-success btn-xs'))}}
                 @foreach($memorandum->trabajadores as $trabajador)
-                  <br>{{Form::label(null, $trabajador->persona->nombre.' '.$trabajador->persona->nombre
+                  <br>{{Form::label(null, $trabajador->persona->nombre.' '.$trabajador->persona->apellidos
                     , array('class'=>'control-label'))}}
                   {{Form::hidden('trabajador'.$trabajador->persona_dni, $trabajador->persona_dni)}}
                 @endforeach
