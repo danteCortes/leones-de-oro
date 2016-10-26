@@ -283,23 +283,78 @@ Estructura de Costos | Nuevo
               </div>
             </div>
             <div class="table-responsive">
-              <table class="table table-striped">
+              <table class="table table-striped table-bordered">
                 <thead>
                   <tr>
                     <th>Cant.</th>
                     <th>Descripción</th>
-                    <th>Prec. Uni.</th>
                     <th>Total</th>
                   </tr>
                 </thead>
                 <tbody id="conceptos">
-                  <tr>
-                    <td>2</td>
-                    <td>SERVICIO DE SEGURIDAD Y VIGILANCIA PARA LA INTENDENCIA REGIONAL DE HUANUCO<br>
-                      SERVICIO DE 24 HORAS DE LUNES A DOMINGO INCLUIDO FERIADOS</td>
-                    <td>7304.00</td>
-                    <td>14608.00</td>
-                  </tr>
+                  @if($costo->id)
+                    @foreach($costo->conceptos as $concepto)
+                    <tr>
+                      <td>{{$concepto->numero}} AVP</td>
+                      <td>{{$concepto->nombre}}</td>
+                      <th style="text-align: right;">
+                        @if(strpos($concepto->total, '.') === false)
+                          {{$concepto->total}}.00
+                        @elseif(strlen(substr($concepto->total, strpos($concepto->total, '.'))) == 3)
+                          {{$concepto->total}}
+                        @else
+                          {{$concepto->total}}.0
+                        @endif
+                      </th>
+                    </tr>
+                    @endforeach
+                    <tr>
+                      <th colspan="2" style="text-align: right;">SUBTOTAL MENSUAL</th>
+                      <th style="text-align: right;">
+                        @if(strpos($costo->subtotal, '.') === false)
+                          {{$costo->subtotal}}.00
+                        @else
+                          @if(strlen(substr($costo->subtotal, strpos($costo->subtotal, '.'))) == 3)
+                            {{$costo->subtotal}}
+                          @else
+                            {{$costo->subtotal}}0
+                          @endif
+                        @endif
+                      </th>
+                    </tr>
+                    <tr>
+                      @if($costo->igv != 0)
+                        <th colspan="2" style="text-align: right;">IGV</th>
+                      @else
+                        <th colspan="2" style="text-align: right;">IGV EXONERADO POR LEY Nº 27037</th>
+                      @endif
+                      <th style="text-align: right;">
+                        @if(strpos($costo->igv, '.') === false)
+                          {{$costo->igv}}.00
+                        @else
+                          @if(strlen(substr($costo->igv, strpos($costo->igv, '.'))) == 3)
+                            {{$costo->igv}}
+                          @else
+                            {{$costo->igv}}0
+                          @endif
+                        @endif
+                      </th>
+                    </tr>
+                    <tr>
+                      <th colspan="2" style="text-align: right;">TOTAL</th>
+                      <th style="text-align: right;">
+                        @if(strpos($costo->total, '.') === false)
+                          {{$costo->total}}.00
+                        @else
+                          @if(strlen(substr($costo->total, strpos($costo->total, '.'))) == 3)
+                            {{$costo->total}}
+                          @else
+                            {{$costo->total}}0
+                          @endif
+                        @endif
+                      </th>
+                    </tr>
+                  @endif
                 </tbody>
               </table>
             </div>
@@ -395,14 +450,15 @@ Estructura de Costos | Nuevo
             capacitacion: $("#capacitacion").val(), movilidad: $("#movilidad").val(), 
             refrigerio: $("#refrigerio").val(), gastosgenerales: $("#gastosgenerales").val(),
             utilidad: $("#utilidad").val(), txt_igv: $("#txt_igv").val()},
-          dataType: 'JSON',
+          
           error: function(){
             alert("hubo un error en la conexión con el controlador");
           },
           success: function(respuesta){
-            
+            $("#conceptos").html(respuesta);
           }
         });
+        $('#nuevo').modal('toggle');
       }
     });
 

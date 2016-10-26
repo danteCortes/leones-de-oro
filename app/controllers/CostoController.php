@@ -64,7 +64,71 @@ class CostoController extends BaseController{
 
     $costo = $this->actualizarCosto($costo->id, $concepto->subtotal, $concepto->igv, $concepto->total);
 
-    return $concepto;
+    
+    $respuesta = "";
+      foreach($costo->conceptos as $concepto){
+      $respuesta .= "<tr>
+          <td>".$concepto->numero." AVP</td>
+          <td>".$concepto->nombre."</td>
+          <th style='text-align: right;'>";
+            if(strpos($concepto->total, '.') === false){
+              $respuesta .= $concepto->total.".00";
+            }elseif(strlen(substr($concepto->total, strpos($concepto->total, '.'))) == 3){
+              $respuesta .= $concepto->total;
+            }else{
+              $respuesta .= $concepto->total."0";
+            }
+          $respuesta .= "</th>
+        </tr>";
+      }
+      $respuesta .= "<tr>
+        <th colspan='2' style='text-align: right;'>SUBTOTAL MENSUAL</th>
+        <th style='text-align: right;'>";
+          if(strpos($costo->subtotal, '.') === false){
+            $respuesta .= $costo->subtotal.".00";
+          }else{
+            if(strlen(substr($costo->subtotal, strpos($costo->subtotal, '.'))) == 3){
+              $respuesta .= $costo->subtotal;
+            }else{
+              $respuesta .= $costo->subtotal."0";
+            }
+          }
+      $respuesta .= "</th>
+      </tr>
+      <tr>";
+        if($costo->igv != 0){
+          $respuesta .= "<th colspan='2' style='text-align: right;'>IGV</th>";
+        }else{
+          $respuesta .= "<th colspan='2' style='text-align: right;'>IGV EXONERADO POR LEY Nº 27037</th>";
+        }
+      $respuesta .= "<th style='text-align: right;'>";
+          if(strpos($costo->igv, '.') === false){
+            $respuesta .= $costo->igv.".00";
+          }else{
+            if(strlen(substr($costo->igv, strpos($costo->igv, '.'))) == 3){
+              $respuesta .= $costo->igv;
+            }else{
+              $respuesta .= $costo->igv."0";
+            }
+          }
+      $respuesta .= "</th>
+      </tr>
+      <tr>
+        <th colspan='2' style='text-align: right;'>TOTAL</th>
+        <th style='text-align: right;'>";
+          if(strpos($costo->total, '.') === false){
+            $respuesta .= $costo->total.".00";
+          }else{
+            if(strlen(substr($costo->total, strpos($costo->total, '.'))) == 3){
+              $respuesta .= $costo->total;
+            }else{
+              $respuesta .= $costo->total."0";
+            }
+          }
+      $respuesta .= "</th>
+      </tr>";
+    
+    echo $respuesta;
   }
 
   private function nuevoCosto($empresa_ruc, $cliente, $lugar, $saludo, $subtotal, $igv, $total,
