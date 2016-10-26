@@ -26,23 +26,82 @@ class CostoController extends BaseController{
     }
   }
 
-  public function postBuscarRuc(){
+  public function postGuardarConcepto(){
     $empresa = Empresa::find(Input::get('empresa_ruc'));
-    $cliente = $empresa->clientes()->find(Input::get('ruc'));
-    if($cliente){
-      return $cliente;
+    $costo = $empresa->costos()->where('estado', '=', 1)->first();
+    if(count($costo) == 0){
+      // $costo = $this->nuevoCosto(Input::get('empresa_ruc'), '', '', '', 0, 0, 0, '', '', 1);
+
+      // $concepto = $this->nuevoConcepto($costo->id, Input::get('nombre'), 
+      //   Input::get('diurno')+Input::get('nocturno'), 0, 0, 0);
+
+      if (Input::get('asignacionfamiliar')) {
+        $asignacionfamiliar = Input::get('rmv') * 0.1;
+        return $asignacionfamiliar;
+      }else{
+        return 0;
+      }
     }else{
-      return 0;
+      // $concepto = $this->nuevoConcepto($costo->id, Input::get('nombre'), 
+      //   Input::get('diurno')+Input::get('nocturno'), 0, 0, 0);
+
+      return 1;
     }
   }
 
-  public function postBuscarNombre(){
-    $empresa = Empresa::find(Input::get('empresa_ruc'));
-    $cliente = $empresa->clientes()->where('nombre', '=', Input::get('nombre'))->first();
-    if($cliente){
-      return $cliente;
-    }else{
-      return 0;
-    }
+  private function nuevoCosto($empresa_ruc, $cliente, $lugar, $saludo, $subtotal, $igv, $total,
+    $despedida, $fecha, $estado){
+
+    $costo = new Costo;
+    $costo->empresa_ruc = $empresa_ruc;
+    $costo->cliente = $cliente;
+    $costo->lugar = $lugar;
+    $costo->saludo = $saludo;
+    $costo->subtotal = $subtotal;
+    $costo->igv = $igv;
+    $costo->total = $total;
+    $costo->despedida = $despedida;
+    $costo->fecha = $fecha;
+    $costo->estado = $estado;
+    $costo->save();
+
+    return Costo::find($costo->id);
   }
+
+  private function nuevoConcepto($costo_id, $nombre, $numero, $subtotal, $igv, $total){
+    $concepto = new Concepto;
+    $concepto->costo_id = $costo_id;
+    $concepto->nombre = mb_strtoupper($nombre);
+    $concepto->numero = $numero;
+    $concepto->subtotal = $subtotal;
+    $concepto->igv = $igv;
+    $concepto->total = $total;
+    $concepto->save();
+
+    return Concepto::find($concepto->id);
+  }
+
+  // private function nuevoConceptoTurno($turno_id, $concepto_id, $puestos, $sueldobasico, 
+  //   $asignacionfamiliar, $jornadanocturna, $sobretiempo, $descancero, $feriados,
+  //   $gratificaciones, $cts, $vacaciones, $essalud, $sctr, $ueas, $capacitacion, $movilidad, 
+  //   $refigerio, $gastosgenerales, $utilidad){
+  //   if($asignacionfamiliar){
+  //     $asignacionfamiliar = $sueldobasico*0.1;
+  //   }
+  //   if($jornadanocturna){
+  //     $jornadanocturna = $sueldobasico*0.35;
+  //   }
+  //   if($sobretiempo){
+  //     if ($sobretiempo > 0 && $sobretiempo <=2) {
+  //       $sobretiempo1 = sueldobasico + asignacionfamiliar
+  //     }
+  //   }
+  //   Concepto::find($concepto_id)->turnos()->attach($turno_id, array('puestos'=>$puestos, 
+  //     'sueldobasico'=>$sueldobasico, 'asignacionfamiliar'=>$asignacionfamiliar, 'jornadanocturna'
+  //     =>$jornadanocturna, 'sobretiempo1'=>$sobretiempo1, 'sobretiempo2'=>$sobretiempo2, 'descancero'
+  //     =>$descancero, 'feriados'=>$feriados, 'gratificaciones'=>$gratificaciones, 'cts'=>$cts,
+  //     'vacaciones'=>$vacaciones, 'essalud'=>$essalud, 'sctr'=>$sctr, 'ueas'=>$ueas, 'capacitacion'=>
+  //     $capacitacion, 'movilidad'=>$movilidad, 'refirgerio'=>$refirgerio, 'gastosgenerales'=>
+  //     $gastosgenerales, 'utilidad'=>$utilidad, 'puestos'=>$puestos, ));
+  // }
 }

@@ -18,9 +18,7 @@ class CrearTablaCostos extends Migration {
       $table->string('empresa_ruc', 11);
       $table->foreign('empresa_ruc')->references('ruc')->on('empresas')
         ->onUpdate('cascade')->onDelete('cascade');
-      $table->string('cliente_ruc', 11)->nullable();
-      $table->foreign('cliente_ruc')->references('ruc')->on('clientes')
-        ->onUpdate('cascade')->onDelete('cascade');
+      $table->string('cliente')->nullable();
       $table->string('lugar')->nullable();
       $table->string('saludo')->nullable();
       $table->double('subtotal')->nullable();

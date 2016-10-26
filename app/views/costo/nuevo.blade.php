@@ -59,14 +59,14 @@ Estructura de Costos | Nuevo
               {{Form::label(null, 'SEÑORES*:', array('class'=>'control-label col-xs-1'))}}
               <div class="col-xs-7">
                 {{Form::text('destinatario','' , array('class'=>'form-control input-sm mayuscula'
-                  ,'placeholder'=>'SEÑORES', 'required'=>''))}}
+                  ,'placeholder'=>'SEÑORES', 'required'=>'', 'id'=>'cliente'))}}
               </div>
             </div>
             <div class="form-group">
               {{Form::label(null, 'LUGAR*:', array('class'=>'control-label col-xs-1'))}}
               <div class="col-xs-5">
                 {{Form::text('lugar','' , array('class'=>'form-control input-sm mayuscula'
-                  ,'placeholder'=>'LUGAR', 'required'=>''))}}
+                  ,'placeholder'=>'LUGAR', 'required'=>'', 'id'=>'lugar'))}}
               </div>
             </div>
           </div>
@@ -83,58 +83,56 @@ Estructura de Costos | Nuevo
             {{Form::button('Agregar Concepto', array('class'=>'btn btn-success', 
               'data-toggle'=>'modal', 'data-target'=>'#nuevo'))}}
             <div class="modal fade modal-info" id="nuevo" tabindex="-1" role="dialog">
-              <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">Nuevo Concepto</h4>
                   </div>
                   <div class="modal-body">
-                    <div class="form-group">
+                    <div class="form-group" id="frgNombre">
                       {{Form::label(null, 'Nombre del Puesto*:', array('class'=>'col-xs-3 control-label'))}}
                       <div class="col-xs-9">
                         {{Form::text('nombre', null, array('class'=>'form-control input-sm mayuscula',
-                          'placeholder'=>'NOMBRE DEL PUESTO', 'required'=>''))}}
+                          'placeholder'=>'NOMBRE DEL PUESTO', 'required'=>'', 'id'=>'nombre'))}}
                       </div>
                     </div>
                     <div class="form-group">
                       {{Form::label(null, 'Nº Puestos Diurno*:', array('class'=>'col-xs-3 control-label'))}}
-                      <div class="col-xs-3">
+                      <div class="col-xs-3" id="frgDiurno">
                         {{Form::text('rmv', null, array('class'=>'form-control input-sm',
-                          'placeholder'=>'PUESTOS DIURNO', 'required'=>''))}}
+                          'placeholder'=>'PTS DIURNO', 'required'=>'', 'id'=>'diurno'))}}
                       </div>
                       {{Form::label(null, 'Nº Puestos Nocturno*:', array('class'=>'col-xs-3 control-label'))}}
                       <div class="col-xs-3">
                         {{Form::text('rmv', null, array('class'=>'form-control input-sm',
-                          'placeholder'=>'PUESTOS NOCTURNO', 'required'=>''))}}
+                          'placeholder'=>'PTS NOCTURNO', 'required'=>'', 'id'=>'nocturno'))}}
                       </div>
                     </div><hr>
-                    <div class="form-group">
+                    <div class="form-group" id="frgRmv">
                       {{Form::label(null, 'Sueldo Básico Mensual*:', array('class'=>'col-xs-3 control-label'))}}
                       <div class="col-xs-3">
-                        {{Form::text('rmv', null, array('class'=>'form-control input-sm', 'placeholder'=>
-                          'SUELDO BASICO MENSUAL'))}}
+                        {{Form::text('rmv', null, array('class'=>'form-control input-sm', 
+                        'placeholder'=>'RVM S/.', 'id'=>'rmv'))}}
                       </div>
                     </div>
                     <div class="form-group">
                       {{Form::label(null, 'Asignación Familiar:', array('class'=>'col-xs-3 control-label'))}}
                       <div class="col-xs-3">
-                        <div class="input-group">
-                          <span class="input-group-addon">
-                            <input type="checkbox" name="chb_af" value="1" id="chb_af">
-                          </span>
-                          {{Form::text('txt_af', null, array('class'=>'form-control input-sm mayuscula',
-                            'placeholder'=>'ASIGNACION FAMILIAR', 'id'=>'txt_af', 'readonly'=>''))}}
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="asignacionFamiliar" value="1" id="asignacionFamiliar">
+                          </label>
                         </div>
                       </div>
                       {{Form::label(null, 'Jornada Nocturna:', array('class'=>'col-xs-3 control-label'))}}
                       <div class="col-xs-3">
                         <div class="input-group">
-                          <span class="input-group-addon">
-                            <input type="checkbox" name="chb_jn" value="1" id="chb_jn">
-                          </span>
-                          {{Form::text('txt_jn', null, array('class'=>'form-control input-sm mayuscula',
-                            'placeholder'=>'JORNADA NOCTURNA', 'id'=>'txt_jn', 'readonly'=>''))}}
+                          <div class="checkbox">
+                            <label>
+                              <input type="checkbox" name="jornadaNocturna" value="1" id="jornadaNocturna">
+                            </label>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -146,7 +144,7 @@ Estructura de Costos | Nuevo
                             <input type="checkbox" name="chb_st" value="1" id="chb_st">
                           </span>
                           {{Form::text('txt_st', null, array('class'=>'form-control input-sm mayuscula',
-                            'placeholder'=>'SOBRE TIEMPO', 'id'=>'txt_st', 'readonly'=>''))}}
+                            'placeholder'=>'ST HRS', 'id'=>'txt_st', 'readonly'=>''))}}
                         </div>
                       </div>
                     </div><hr>
@@ -154,21 +152,21 @@ Estructura de Costos | Nuevo
                       {{Form::label(null, 'Descancero:', array('class'=>'col-xs-3 control-label'))}}
                       <div class="col-xs-3">
                         <div class="input-group">
-                          <span class="input-group-addon">
-                            <input type="checkbox" name="chb_descancero" value="1" id="chb_descancero">
-                          </span>
-                          {{Form::text('txt_descancero', null, array('class'=>'form-control input-sm mayuscula',
-                            'placeholder'=>'DESCANCERO', 'id'=>'txt_descancero', 'readonly'=>''))}}
+                          <div class="checkbox">
+                            <label>
+                              <input type="checkbox" name="descancero" value="1" id="descancero">
+                            </label>
+                          </div>
                         </div>
                       </div>
                       {{Form::label(null, 'Feriados:', array('class'=>'col-xs-3 control-label'))}}
                       <div class="col-xs-3">
                         <div class="input-group">
-                          <span class="input-group-addon">
-                            <input type="checkbox" name="chb_feriados" value="1" id="chb_feriados">
-                          </span>
-                          {{Form::text('txt_feriados', null, array('class'=>'form-control input-sm mayuscula',
-                            'placeholder'=>'FERIADOS', 'id'=>'txt_feriados', 'readonly'=>''))}}
+                          <div class="checkbox">
+                            <label>
+                              <input type="checkbox" name="feriados" value="1" id="feriados">
+                            </label>
+                          </div>
                         </div>
                       </div>
                     </div><hr>  
@@ -176,21 +174,21 @@ Estructura de Costos | Nuevo
                       {{Form::label(null, 'Gratificaciones:', array('class'=>'col-xs-3 control-label'))}}
                       <div class="col-xs-3">
                         <div class="input-group">
-                          <span class="input-group-addon">
-                            <input type="checkbox" name="chb_gratificaciones" value="1" id="chb_gratificaciones">
-                          </span>
-                          {{Form::text('txt_gratificaciones', null, array('class'=>'form-control input-sm mayuscula',
-                            'placeholder'=>'GRATIFICACIONES', 'id'=>'txt_gratificaciones', 'readonly'=>''))}}
+                          <div class="checkbox">
+                            <label>
+                              <input type="checkbox" name="gratificaciones" value="1" id="gratificaciones">
+                            </label>
+                          </div>
                         </div>
                       </div>
                       {{Form::label(null, 'C.T.S.:', array('class'=>'col-xs-3 control-label'))}}
                       <div class="col-xs-3">
                         <div class="input-group">
-                          <span class="input-group-addon">
-                            <input type="checkbox" name="chb_cts" value="1" id="chb_cts">
-                          </span>
-                          {{Form::text('txt_cts', null, array('class'=>'form-control input-sm mayuscula',
-                            'placeholder'=>'C.T.S.', 'id'=>'txt_cts', 'readonly'=>''))}}
+                          <div class="checkbox">
+                            <label>
+                              <input type="checkbox" name="cts" value="1" id="cts">
+                            </label>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -198,11 +196,11 @@ Estructura de Costos | Nuevo
                       {{Form::label(null, 'Vacaciones:', array('class'=>'col-xs-3 control-label'))}}
                       <div class="col-xs-3">
                         <div class="input-group">
-                          <span class="input-group-addon">
-                            <input type="checkbox" name="chb_vacaciones" value="1" id="chb_vacaciones">
-                          </span>
-                          {{Form::text('txt_vacaciones', null, array('class'=>'form-control input-sm mayuscula',
-                            'placeholder'=>'VACACIONES', 'id'=>'txt_vacaciones', 'readonly'=>''))}}
+                          <div class="checkbox">
+                            <label>
+                              <input type="checkbox" name="vacaciones" value="1" id="vacaciones">
+                            </label>
+                          </div>
                         </div>
                       </div>
                     </div><hr>
@@ -210,11 +208,11 @@ Estructura de Costos | Nuevo
                       {{Form::label(null, 'EsSalud:', array('class'=>'col-xs-3 control-label'))}}
                       <div class="col-xs-3">
                         <div class="input-group">
-                          <span class="input-group-addon">
-                            <input type="checkbox" name="chb_essalud" value="1" id="chb_essalud">
-                          </span>
-                          {{Form::text('txt_essalud', null, array('class'=>'form-control input-sm mayuscula',
-                            'placeholder'=>'ESSALUD', 'id'=>'txt_essalud', 'readonly'=>''))}}
+                          <div class="checkbox">
+                            <label>
+                              <input type="checkbox" name="essalud" value="1" id="essalud">
+                            </label>
+                          </div>
                         </div>
                       </div>
                       {{Form::label(null, 'S.C.T.R.:', array('class'=>'col-xs-3 control-label'))}}
@@ -224,7 +222,7 @@ Estructura de Costos | Nuevo
                             <input type="checkbox" name="chb_sctr" value="1" id="chb_sctr">
                           </span>
                           {{Form::text('txt_sctr', null, array('class'=>'form-control input-sm mayuscula',
-                            'placeholder'=>'S.C.T.R', 'id'=>'txt_sctr', 'readonly'=>''))}}
+                            'placeholder'=>'S.C.T.R. %', 'id'=>'txt_sctr', 'readonly'=>''))}}
                         </div>
                       </div>
                     </div><hr>
@@ -279,7 +277,7 @@ Estructura de Costos | Nuevo
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary">Guardar</button>
+                    <button type="button" class="btn btn-primary" id="guardarConcepto">Guardar</button>
                   </div>
                 </div>
               </div>
@@ -317,8 +315,8 @@ Estructura de Costos | Nuevo
             <div class="form-group">
               {{Form::label(null, 'Fecha*:', array('class'=>'col-sm-1 control-label'))}}
               <div class="col-xs-5">
-                {{Form::text('lugar', null, array('class'=>'form-control input-sm',
-                  'placeholder'=>'FECHA', 'required'=>''))}}
+                {{Form::text('fecha', null, array('class'=>'form-control input-sm',
+                  'placeholder'=>'FECHA', 'required'=>'', 'id'=>'fecha'))}}
               </div>
             </div>
           </div>
@@ -347,84 +345,12 @@ Estructura de Costos | Nuevo
 
     CKEDITOR.replace('despedida');
 
-    $("#chb_af").change(function(){
-      $("#txt_af").val('');
-      if($("#chb_af").prop("checked")){
-        $("#txt_af").prop('readonly', false);
-      }else{
-        $("#txt_af").prop('readonly', true);
-      }
-    });
-
-    $("#chb_jn").change(function(){
-      $("#txt_jn").val('');
-      if($("#chb_jn").prop("checked")){
-        $("#txt_jn").prop('readonly', false);
-      }else{
-        $("#txt_jn").prop('readonly', true);
-      }
-    });
-
     $("#chb_st").change(function(){
       $("#txt_st").val('');
       if($("#chb_st").prop("checked")){
         $("#txt_st").prop('readonly', false);
       }else{
         $("#txt_st").prop('readonly', true);
-      }
-    });
-
-    $("#chb_descancero").change(function(){
-      $("#txt_descancero").val('');
-      if($("#chb_descancero").prop("checked")){
-        $("#txt_descancero").prop('readonly', false);
-      }else{
-        $("#txt_descancero").prop('readonly', true);
-      }
-    });
-
-    $("#chb_feriados").change(function(){
-      $("#txt_feriados").val('');
-      if($("#chb_feriados").prop("checked")){
-        $("#txt_feriados").prop('readonly', false);
-      }else{
-        $("#txt_feriados").prop('readonly', true);
-      }
-    });
-
-    $("#chb_gratificaciones").change(function(){
-      $("#txt_gratificaciones").val('');
-      if($("#chb_gratificaciones").prop("checked")){
-        $("#txt_gratificaciones").prop('readonly', false);
-      }else{
-        $("#txt_gratificaciones").prop('readonly', true);
-      }
-    });
-
-    $("#chb_cts").change(function(){
-      $("#txt_cts").val('');
-      if($("#chb_cts").prop("checked")){
-        $("#txt_cts").prop('readonly', false);
-      }else{
-        $("#txt_cts").prop('readonly', true);
-      }
-    });
-
-    $("#chb_vacaciones").change(function(){
-      $("#txt_vacaciones").val('');
-      if($("#chb_vacaciones").prop("checked")){
-        $("#txt_vacaciones").prop('readonly', false);
-      }else{
-        $("#txt_vacaciones").prop('readonly', true);
-      }
-    });
-
-    $("#chb_essalud").change(function(){
-      $("#txt_essalud").val('');
-      if($("#chb_essalud").prop("checked")){
-        $("#txt_essalud").prop('readonly', false);
-      }else{
-        $("#txt_essalud").prop('readonly', true);
       }
     });
 
@@ -445,6 +371,40 @@ Estructura de Costos | Nuevo
         $("#txt_igv").prop('readonly', true);
       }
     });
+
+    $("#guardarConcepto").click(function(){
+      if($("#nombre").val() == ''){
+        $("#nombre").focus();
+      }else if($("#diurno").val() == ''){
+        $("#diurno").focus();
+      }else if($("#nocturno").val() == ''){
+        $("#nocturno").focus();
+      }else if($("#rmv").val() == ''){
+        $("#rmv").focus();
+      }else{
+        $.ajax({
+          url: "<?=URL::to('costo/guardar-concepto')?>",
+          type: 'POST',
+          data: {empresa_ruc: $("#empresa_ruc").val(), nombre: $("#nombre").val(),
+            diurno: $("#diurno").val(), nocturno: $("#nocturno").val(), rmv: $("#rmv").val(), 
+            asignacionfamiliar: $("#asignacionFamiliar:checked").val(), txt_st: $("#txt_st").val(),
+            jornadanocturna: $("#jornadaNocturna:checked").val()},
+          dataType: 'JSON',
+          error: function(){
+            alert("hubo un error en la conexión con el controlador");
+          },
+          success: function(respuesta){
+            
+          }
+        });
+      }
+    });
+
+    $('input').keypress(function(e){
+      if(e.which == 13){
+        return false;
+    }
+  });
   });
 </script>
 @stop
