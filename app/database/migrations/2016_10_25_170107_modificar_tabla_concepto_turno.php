@@ -16,6 +16,8 @@ class ModificarTablaConceptoTurno extends Migration {
     {
       $table->renameColumn('asigfamiliar', 'igv')->after('utilidad');
       $table->integer('puestos')->unsigned()->after('turno_id');
+      $table->double('subtotal')->unsigned()->after('utilidad');
+      $table->renameColumn('descancero', 'descansero');
     });
   }
 
@@ -30,6 +32,7 @@ class ModificarTablaConceptoTurno extends Migration {
     {
       $table->renameColumn('igv', 'asigfamiliar')->after('feriados');
       $table->dropColumn('puestos');
+      $table->dropColumn('subtotal');
     });
   }
 

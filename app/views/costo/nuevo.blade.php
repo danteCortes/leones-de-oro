@@ -149,12 +149,12 @@ Estructura de Costos | Nuevo
                       </div>
                     </div><hr>
                     <div class="form-group">
-                      {{Form::label(null, 'Descancero:', array('class'=>'col-xs-3 control-label'))}}
+                      {{Form::label(null, 'Descansero:', array('class'=>'col-xs-3 control-label'))}}
                       <div class="col-xs-3">
                         <div class="input-group">
                           <div class="checkbox">
                             <label>
-                              <input type="checkbox" name="descancero" value="1" id="descancero">
+                              <input type="checkbox" name="descansero" value="1" id="descansero">
                             </label>
                           </div>
                         </div>
@@ -230,36 +230,36 @@ Estructura de Costos | Nuevo
                       {{Form::label(null, 'Unif. Equip, Sup.:', array('class'=>'col-xs-3 control-label'))}}
                       <div class="col-xs-3">
                         {{Form::text('cmb_st', null, array('class'=>'form-control input-sm mayuscula',
-                          'placeholder'=>'UNIFORME, EQUIPO, SUPERVISION'))}}
+                          'placeholder'=>'UNIFORME, EQUIPO, SUPERVISION', 'id'=>'ueas'))}}
                       </div>
                       {{Form::label(null, 'Capacitación:', array('class'=>'col-xs-3 control-label'))}}
                       <div class="col-xs-3">
                         {{Form::text('cmb_st', null, array('class'=>'form-control input-sm mayuscula',
-                          'placeholder'=>'CAPACITACION'))}}
+                          'placeholder'=>'CAPACITACION', 'id'=>'capacitacion'))}}
                       </div>
                     </div><hr>
                     <div class="form-group">
                       {{Form::label(null, 'Movilidad:', array('class'=>'col-xs-3 control-label'))}}
                       <div class="col-xs-3">
                         {{Form::text('cmb_st', null, array('class'=>'form-control input-sm mayuscula',
-                          'placeholder'=>'MOVILIDAD'))}}
+                          'placeholder'=>'MOVILIDAD', 'id'=>'movilidad'))}}
                       </div>
                       {{Form::label(null, 'Refrigerio:', array('class'=>'col-xs-3 control-label'))}}
                       <div class="col-xs-3">
                         {{Form::text('cmb_st', null, array('class'=>'form-control input-sm mayuscula',
-                          'placeholder'=>'REFRIGERIO'))}}
+                          'placeholder'=>'REFRIGERIO', 'id'=>'refrigerio'))}}
                       </div>
                     </div><hr>
                     <div class="form-group">
                       {{Form::label(null, 'Gastos Generales:', array('class'=>'col-xs-3 control-label'))}}
                       <div class="col-xs-3">
                         {{Form::text('cmb_st', null, array('class'=>'form-control input-sm mayuscula',
-                          'placeholder'=>'GASTOS GENERALES'))}}
+                          'placeholder'=>'GASTOS GENERALES', 'id'=>'gastosgenerales'))}}
                       </div>
                       {{Form::label(null, 'Utilidad:', array('class'=>'col-xs-3 control-label'))}}
                       <div class="col-xs-3">
                         {{Form::text('cmb_st', null, array('class'=>'form-control input-sm mayuscula',
-                          'placeholder'=>'UTILIDAD'))}}
+                          'placeholder'=>'UTILIDAD', 'id'=>'utilidad'))}}
                       </div>
                     </div><hr>
                     <div class="form-group">
@@ -292,7 +292,7 @@ Estructura de Costos | Nuevo
                     <th>Total</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody id="conceptos">
                   <tr>
                     <td>2</td>
                     <td>SERVICIO DE SEGURIDAD Y VIGILANCIA PARA LA INTENDENCIA REGIONAL DE HUANUCO<br>
@@ -388,7 +388,13 @@ Estructura de Costos | Nuevo
           data: {empresa_ruc: $("#empresa_ruc").val(), nombre: $("#nombre").val(),
             diurno: $("#diurno").val(), nocturno: $("#nocturno").val(), rmv: $("#rmv").val(), 
             asignacionfamiliar: $("#asignacionFamiliar:checked").val(), txt_st: $("#txt_st").val(),
-            jornadanocturna: $("#jornadaNocturna:checked").val()},
+            jornadanocturna: $("#jornadaNocturna:checked").val(), descansero: $("#descansero:checked").val(),
+            feriados: $("#feriados:checked").val(), gratificaciones: $("#gratificaciones:checked").val(),
+            cts: $("#cts:checked").val(), vacaciones: $("#vacaciones:checked").val(),
+            essalud: $("#essalud:checked").val(), txt_sctr: $("#txt_sctr").val(), ueas: $("#ueas").val(),
+            capacitacion: $("#capacitacion").val(), movilidad: $("#movilidad").val(), 
+            refrigerio: $("#refrigerio").val(), gastosgenerales: $("#gastosgenerales").val(),
+            utilidad: $("#utilidad").val(), txt_igv: $("#txt_igv").val()},
           dataType: 'JSON',
           error: function(){
             alert("hubo un error en la conexión con el controlador");
