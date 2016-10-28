@@ -64,22 +64,16 @@ Estructura de Costos | Inicio
                 <th>ID</th>
                 <th>Cliente</th>
                 <th>Mostrar</th>
-                <th>Editar</th>
                 <th>Borrar</th>
               </tr>
             </thead>
             <tbody>
               @foreach($costos as $costo)
-                @if($costo->usuario_id)
+                @if($costo->estado == 0)
                   <tr>
                     <td>{{$costo->id}}</td>
-                    <td>{{$costo->cliente_ruc}}</td>
+                    <td>{{$costo->cliente}}</td>
                     <td><a href="<?=URL::to('costo/mostrar/'.$costo->id)?>" class="btn btn-warning btn-xs">Mostrar</a>
-                    </td>
-                    <td>
-                      <a class="btn btn-primary btn-xs" href="<?=URL::to('costo/editar/'.$costo->id)?>">
-                        Editar
-                      </a>
                     </td>
                     <td>
                       <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#borrar{{$costo->id}}">

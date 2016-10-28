@@ -94,19 +94,19 @@ Estructura de Costos | Nuevo
                       {{Form::label(null, 'Nombre del Puesto*:', array('class'=>'col-xs-3 control-label'))}}
                       <div class="col-xs-9">
                         {{Form::text('nombre', null, array('class'=>'form-control input-sm mayuscula',
-                          'placeholder'=>'NOMBRE DEL PUESTO', 'required'=>'', 'id'=>'nombre'))}}
+                          'placeholder'=>'NOMBRE DEL PUESTO', 'id'=>'nombre'))}}
                       </div>
                     </div>
                     <div class="form-group">
                       {{Form::label(null, 'Nº Puestos Diurno*:', array('class'=>'col-xs-3 control-label'))}}
                       <div class="col-xs-3" id="frgDiurno">
                         {{Form::text('rmv', null, array('class'=>'form-control input-sm',
-                          'placeholder'=>'PTS DIURNO', 'required'=>'', 'id'=>'diurno'))}}
+                          'placeholder'=>'PTS DIURNO', 'id'=>'diurno'))}}
                       </div>
                       {{Form::label(null, 'Nº Puestos Nocturno*:', array('class'=>'col-xs-3 control-label'))}}
                       <div class="col-xs-3">
                         {{Form::text('rmv', null, array('class'=>'form-control input-sm',
-                          'placeholder'=>'PTS NOCTURNO', 'required'=>'', 'id'=>'nocturno'))}}
+                          'placeholder'=>'PTS NOCTURNO', 'id'=>'nocturno'))}}
                       </div>
                     </div><hr>
                     <div class="form-group" id="frgRmv">
@@ -370,16 +370,19 @@ Estructura de Costos | Nuevo
             <div class="form-group">
               {{Form::label(null, 'Fecha*:', array('class'=>'col-sm-1 control-label'))}}
               <div class="col-xs-5">
-                {{Form::text('fecha', null, array('class'=>'form-control input-sm',
+                {{Form::text('fecha', null, array('class'=>'form-control input-sm mayuscula',
                   'placeholder'=>'FECHA', 'required'=>'', 'id'=>'fecha'))}}
               </div>
             </div>
           </div>
           <div class="box-body">
-            {{Form::button('Guardar', array('class'=>'btn btn-primary', 'type'=>'submit', 
-              'id'=>'guardar'))}}
+            {{Form::button('Guardar', array('class'=>'btn btn-primary', 'type'=>'submit',))}}
+            @if($costo->id)
+            <a href="<?=URL::to('costo/cancelar/'.$costo->id)?>"
+              class="btn btn-danger">Atras</a>
+            @endif
             <a href="<?=URL::to('costo/inicio/'.$empresa->ruc)?>"
-              class="btn btn-warning pull-right">Atras</a>
+              class="btn btn-warning pull-right">Cancelar</a>
           </div>
           {{Form::hidden('empresa_ruc', $empresa->ruc, array('id'=>'empresa_ruc'))}}
         {{Form::close()}}
