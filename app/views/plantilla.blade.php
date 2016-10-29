@@ -248,6 +248,8 @@
               Areas</a></li>
             <li><a href="<?=URL::to('tipoMemorandum')?>"><i class="fa fa-circle-o"></i> 
               Tipo Memorandums</a></li>
+            <li><a href="<?=URL::to('numeracion/inicio')?>"><i class="fa fa-circle-o"></i> 
+              Numeraciones</a></li>
           </ul>
         </li>
         @elseif(Auth::user()->nivel == 1)

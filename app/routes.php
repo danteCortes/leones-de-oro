@@ -43,6 +43,8 @@ Route::group(array('before' => 'auth'), function(){
 
   Route::controller('informe', 'InformeController');
 
+  Route::controller('numeracion', 'NumeracionController');
+
   Route::controller('costo', 'CostoController');
 });
 

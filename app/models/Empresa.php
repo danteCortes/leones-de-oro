@@ -30,4 +30,20 @@ class Empresa extends Eloquent{
   public function costos(){
     return $this->hasMany('Costo', 'empresa_ruc');
   }
+
+  public function variables(){
+    return $this->hasMany('Variable', 'empresa_ruc');
+  }
+
+  public function cartas(){
+    return $this->hasMany('Carta', 'empresa_ruc');
+  }
+
+  public function memorandums(){
+    return $this->hasMany('Memorandum', 'empresa_ruc');
+  }
+
+  public function informes(){
+    return $this->hasMany('Informe', 'empresa_ruc');
+  }
 }
