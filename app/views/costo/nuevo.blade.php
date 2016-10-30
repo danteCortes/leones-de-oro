@@ -65,7 +65,7 @@ Estructura de Costos | Nuevo
             <div class="form-group">
               {{Form::label(null, 'LUGAR*:', array('class'=>'control-label col-xs-1'))}}
               <div class="col-xs-5">
-                {{Form::text('lugar','' , array('class'=>'form-control input-sm mayuscula'
+                {{Form::text('lugar','' , array('class'=>'form-control input-sm'
                   ,'placeholder'=>'LUGAR', 'required'=>'', 'id'=>'lugar'))}}
               </div>
             </div>
@@ -81,7 +81,7 @@ Estructura de Costos | Nuevo
           </div>
           <div class="box-body">
             {{Form::button('Agregar Concepto', array('class'=>'btn btn-success', 
-              'data-toggle'=>'modal', 'data-target'=>'#nuevo'))}}
+              'data-toggle'=>'modal', 'data-target'=>'#nuevo', 'id'=>'btnModal'))}}
             <div class="modal fade modal-info" id="nuevo" tabindex="-1" role="dialog">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -254,7 +254,7 @@ Estructura de Costos | Nuevo
                       {{Form::label(null, 'Gastos Generales:', array('class'=>'col-xs-3 control-label'))}}
                       <div class="col-xs-3">
                         {{Form::text('cmb_st', null, array('class'=>'form-control input-sm mayuscula',
-                          'placeholder'=>'GASTOS GENERALES', 'id'=>'gastosgenerales'))}}
+                          'placeholder'=>'% GASTOS GENERALES', 'id'=>'gastosgenerales'))}}
                       </div>
                       {{Form::label(null, 'Utilidad:', array('class'=>'col-xs-3 control-label'))}}
                       <div class="col-xs-3">
@@ -283,7 +283,7 @@ Estructura de Costos | Nuevo
               </div>
             </div>
             <div class="table-responsive">
-              <table class="table table-striped table-bordered">
+              <table class="table table-striped table-bordered" id="tblConceptos">
                 <thead>
                   <tr>
                     <th>Cant.</th>
@@ -377,12 +377,11 @@ Estructura de Costos | Nuevo
           </div>
           <div class="box-body">
             {{Form::button('Guardar', array('class'=>'btn btn-primary', 'type'=>'submit',))}}
-            @if($costo->id)
-            <a href="<?=URL::to('costo/cancelar/'.$costo->id)?>"
-              class="btn btn-danger">Atras</a>
-            @endif
+            
+              {{Form::button('Cancelar', array('class'=>'btn btn-danger', 'type'=>'button',))}}
+            
             <a href="<?=URL::to('costo/inicio/'.$empresa->ruc)?>"
-              class="btn btn-warning pull-right">Cancelar</a>
+              class="btn btn-warning pull-right">Atras</a>
           </div>
           {{Form::hidden('empresa_ruc', $empresa->ruc, array('id'=>'empresa_ruc'))}}
         {{Form::close()}}
@@ -453,15 +452,22 @@ Estructura de Costos | Nuevo
             capacitacion: $("#capacitacion").val(), movilidad: $("#movilidad").val(), 
             refrigerio: $("#refrigerio").val(), gastosgenerales: $("#gastosgenerales").val(),
             utilidad: $("#utilidad").val(), txt_igv: $("#txt_igv").val()},
-          
+          beforeSend: function() {
+            $("#conceptos").append("<div class='overlay' id='overlay'><i class='fa fa-refresh fa-spin'></i></div>");
+            $("#btnModal").addClass("disabled");
+          },
           error: function(){
             alert("hubo un error en la conexión con el controlador");
           },
           success: function(respuesta){
             $("#conceptos").html(respuesta);
+            $("#conceptos").remove("#overlay");
+            $("#btnModal").removeClass("disabled");
           }
         });
         $('#nuevo').modal('toggle');
+        $(":text", $("#nuevo")).val("");
+        $(":checked", $("#nuevo")).prop("checked", false);
       }
     });
 
@@ -469,6 +475,12 @@ Estructura de Costos | Nuevo
       if(e.which == 13){
         return false;
     }
+
+    $("#btnModal").click(function(){
+      if ($("#btnModal").hasClass('disabled')){
+        return false;
+      };
+    });
   });
   });
 </script>

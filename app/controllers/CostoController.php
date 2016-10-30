@@ -125,7 +125,7 @@ class CostoController extends BaseController{
             font-family: Cambria, Georgia, serif;
           }
           @page{
-            margin-top: 5cm;
+            margin-top: 5.5cm;
             margin-left: 3cm;
             margin-right: 2.5cm;
             margin-bottom: 3cm;
@@ -301,7 +301,7 @@ class CostoController extends BaseController{
             <td align=right>".$this->formatoMoneda($nocturno->refrigerio)."</td>
           </tr>
           <tr>
-            <th>COSTO TOTAL POR UN PUESTO DE 12 HORAS</th>
+            <th>COSTO POR UN PUESTO DE 12 HORAS</th>
             <th></th>
             <th align=right>".$this->formatoMoneda($manodeobradiurno+$implementosdiurno
               +$viaticosdiurno)."</th>
@@ -309,7 +309,7 @@ class CostoController extends BaseController{
               +$viaticosnocturno)."</th>
           </tr>
           <tr>
-            <td>Gastos Generales</td>
+            <td>Gastos Generales ".Input::get('gastosgenerales')."% </td>
             <td></td>
             <td align=right>".$this->formatoMoneda($diurno->gastosgenerale)."</td>
             <td align=right>".$this->formatoMoneda($nocturno->gastosgenerale)."</td>
@@ -327,12 +327,19 @@ class CostoController extends BaseController{
             <th align=right>".$this->formatoMoneda($nocturno->gastosgenerale+$nocturno->utilidad)."</th>
           </tr>
           <tr>
-            <th>COSTO TOTAL DEL SERVICIO DIURNO Y NOCTURNO</th>
+            <th>COSTO DEL SERVICIO POR 12 HORAS DIURNO Y 12 HORAS NOCTURNO</th>
             <th></th>
             <th align=right>".$this->formatoMoneda($manodeobradiurno+$implementosdiurno
               +$viaticosdiurno+$diurno->gastosgenerale+$diurno->utilidad)."</th>
             <th align=right>".$this->formatoMoneda($manodeobranocturno+$implementosnocturno
               +$viaticosnocturno+$nocturno->gastosgenerale+$nocturno->utilidad)."</th>
+          </tr>
+          <tr>
+            <th>COSTO DEL SERVICIO POR ".$diurno->puestos." PUESTOS DIURNO Y ".$nocturno->puestos
+              ." PUESTOS NOCTURNO</th>
+            <th></th>
+            <th align=right>".$this->formatoMoneda($diurno->subtotal)."</th>
+            <th align=right>".$this->formatoMoneda($nocturno->subtotal)."</th>
           </tr>
           <tr>
             <th>COSTO DEL SERVICIO POR ";
@@ -458,7 +465,7 @@ class CostoController extends BaseController{
       
       $costo = Costo::find($costo->id);
       $costo->cliente = mb_strtoupper(Input::get('destinatario'));
-      $costo->lugar = mb_strtoupper(Input::get('lugar'));
+      $costo->lugar = Input::get('lugar');
       $costo->saludo = Input::get('saludo');
       $costo->despedida = Input::get('despedida');
       $costo->fecha = mb_strtoupper(Input::get('fecha'));
@@ -498,7 +505,7 @@ class CostoController extends BaseController{
               }
             </style>
             <h1 align=center>ESTRUCTURA DE COSTOS</h1>
-            <p>Señores:<br>".$costo->cliente."</p>
+            <p>Señores:<br><b>".$costo->cliente."</b></p>
             <p>".$costo->lugar."</p>
             <p>".$costo->saludo."</p>
             <table class='borde-tabla'>
@@ -579,6 +586,9 @@ class CostoController extends BaseController{
       return Redirect::to('costo/inicio/'.$ruc)->with('rojo', $mensaje);
     }
   }
+
+
+  /*Funciones privadas********************************************************************/
 
   private function nuevoCosto($empresa_ruc, $cliente, $lugar, $saludo, $subtotal, $igv, $total,
     $despedida, $fecha, $estado){
@@ -715,6 +725,8 @@ class CostoController extends BaseController{
 
     if(!$gastosgenerales){
       $gastosgenerales = 0;
+    }else{
+      $gastosgenerales = round($total12horas*$gastosgenerales)/100;
     }
 
     if(!$utilidad){
