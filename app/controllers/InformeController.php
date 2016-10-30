@@ -141,6 +141,10 @@ class InformeController extends BaseController{
       </head>
       <body>
         <style type='text/css'>
+          .titulo{
+            font-size: 9pt;
+            text-decoration: underline;
+          }
           .borde{
            border: 1px solid #000;
            padding-left: 10px;
@@ -151,32 +155,32 @@ class InformeController extends BaseController{
             font-family: Cambria, Georgia, serif;
           }
           @page{
-            margin-top: 5cm;
+            margin-top: 5.5cm;
             margin-left: 3cm;
             margin-right: 2.5cm;
             margin-bottom: 3cm;
           }
         </style>
-        <h1 class='titulo' align='center'>".$informe->anio."</h1><br>
-        <p align='left'>".$informe->codigo."</p>
+        <h1 align='center'>".$informe->anio."</h1><br>
+        <p class='titulo' align='left'><b>".$informe->codigo."</b></p>
         <table>
           <tr valign=top>
             <td height=30><b>PARA</b></td>
-            <td>:".$informe->destinatario."<br>".
-            $informe->cargo_destinatario."</td>
+            <td><b>:".$informe->destinatario."<br>".
+            $informe->cargo_destinatario."</b></td>
           </tr>
           <tr valign=top>
             <td width=100 height=50><b>DE</b></td>
-            <td>:".$informe->remite."<br>".
-            $informe->cargo_remite."</td>
+            <td><b>:".$informe->remite."<br>".
+            $informe->cargo_remite."</b></td>
           </tr>
           <tr valign=top>
             <td height=30><b>ASUNTO</b></td>
-            <td>:".$informe->asunto."</td>
+            <td><b>:".$informe->asunto."</b></td>
           </tr>
           <tr valign=top>
             <td height=30><b>FECHA</b></td>
-            <td>:".$informe->fecha."</td>
+            <td><b>:".$informe->fecha."</b></td>
           </tr>
         </table><hr>
         <p width=300>".$informe->contenido."
@@ -249,6 +253,10 @@ class InformeController extends BaseController{
       </head>
       <body>
         <style type='text/css'>
+          .titulo{
+            font-size: 9pt;
+            text-decoration: underline;
+          }
           .borde{
            border: 1px solid #000;
            padding-left: 10px;
@@ -259,32 +267,32 @@ class InformeController extends BaseController{
             font-family: Cambria, Georgia, serif;
           }
           @page{
-            margin-top: 5cm;
+            margin-top: 5.5cm;
             margin-left: 3cm;
             margin-right: 2.5cm;
             margin-bottom: 3cm;
           }
         </style>
-        <h1 class='titulo' align='center'>".$informe->anio."</h1><br>
-        <p align='left'>".$informe->codigo."</p>
+        <h1 align='center'>".$informe->anio."</h1><br>
+        <p class='titulo' align='left'><b>".$informe->codigo."</b></p>
         <table>
           <tr valign=top>
             <td height=30><b>PARA</b></td>
-            <td>:".$informe->destinatario."<br>".
-            $informe->cargo_destinatario."</td>
+            <td><b>:".$informe->destinatario."<br>".
+            $informe->cargo_destinatario."</b></td>
           </tr>
           <tr valign=top>
-            <td height=30><b>PARA</b></td>
-            <td>:".$informe->remite."<br>".
-            $informe->cargo_remite."</td>
+            <td width=100 height=50><b>DE</b></td>
+            <td><b>:".$informe->remite."<br>".
+            $informe->cargo_remite."</b></td>
           </tr>
           <tr valign=top>
             <td height=30><b>ASUNTO</b></td>
-            <td>:".$informe->asunto."</td>
+            <td><b>:".$informe->asunto."</b></td>
           </tr>
           <tr valign=top>
             <td height=30><b>FECHA</b></td>
-            <td>:".$informe->fecha."</td>
+            <td><b>:".$informe->fecha."</b></td>
           </tr>
         </table><hr>
         <p width=300>".$informe->contenido."
