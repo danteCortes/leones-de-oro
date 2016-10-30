@@ -64,6 +64,7 @@ Informe | Inicio
                 <th>Informe</th>
                 <th>Remitente</th>
                 <th>Destinatario</th>
+                <th>Redactor</th>
                 <th>Mostrar</th>
                 <th>Editar</th>
                 <th>Borrar</th>
@@ -76,6 +77,7 @@ Informe | Inicio
                     <td>{{$informe->codigo}}</td>
                     <td>{{$informe->remite}}</td>
                     <td>{{$informe->destinatario}}</td>
+                    <td>{{Usuario::find($informe->usuario_id)->persona->nombre}}</td>
                     <td><a href="<?=URL::to('informe/mostrar/'.$informe->id)?>" class="btn btn-warning btn-xs">Mostrar</a>
                     </td>
                     <td>

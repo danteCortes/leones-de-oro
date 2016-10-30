@@ -22,7 +22,7 @@ class CrearTablaInformes extends Migration {
       $table->foreign('empresa_ruc')->references('ruc')->on('empresas')
         ->onUpdate('cascade')->onDelete('cascade');
       $table->string('remite');
-      $table->string('crgo_remite');
+      $table->string('cargo_remite');
       $table->string('anio');
       $table->string('fecha');
       $table->integer('numero')->unsigned();
