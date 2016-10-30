@@ -68,6 +68,7 @@ Memorandum | Inicio
                   <th>Remitente</th>
                   <th>Trabajador</th>
                   <th>Razón</th>
+                  <th>Redactor</th>
                   <th>Mostrar</th>
                   <th>Editar</th>
                   <th>Borrar</th>
@@ -90,6 +91,7 @@ Memorandum | Inicio
                         @endif
                       </td>
                       <td>{{TipoMemorandum::find($memorandum->tipo_memorandum_id)->nombre}}</td>
+                      <td>{{Usuario::find($memorandum->usuario_id)->persona->nombre}}</td>
                       <td><a href="<?=URL::to('memorandum/mostrar/'.$memorandum->id)?>" class="btn btn-warning btn-xs">Mostrar</a>
                       </td>
                       <td>

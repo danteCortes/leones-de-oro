@@ -138,65 +138,66 @@ class MemorandumController extends BaseController{
     }
 
     $html = "
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <meta http-equiv='Content-Type' content='text/html; charset=ISO-8859-1'>
-        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-        <title>".$memorandum->codigo."</title>
-        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' 
-          name='viewport'>
-      </head>
-      <body>
-        <style type='text/css'>
-          .titulo{
-            font-size: 20px;
-            font-family: monospace;
-          }
-          .borde{
-           border: 1px solid #000;
-           padding-left: 10px;
-           margin-left: 30%;
-          }
-          .cuerpo{
-            font-size: 14px;
-            font-family: monospace;
-          }
-        </style>
-        <img src='documentos/membretes/".$memorandum->empresa_ruc.".jpg' width=100%>
-        <h1 class='titulo' align='left'>".$memorandum->codigo."</h1><br>
-        <table>
-          <tr valign=top>
-            <td width=100 height=50><b>DE</b></td>
-            <td>:".Usuario::find($memorandum->remite)->persona->nombre." ".
-              Usuario::find($memorandum->remite)->persona->apellidos."<br> <b>".
-              Area::find(Empresa::find($memorandum->empresa_ruc)->usuarios()->find($memorandum->remite)
-                ->area_id)->nombre."</b></td>
-          </tr>
-          <tr valign=top>
-            <td height=30><b>A</b></td>
-            <td>:MEMORANDUM MULTIPLE</td>
-          </tr>
-          <tr valign=top>
-            <td height=30><b>ASUNTO</b></td>
-            <td>:".$memorandum->asunto."</td>
-          </tr>
-          <tr valign=top>
-            <td height=30><b>FECHA</b></td>
-            <td>:".$memorandum->fecha."</td>
-          </tr>
-        </table><hr>
-        <p width=300>".$memorandum->contenido."
-        </p>
-        <p align='center'>Atentamente,</p><br><br><br><br><br><p align='center'>
-        ___________________________<br>".
-        Usuario::find($memorandum->remite)->persona->nombre."<br>".
-        Usuario::find($memorandum->remite)->persona->apellidos."<br>".
-        Area::find(Empresa::find($memorandum->empresa_ruc)->usuarios()->find($memorandum->remite)
-          ->area_id)->nombre."</p>
-      </body>
-    </html>
-    ";
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta http-equiv='Content-Type' content='text/html; charset=ISO-8859-1'>
+          <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+          <title>".$memorandum->codigo."</title>
+          <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' 
+            name='viewport'>
+        </head>
+        <body>
+          <style type='text/css'>
+            .titulo{
+              font-size: 14pt;
+              font-family: monospace;
+              text-decoration: underline;
+            }
+            .borde{
+             border: 1px solid #000;
+             padding-left: 10px;
+             margin-left: 30%;
+            }
+            .cuerpo{
+              font-size: 12pt;
+              font-family: monospace;
+            }
+          </style>
+          <img src='documentos/membretes/".$memorandum->empresa_ruc.".jpg' width=100%>
+          <h1 class='titulo' align='left'>".$memorandum->codigo."</h1><br>
+          <table>
+            <tr valign=top>
+              <td width=100 height=50><b>DE</b></td>
+              <td><b>:".Usuario::find($memorandum->remite)->persona->nombre." ".
+                Usuario::find($memorandum->remite)->persona->apellidos."<br>".
+                Area::find(Empresa::find($memorandum->empresa_ruc)->usuarios()->find($memorandum->remite)
+                  ->area_id)->nombre."</b></td>
+            </tr>
+            <tr valign=top>
+              <td height=30><b>A</b></td>
+              <td><b>:MEMORANDUM MULTIPLE</b></td>
+            </tr>
+            <tr valign=top>
+              <td height=30><b>ASUNTO</b></td>
+              <td><b>:".$memorandum->asunto."</b></td>
+            </tr>
+            <tr valign=top>
+              <td height=30><b>FECHA</b></td>
+              <td><b>:".$memorandum->fecha."</b></td>
+            </tr>
+          </table><hr>
+          <p width=300>".$memorandum->contenido."
+          </p>
+          <p align='center'>Atentamente,</p><br><br><br><br><br><p align='center'>
+          ___________________________<br>".
+          Usuario::find($memorandum->remite)->persona->nombre."<br>".
+          Usuario::find($memorandum->remite)->persona->apellidos."<br>".
+          Area::find(Empresa::find($memorandum->empresa_ruc)->usuarios()->find($memorandum->remite)
+            ->area_id)->nombre."</p>
+        </body>
+      </html>
+      ";
 
     define('BUDGETS_DIR', public_path('documentos/memorandums/'.$empresa->ruc));
 
@@ -279,66 +280,67 @@ class MemorandumController extends BaseController{
     $memorandum->trabajadores()->attach(Input::get('trabajador_id'));
 
     $html = "
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <meta http-equiv='Content-Type' content='text/html; charset=ISO-8859-1'>
-        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-        <title>".$memorandum->codigo."</title>
-        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' 
-          name='viewport'>
-      </head>
-      <body>
-        <style type='text/css'>
-          .titulo{
-            font-size: 20px;
-            font-family: monospace;
-          }
-          .borde{
-           border: 1px solid #000;
-           padding-left: 10px;
-           margin-left: 30%;
-          }
-          .cuerpo{
-            font-size: 14px;
-            font-family: monospace;
-          }
-        </style>
-        <img src='documentos/membretes/".$memorandum->empresa_ruc.".jpg' width=100%>
-        <h1 class='titulo' align='left'>".$memorandum->codigo."</h1><br>
-        <table>
-          <tr valign=top>
-            <td width=100 height=50><b>DE</b></td>
-            <td>:".Usuario::find($memorandum->remite)->persona->nombre." ".
-              Usuario::find($memorandum->remite)->persona->apellidos."<br> <b>".
-              Area::find(Empresa::find($memorandum->empresa_ruc)->usuarios()->find($memorandum->remite)
-                ->area_id)->nombre."</b></td>
-          </tr>
-          <tr valign=top>
-            <td height=30><b>A</b></td>
-            <td>:".Trabajador::find($memorandum->trabajadores()->find(Input::get('trabajador_id'))->trabajador_id)->persona->nombre." ".
-            Trabajador::find($memorandum->trabajadores()->find(Input::get('trabajador_id'))->trabajador_id)->persona->apellidos."</td>
-          </tr>
-          <tr valign=top>
-            <td height=30><b>ASUNTO</b></td>
-            <td>:".$memorandum->asunto."</td>
-          </tr>
-          <tr valign=top>
-            <td height=30><b>FECHA</b></td>
-            <td>:".$memorandum->fecha."</td>
-          </tr>
-        </table><hr>
-        <p width=300>".$memorandum->contenido."
-        </p>
-        <p align='center'>Atentamente,</p><br><br><br><br><br><p align='center'>
-        ___________________________<br>".
-        Usuario::find($memorandum->remite)->persona->nombre."<br>".
-        Usuario::find($memorandum->remite)->persona->apellidos."<br>".
-        Area::find(Empresa::find($memorandum->empresa_ruc)->usuarios()->find($memorandum->remite)
-          ->area_id)->nombre."</p>
-      </body>
-    </html>
-    ";
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta http-equiv='Content-Type' content='text/html; charset=ISO-8859-1'>
+          <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+          <title>".$memorandum->codigo."</title>
+          <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' 
+            name='viewport'>
+        </head>
+        <body>
+          <style type='text/css'>
+            .titulo{
+              font-size: 14pt;
+              font-family: monospace;
+              text-decoration: underline;
+            }
+            .borde{
+             border: 1px solid #000;
+             padding-left: 10px;
+             margin-left: 30%;
+            }
+            .cuerpo{
+              font-size: 12pt;
+              font-family: monospace;
+            }
+          </style>
+          <img src='documentos/membretes/".$memorandum->empresa_ruc.".jpg' width=100%>
+          <h1 class='titulo' align='left'>".$memorandum->codigo."</h1><br>
+          <table>
+            <tr valign=top>
+              <td width=100 height=50><b>DE</b></td>
+              <td><b>:".Usuario::find($memorandum->remite)->persona->nombre." ".
+                Usuario::find($memorandum->remite)->persona->apellidos."<br> ".
+                Area::find(Empresa::find($memorandum->empresa_ruc)->usuarios()->find($memorandum->remite)
+                  ->area_id)->nombre."</b></td>
+            </tr>
+            <tr valign=top>
+              <td height=30><b>A</b></td>
+              <td><b>:".Trabajador::find($memorandum->trabajadores()->find(Input::get('trabajador_id'))->trabajador_id)->persona->nombre." ".
+              Trabajador::find($memorandum->trabajadores()->find(Input::get('trabajador_id'))->trabajador_id)->persona->apellidos."</b></td>
+            </tr>
+            <tr valign=top>
+              <td height=30><b>ASUNTO</b></td>
+              <td><b>:".$memorandum->asunto."</b></td>
+            </tr>
+            <tr valign=top>
+              <td height=30><b>FECHA</b></td>
+              <td><b>:".$memorandum->fecha."</b></td>
+            </tr>
+          </table><hr>
+          <p width=300>".$memorandum->contenido."
+          </p>
+          <p align='center'>Atentamente,</p><br><br><br><br><br><p align='center'>
+          ___________________________<br>".
+          Usuario::find($memorandum->remite)->persona->nombre."<br>".
+          Usuario::find($memorandum->remite)->persona->apellidos."<br>".
+          Area::find(Empresa::find($memorandum->empresa_ruc)->usuarios()->find($memorandum->remite)
+            ->area_id)->nombre."</p>
+        </body>
+      </html>
+      ";
 
     define('BUDGETS_DIR', public_path('documentos/memorandums/'.$empresa->ruc));
 
@@ -447,66 +449,68 @@ class MemorandumController extends BaseController{
     };
 
     $html = "
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <meta http-equiv='Content-Type' content='text/html; charset=ISO-8859-1'>
-        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-        <title>".$memorandum->codigo."</title>
-        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' 
-          name='viewport'>
-      </head>
-      <body>
-        <style type='text/css'>
-          .titulo{
-            font-size: 20px;
-            font-family: monospace;
-          }
-          .borde{
-           border: 1px solid #000;
-           padding-left: 10px;
-           margin-left: 30%;
-          }
-          .cuerpo{
-            font-size: 14px;
-            font-family: monospace;
-          }
-        </style>
-        <img src='documentos/membretes/".$memorandum->empresa_ruc.".jpg' width=100%>
-        <h1 class='titulo' align='left'>".$memorandum->codigo."</h1><br>
-        <table>
-          <tr valign=top>
-            <td width=100 height=50><b>DE</b></td>
-            <td>:".Usuario::find($memorandum->remite)->persona->nombre." ".
-              Usuario::find($memorandum->remite)->persona->apellidos."<br> <b>".
-              Area::find(Empresa::find($memorandum->empresa_ruc)->usuarios()->find($memorandum->remite)
-                ->area_id)->nombre."</b></td>
-          </tr>
-          <tr valign=top>
-            <td height=30><b>A</b></td>
-            <td>:".Trabajador::find($memorandum->trabajadores()->find(Input::get('trabajador_id'))->trabajador_id)->persona->nombre." ".
-            Trabajador::find($memorandum->trabajadores()->find(Input::get('trabajador_id'))->trabajador_id)->persona->apellidos."</td>
-          </tr>
-          <tr valign=top>
-            <td height=30><b>ASUNTO</b></td>
-            <td>:".$memorandum->asunto."</td>
-          </tr>
-          <tr valign=top>
-            <td height=30><b>FECHA</b></td>
-            <td>:".$memorandum->fecha."</td>
-          </tr>
-        </table><hr>
-        <p width=300>".$memorandum->contenido."
-        </p>
-        <p align='center'>Atentamente,</p><br><br><br><br><br><p align='center'>
-        ___________________________<br>".
-        Usuario::find($memorandum->remite)->persona->nombre."<br>".
-        Usuario::find($memorandum->remite)->persona->apellidos."<br>".
-        Area::find(Empresa::find($memorandum->empresa_ruc)->usuarios()->find($memorandum->remite)
-          ->area_id)->nombre."</p>
-      </body>
-    </html>
-    ";
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta http-equiv='Content-Type' content='text/html; charset=ISO-8859-1'>
+          <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+          <title>".$memorandum->codigo."</title>
+          <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' 
+            name='viewport'>
+        </head>
+        <body>
+          <style type='text/css'>
+            .titulo{
+              font-size: 14pt;
+              font-family: monospace;
+              text-decoration: underline;
+            }
+            .borde{
+             border: 1px solid #000;
+             padding-left: 10px;
+             margin-left: 30%;
+            }
+            .cuerpo{
+              font-size: 12pt;
+              font-family: monospace;
+            }
+          </style>
+          <img src='documentos/membretes/".$memorandum->empresa_ruc.".jpg' width=100%>
+          <h1 class='titulo' align='left'>".$memorandum->codigo."</h1><br>
+          <table>
+            <tr valign=top>
+              <td width=100 height=50><b>DE</b></td>
+              <td><b>:".Usuario::find($memorandum->remite)->persona->nombre." ".
+                Usuario::find($memorandum->remite)->persona->apellidos."<br> ".
+                Area::find(Empresa::find($memorandum->empresa_ruc)->usuarios()->find($memorandum->remite)
+                  ->area_id)->nombre."</b></td>
+            </tr>
+            <tr valign=top>
+              <td height=30><b>A</b></td>
+              <td><b>:".Trabajador::find($memorandum->trabajadores()->find(Input::get('trabajador_id'))->trabajador_id)->persona->nombre." ".
+              Trabajador::find($memorandum->trabajadores()->find(Input::get('trabajador_id'))
+                ->trabajador_id)->persona->apellidos."</b></td>
+            </tr>
+            <tr valign=top>
+              <td height=30><b>ASUNTO</b></td>
+              <td><b>:".$memorandum->asunto."</b></td>
+            </tr>
+            <tr valign=top>
+              <td height=30><b>FECHA</b></td>
+              <td><b>:".$memorandum->fecha."</b></td>
+            </tr>
+          </table><hr>
+          <p width=300>".$memorandum->contenido."
+          </p>
+          <p align='center'>Atentamente,</p><br><br><br><br><br><p align='center'>
+          ___________________________<br>".
+          Usuario::find($memorandum->remite)->persona->nombre."<br>".
+          Usuario::find($memorandum->remite)->persona->apellidos."<br>".
+          Area::find(Empresa::find($memorandum->empresa_ruc)->usuarios()->find($memorandum->remite)
+            ->area_id)->nombre."</p>
+        </body>
+      </html>
+      ";
 
     define('BUDGETS_DIR', public_path('documentos/memorandums/'.$empresa->ruc));
 
@@ -575,65 +579,66 @@ class MemorandumController extends BaseController{
     }
 
     $html = "
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <meta http-equiv='Content-Type' content='text/html; charset=ISO-8859-1'>
-        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-        <title>".$memorandum->codigo."</title>
-        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' 
-          name='viewport'>
-      </head>
-      <body>
-        <style type='text/css'>
-          .titulo{
-            font-size: 20px;
-            font-family: monospace;
-          }
-          .borde{
-           border: 1px solid #000;
-           padding-left: 10px;
-           margin-left: 30%;
-          }
-          .cuerpo{
-            font-size: 14px;
-            font-family: monospace;
-          }
-        </style>
-        <img src='documentos/membretes/".$memorandum->empresa_ruc.".jpg' width=100%>
-        <h1 class='titulo' align='left'>".$memorandum->codigo."</h1><br>
-        <table>
-          <tr valign=top>
-            <td width=100 height=50><b>DE</b></td>
-            <td>:".Usuario::find($memorandum->remite)->persona->nombre." ".
-              Usuario::find($memorandum->remite)->persona->apellidos."<br> <b>".
-              Area::find(Empresa::find($memorandum->empresa_ruc)->usuarios()->find($memorandum->remite)
-                ->area_id)->nombre."</b></td>
-          </tr>
-          <tr valign=top>
-            <td height=30><b>A</b></td>
-            <td>:MEMORANDUM MULTIPLE</td>
-          </tr>
-          <tr valign=top>
-            <td height=30><b>ASUNTO</b></td>
-            <td>:".$memorandum->asunto."</td>
-          </tr>
-          <tr valign=top>
-            <td height=30><b>FECHA</b></td>
-            <td>:".$memorandum->fecha."</td>
-          </tr>
-        </table><hr>
-        <p width=300>".$memorandum->contenido."
-        </p>
-        <p align='center'>Atentamente,</p><br><br><br><br><br><p align='center'>
-        ___________________________<br>".
-        Usuario::find($memorandum->remite)->persona->nombre."<br>".
-        Usuario::find($memorandum->remite)->persona->apellidos."<br>".
-        Area::find(Empresa::find($memorandum->empresa_ruc)->usuarios()->find($memorandum->remite)
-          ->area_id)->nombre."</p>
-      </body>
-    </html>
-    ";
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta http-equiv='Content-Type' content='text/html; charset=ISO-8859-1'>
+          <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+          <title>".$memorandum->codigo."</title>
+          <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' 
+            name='viewport'>
+        </head>
+        <body>
+          <style type='text/css'>
+            .titulo{
+              font-size: 14pt;
+              font-family: monospace;
+              text-decoration: underline;
+            }
+            .borde{
+             border: 1px solid #000;
+             padding-left: 10px;
+             margin-left: 30%;
+            }
+            .cuerpo{
+              font-size: 12pt;
+              font-family: monospace;
+            }
+          </style>
+          <img src='documentos/membretes/".$memorandum->empresa_ruc.".jpg' width=100%>
+          <h1 class='titulo' align='left'>".$memorandum->codigo."</h1><br>
+          <table>
+            <tr valign=top>
+              <td width=100 height=50><b>DE</b></td>
+              <td><b>:".Usuario::find($memorandum->remite)->persona->nombre." ".
+                Usuario::find($memorandum->remite)->persona->apellidos."<br> ".
+                Area::find(Empresa::find($memorandum->empresa_ruc)->usuarios()->find($memorandum->remite)
+                  ->area_id)->nombre."</b></td>
+            </tr>
+            <tr valign=top>
+              <td height=30><b>A</b></td>
+              <td><b>:MEMORANDUM MULTIPLE</b></td>
+            </tr>
+            <tr valign=top>
+              <td height=30><b>ASUNTO</b></td>
+              <td><b>:".$memorandum->asunto."</b></td>
+            </tr>
+            <tr valign=top>
+              <td height=30><b>FECHA</b></td>
+              <td><b>:".$memorandum->fecha."</b></td>
+            </tr>
+          </table><hr>
+          <p width=300>".$memorandum->contenido."
+          </p>
+          <p align='center'>Atentamente,</p><br><br><br><br><br><p align='center'>
+          ___________________________<br>".
+          Usuario::find($memorandum->remite)->persona->nombre."<br>".
+          Usuario::find($memorandum->remite)->persona->apellidos."<br>".
+          Area::find(Empresa::find($memorandum->empresa_ruc)->usuarios()->find($memorandum->remite)
+            ->area_id)->nombre."</p>
+        </body>
+      </html>
+      ";
 
     define('BUDGETS_DIR', public_path('documentos/memorandums/'.$empresa->ruc));
 
