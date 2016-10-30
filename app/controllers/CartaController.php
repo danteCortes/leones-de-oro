@@ -121,7 +121,7 @@ class CartaController extends BaseController{
     $carta->numero = $nro;
     $carta->codigo = $codigo;
     $carta->destinatario = mb_strtoupper(Input::get('destinatario'));
-    $carta->lugar = mb_strtoupper(Input::get('lugar'));
+    $carta->lugar = Input::get('lugar');
     $carta->asunto = mb_strtoupper(Input::get('asunto'));
     $carta->referencia = mb_strtoupper(Input::get('referencia'));
     $carta->contenido = Input::get('contenido');
@@ -140,36 +140,40 @@ class CartaController extends BaseController{
       </head>
       <body>
         <style type='text/css'>
+          *{
+            font-size: 12pt;
+            font-family: Cambria, Georgia, serif;
+          }
+          .titulo{
+            text-decoration: underline;
+          }
           .borde{
            border: 1px solid #000;
            padding-left: 10px;
            margin-left: 30%;
           }
-          *{
-            font-size: 12pt;
-            font-family: Cambria, Georgia, serif;
-          }
           @page{
-            margin-top: 5cm;
+            margin-top: 5.5cm;
             margin-left: 3cm;
             margin-right: 2.5cm;
             margin-bottom: 3cm;
           }
         </style>
-        <h1 class='titulo' align='center'>".$carta->anio."</h1><br>
+        <h1 align='center'>".$carta->anio."</h1><br>
         <p align='right'>".$carta->fecha."</p>
-        <p>".$carta->codigo."</p>
-        <p>Señores:<br>".
-          $carta->destinatario."<br>".
+        <p class='titulo'>".$carta->codigo."</p>
+        <p>Señores:<br><b>".
+          $carta->destinatario."</p><p>".
           $carta->lugar."</p>";
         if($carta->asunto){
-          $html .= "<p>ASUNTO: ".
-            $carta->asunto."</p>";
-        }elseif($carta->referencia){
-          $html .= "<p>REFERENCIA: ".
-            $carta->referencia."</p>";
+          $html .= "<p><b>&nbsp;&nbsp;&nbsp;&nbsp;ASUNTO: ".
+            $carta->asunto."</b></p>";
         }
-        $html .= "<p width=300>".$carta->contenido."
+        if($carta->referencia){
+          $html .= "<p><b>&nbsp;&nbsp;&nbsp;&nbsp;REFERENCIA: ".
+            $carta->referencia."</b></p>";
+        }
+        $html .= "<p width=300 style='text-indent: 1em'>".$carta->contenido."
         </p>
         <p align='center'>Atentamente,
       </body>
@@ -220,7 +224,7 @@ class CartaController extends BaseController{
     $carta->fecha = mb_strtoupper(Input::get('fecha'));
     $carta->codigo = $codigo;
     $carta->destinatario = mb_strtoupper(Input::get('destinatario'));
-    $carta->lugar = mb_strtoupper(Input::get('lugar'));
+    $carta->lugar = Input::get('lugar');
     $carta->asunto = mb_strtoupper(Input::get('asunto'));
     $carta->referencia = mb_strtoupper(Input::get('referencia'));
     $carta->contenido = Input::get('contenido');
@@ -238,38 +242,42 @@ class CartaController extends BaseController{
       </head>
       <body>
         <style type='text/css'>
+          *{
+            font-size: 12pt;
+            font-family: Cambria, Georgia, serif;
+          }
+          .titulo{
+            text-decoration: underline;
+          }
           .borde{
            border: 1px solid #000;
            padding-left: 10px;
            margin-left: 30%;
           }
-          *{
-            font-size: 12pt;
-            font-family: Cambria, Georgia, serif;
-          }
           @page{
-            margin-top: 5cm;
+            margin-top: 5.5cm;
             margin-left: 3cm;
             margin-right: 2.5cm;
             margin-bottom: 3cm;
           }
         </style>
-        <h1 class='titulo' align='center'>".$carta->anio."</h1><br>
+        <h1 align='center'>".$carta->anio."</h1><br>
         <p align='right'>".$carta->fecha."</p>
-        <p>".$carta->codigo."</p>
-        <p>Señores:<br>".
-          $carta->destinatario."<br>".
+        <p class='titulo'>".$carta->codigo."</p>
+        <p>Señores:<br><b>".
+          $carta->destinatario."</p><p>".
           $carta->lugar."</p>";
         if($carta->asunto){
-          $html .= "<p>ASUNTO: ".
-            $carta->asunto."</p>";
-        }elseif($carta->referencia){
-          $html .= "<p>REFERENCIA: ".
-            $carta->referencia."</p>";
+          $html .= "<p><b>&nbsp;&nbsp;&nbsp;&nbsp;ASUNTO: ".
+            $carta->asunto."</b></p>";
         }
-        $html .= "<p width=300>".$carta->contenido."
+        if($carta->referencia){
+          $html .= "<p><b>&nbsp;&nbsp;&nbsp;&nbsp;REFERENCIA: ".
+            $carta->referencia."</b></p>";
+        }
+        $html .= "<p width=300 style='text-indent: 1em'>".$carta->contenido."
         </p>
-        <p align='center'>Atentamente,</p>
+        <p align='center'>Atentamente,
       </body>
     </html>
     ";

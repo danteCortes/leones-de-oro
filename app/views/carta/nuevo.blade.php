@@ -195,7 +195,7 @@ Carta | Nuevo
           </h3>
         </div>
         {{Form::open(array('url'=>'carta/nuevo', 'class'=>'form-horizontal', 
-          'method'=>'post'))}}
+          'method'=>'post', 'id'=>'formulario'))}}
           <div class="box-body">
             <div class="form-group">
               {{Form::label(null, 'A*:', array('class'=>'control-label col-xs-2'))}}
@@ -207,7 +207,7 @@ Carta | Nuevo
             <div class="form-group">
               {{Form::label(null, 'LUGAR*:', array('class'=>'control-label col-xs-2'))}}
               <div class="col-xs-10">
-                {{Form::text('lugar','' , array('class'=>'form-control input-sm mayuscula'
+                {{Form::text('lugar','' , array('class'=>'form-control input-sm'
                   ,'placeholder'=>'LUGAR', 'required'=>''))}}
               </div>
             </div>
@@ -266,32 +266,10 @@ Carta | Nuevo
     // instance, using default configuration.
     CKEDITOR.replace('contenido');
 
-    //desactiva el input text 
-    $("#asunto").keypress(function(){
-      if($("#referencia").val() == ""){
-        $("#referencia").prop('readonly', true);
-      }
-    });
-
-    $("#asunto").blur(function(){
-      if($("#asunto").val() == ""){
-        $("#referencia").prop('readonly', false);
-      }else{
-        $("#referencia").prop('readonly', true);
-      }
-    });
-
-    $("#referencia").keypress(function(){
-      if($("#asunto").val() == ""){
-        $("#asunto").prop('readonly', true);
-      }
-    });
-
-    $("#referencia").blur(function(){
-      if($("#referencia").val() == ""){
-        $("#asunto").prop('readonly', false);
-      }else{
-        $("#asunto").prop('readonly', true);
+    $("#formulario").submit(function(){
+      if($("#asunto").val() == "" && $("#referencia").val() == ""){
+        $("#asunto").focus();
+        return false;
       }
     });
 

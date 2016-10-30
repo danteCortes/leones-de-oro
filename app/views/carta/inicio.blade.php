@@ -63,6 +63,7 @@ Carta | Inicio
               <tr>
                 <th>Carta</th>
                 <th>Destinatario</th>
+                <th>Redactor</th>
                 <th>Mostrar</th>
                 <th>Editar</th>
                 <th>Borrar</th>
@@ -74,6 +75,7 @@ Carta | Inicio
                   <tr>
                     <td>{{$carta->codigo}}</td>
                     <td>{{$carta->destinatario}}</td>
+                    <td>{{Usuario::find($carta->usuario_id)->persona->nombre}}</td>
                     <td><a href="<?=URL::to('carta/mostrar/'.$carta->id)?>" class="btn btn-warning btn-xs">Mostrar</a>
                     </td>
                     <td>
