@@ -11,4 +11,8 @@ class Concepto extends Eloquent{
       'capacitacion', 'movilidad', 'refrigerio', 'gastosgenerale', 'utilidad', 'subtotal', 'total',
       'puestos');
   }
+
+  public function costo(){
+  	return $this->belongsTo('Costo');
+  }
 }

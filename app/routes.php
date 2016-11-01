@@ -49,6 +49,6 @@ Route::group(array('before' => 'auth'), function(){
 });
 
 Route::get('prueba', function(){
-  $concepto = Concepto::find(31);
-  return $concepto->turnos()->find(1);
+  $datos = Session::all();
+  return $datos;
 });

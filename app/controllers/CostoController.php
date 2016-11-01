@@ -109,266 +109,266 @@ class CostoController extends BaseController{
     $viaticosnocturno = $nocturno->movilidad+$nocturno->refrigerio;
 
     $html = "
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <meta http-equiv='Content-Type' content='text/html; charset=ISO-8859-1'>
-        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-        <title> ESTRUCTURA DE COSTO DETALLADO ".$concepto->id."</title>
-        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' 
-          name='viewport'>
-      </head>
-      <body>
-        <style type='text/css'>
-          *{
-            font-size: 9pt;
-            font-family: Cambria, Georgia, serif;
-          }
-          @page{
-            margin-top: 5.5cm;
-            margin-left: 3cm;
-            margin-right: 2.5cm;
-            margin-bottom: 3cm;
-          }
-          .borde-tabla {
-            width: 100%;
-            border-collapse: collapse;
-            border: 1px solid #000000;
-          }
-          th, td {
-            text-align: left;
-            border: 1px solid #000000;
-          }
-        </style>
-        <table class='borde-tabla'>
-          <tr>
-            <th colspan='4' align='center'>ESTRUCTURA MENSUAL DE COSTOS S/.</th>
-          </tr>
-          <tr>
-            <th colspan='4' align='left'>NOMBRE DEL PUESTO: ".$concepto->nombre."</th>
-          </tr>
-          <tr>
-            <th colspan='4'>NUMERO DE PUESTOS: ".$concepto->numero."</th>
-          </tr>
-          <tr>
-            <th>CONCEPTO</th>
-            <th>APLICACIÓN</th>
-            <th>TURNO DIA</th>
-            <th>TURNO NOCHE</th>
-          </tr>
-          <tr>
-            <th>REMUNERACIONES:</th>
-            <th></th>
-            <th></th>
-            <th></th>
-          </tr>
-          <tr>
-            <td>S. Sueldo Básico Mensual Mínimo (S/. ".$this->formatoMoneda(Input::get('rmv')).")</td>
-            <td></td>
-            <td align=right>".$this->formatoMoneda($diurno->sueldobasico)."</td>
-            <td align=right>".$this->formatoMoneda($nocturno->sueldobasico)."</td>
-          </tr>
-          <tr>
-            <td>AF. Asiganción Familiar</td>
-            <td>S*0.10</td>
-            <td align=right>".$this->formatoMoneda($diurno->asignacionfamiliar)."</td>
-            <td align=right>".$this->formatoMoneda($nocturno->asignacionfamiliar)."</td>
-          </tr>
-          <tr>
-            <td>JN. Bonificación por Jornada nocturna</td>
-            <td>S*0.35</td>
-            <td align=right>".$this->formatoMoneda($diurno->jornadanocturna)."</td>
-            <td align=right>".$this->formatoMoneda($nocturno->jornadanocturna)."</td>
-          </tr>
-          <tr>
-            <td>ST. Pago de Sobretiempos</td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td> -2 Primeras Horas al 25%</td>
-            <td>(((((S+AF)*1.25)/30)/8)*26)*2 pri hrs</td>
-            <td align=right>".$this->formatoMoneda($diurno->sobretiempo1)."</td>
-            <td align=right>".$this->formatoMoneda($nocturno->sobretiempo1)."</td>
-          </tr>
-          <tr>
-            <td> -2 Segundas Horas al 35%</td>
-            <td>(((((S+AF)*1.35)/30)/8)*26)*2 seg hrs</td>
-            <td align=right>".$this->formatoMoneda($diurno->sobretiempo2)."</td>
-            <td align=right>".$this->formatoMoneda($nocturno->sobretiempo2)."</td>
-          </tr>
-          <tr>
-            <th>SUBTOTAL</th>
-            <th></th>
-            <th align=right>".$this->formatoMoneda($subtotaldiurno)."</th>
-            <th align=right>".$this->formatoMoneda($subtotalnocturno)."</th>
-          </tr>
-          <tr>
-            <td>D. Descansero</td>
-            <td>Subtotal/6 dias</td>
-            <td align=right>".$this->formatoMoneda($diurno->descansero)."</td>
-            <td align=right>".$this->formatoMoneda($nocturno->descansero)."</td>
-          </tr>
-          <tr>
-            <td>F. Feriados</td>
-            <td>(Subtotal+D)/30 dias</td>
-            <td align=right>".$this->formatoMoneda($diurno->feriados)."</td>
-            <td align=right>".$this->formatoMoneda($nocturno->feriados)."</td>
-          </tr>
-          <tr>
-            <th>TOTAL DE REMUNERACIONES</th>
-            <th></th>
-            <th align=right>".$this->formatoMoneda($remuneracionesdiurno)."</th>
-            <th align=right>".$this->formatoMoneda($remuneracionesnocturno)."</th>
-          </tr>
-          <tr>
-            <td>G. Gratificaciones</td>
-            <td>(2*(Subtotal+AF)+D+2*F)/12 meses</td>
-            <td align=right>".$this->formatoMoneda($diurno->gratificaciones)."</td>
-            <td align=right>".$this->formatoMoneda($nocturno->gratificaciones)."</td>
-          </tr>
-          <tr>
-            <td>C.T.S.</td>
-            <td>(Totalremuneraciones+G)*0.0833</td>
-            <td align=right>".$this->formatoMoneda($diurno->cts)."</td>
-            <td align=right>".$this->formatoMoneda($nocturno->cts)."</td>
-          </tr>
-          <tr>
-            <td>V. Vacaciones</td>
-            <td>Totalremuneraciones*0.833</td>
-            <td align=right>".$this->formatoMoneda($diurno->vacaciones)."</td>
-            <td align=right>".$this->formatoMoneda($nocturno->vacaciones)."</td>
-          </tr>
-          <tr>
-            <th>TOTAL BENEFICIOS SOCIALES (BB.SS.)</th>
-            <th></th>
-            <th align=right>".$this->formatoMoneda($beneficiossocialesdiurno)."</th>
-            <th align=right>".$this->formatoMoneda($beneficiossocialesnocturno)."</th>
-          </tr>
-          <tr>
-            <td>EsSalud 9%</td>
-            <td>(Totalremuneraciones+G+V)*0.09</td>
-            <td align=right>".$this->formatoMoneda($diurno->essalud)."</td>
-            <td align=right>".$this->formatoMoneda($nocturno->essalud)."</td>
-          </tr>
-          <tr>
-            <td>S.C.T.R. ".Input::get('txt_sctr')."%</td>
-            <td>(Totalremuneraciones+G+V)*".(Input::get('txt_sctr')/100)."</td>
-            <td align=right>".$this->formatoMoneda($diurno->sctr)."</td>
-            <td align=right>".$this->formatoMoneda($nocturno->sctr)."</td>
-          </tr>
-          <tr>
-            <th>TOTAL CONTRIBUCIONES SOCIALES (CC.SS.)</th>
-            <th></th>
-            <th align=right>".$this->formatoMoneda($contribucionessocialesdiurno)."</th>
-            <th align=right>".$this->formatoMoneda($contribucionessocialesnocturno)."</th>
-          </tr>
-          <tr>
-            <th>TOTAL MANO DE OBRA (remuner+Benef.Soc+Contr.Soc)</th>
-            <th></th>
-            <th align=right>".$this->formatoMoneda($manodeobradiurno)."</th>
-            <th align=right>".$this->formatoMoneda($manodeobranocturno)."</th>
-          </tr>
-          <tr>
-            <td>Uniforme, Equipo, Armamento, Supervisión</td>
-            <td></td>
-            <td align=right>".$this->formatoMoneda($diurno->ueas)."</td>
-            <td align=right>".$this->formatoMoneda($nocturno->ueas)."</td>
-          </tr>
-          <tr>
-            <td>Entrenamiento-Capacitación</td>
-            <td></td>
-            <td align=right>".$this->formatoMoneda($diurno->capacitacion)."</td>
-            <td align=right>".$this->formatoMoneda($nocturno->capacitacion)."</td>
-          </tr>
-          <tr>
-            <th>TOTAL IMPLEMENTOS</th>
-            <th></th>
-            <th align=right>".$this->formatoMoneda($implementosdiurno)."</th>
-            <th align=right>".$this->formatoMoneda($implementosnocturno)."</th>
-          </tr>
-          <tr>
-            <td>Movilidad</td>
-            <td></td>
-            <td align=right>".$this->formatoMoneda($diurno->movilidad)."</td>
-            <td align=right>".$this->formatoMoneda($nocturno->movilidad)."</td>
-          </tr>
-          <tr>
-            <td>Refrigerio</td>
-            <td></td>
-            <td align=right>".$this->formatoMoneda($diurno->refrigerio)."</td>
-            <td align=right>".$this->formatoMoneda($nocturno->refrigerio)."</td>
-          </tr>
-          <tr>
-            <th>COSTO POR UN PUESTO DE 12 HORAS</th>
-            <th></th>
-            <th align=right>".$this->formatoMoneda($manodeobradiurno+$implementosdiurno
-              +$viaticosdiurno)."</th>
-            <th align=right>".$this->formatoMoneda($manodeobranocturno+$implementosnocturno
-              +$viaticosnocturno)."</th>
-          </tr>
-          <tr>
-            <td>Gastos Generales ".Input::get('gastosgenerales')."% </td>
-            <td></td>
-            <td align=right>".$this->formatoMoneda($diurno->gastosgenerale)."</td>
-            <td align=right>".$this->formatoMoneda($nocturno->gastosgenerale)."</td>
-          </tr>
-          <tr>
-            <td>Utilidad</td>
-            <td></td>
-            <td align=right>".$this->formatoMoneda($diurno->utilidad)."</td>
-            <td align=right>".$this->formatoMoneda($nocturno->utilidad)."</td>
-          </tr>
-          <tr>
-            <th>TOTAL DE GASTOS GENERALES + UTILIDAD</th>
-            <th></th>
-            <th align=right>".$this->formatoMoneda($diurno->gastosgenerale+$diurno->utilidad)."</th>
-            <th align=right>".$this->formatoMoneda($nocturno->gastosgenerale+$nocturno->utilidad)."</th>
-          </tr>
-          <tr>
-            <th>COSTO DEL SERVICIO POR 12 HORAS DIURNO Y 12 HORAS NOCTURNO</th>
-            <th></th>
-            <th align=right>".$this->formatoMoneda($manodeobradiurno+$implementosdiurno
-              +$viaticosdiurno+$diurno->gastosgenerale+$diurno->utilidad)."</th>
-            <th align=right>".$this->formatoMoneda($manodeobranocturno+$implementosnocturno
-              +$viaticosnocturno+$nocturno->gastosgenerale+$nocturno->utilidad)."</th>
-          </tr>
-          <tr>
-            <th>COSTO DEL SERVICIO POR ".$diurno->puestos." PUESTOS DIURNO Y ".$nocturno->puestos
-              ." PUESTOS NOCTURNO</th>
-            <th></th>
-            <th align=right>".$this->formatoMoneda($diurno->subtotal)."</th>
-            <th align=right>".$this->formatoMoneda($nocturno->subtotal)."</th>
-          </tr>
-          <tr>
-            <th>COSTO DEL SERVICIO POR ";
-            if(Input::get('nocturno') == 0 || Input::get('diurno') == 0){
-              $html .= "12";
-            }else{
-              $html .= "24";
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta http-equiv='Content-Type' content='text/html; charset=ISO-8859-1'>
+          <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+          <title> ESTRUCTURA DE COSTO DETALLADO ".$concepto->id."</title>
+          <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' 
+            name='viewport'>
+        </head>
+        <body>
+          <style type='text/css'>
+            *{
+              font-size: 9pt;
+              font-family: Cambria, Georgia, serif;
             }
-          $html .= " HORAS</th>
-            <th></th>
-            <th colspan='2' align=right>".$this->formatoMoneda($concepto->subtotal)."</th>
-          </tr>
-          <tr>
-            <th>IGV ";
-            if($concepto->igv == 0){
-              $html .= "EXONERADO POR LEY Nº 27037";
+            @page{
+              margin-top: 5.5cm;
+              margin-left: 3cm;
+              margin-right: 2.5cm;
+              margin-bottom: 3cm;
             }
-          $html .= "</th>
-            <th></th>
-            <th colspan='2' align=right>".$this->formatoMoneda($concepto->igv)."</th>
-          </tr>
-          <tr>
-            <th>COSTO DEL SERVICIO MENSUAL</th>
-            <th></th>
-            <th colspan='2' align=right>".$this->formatoMoneda($concepto->total)."</th>
-          </tr>
-        </table>
-      </body>
-    </html>";
+            .borde-tabla {
+              width: 100%;
+              border-collapse: collapse;
+              border: 1px solid #000000;
+            }
+            th, td {
+              text-align: left;
+              border: 1px solid #000000;
+            }
+          </style>
+          <table class='borde-tabla'>
+            <tr>
+              <th colspan='4' align='center'>ESTRUCTURA MENSUAL DE COSTOS S/.</th>
+            </tr>
+            <tr>
+              <th colspan='4' align='left'>NOMBRE DEL PUESTO: ".$concepto->nombre."</th>
+            </tr>
+            <tr>
+              <th colspan='4'>NUMERO DE PUESTOS: ".$concepto->numero."</th>
+            </tr>
+            <tr>
+              <th>CONCEPTO</th>
+              <th>APLICACIÓN</th>
+              <th>TURNO DIA</th>
+              <th>TURNO NOCHE</th>
+            </tr>
+            <tr>
+              <th>REMUNERACIONES:</th>
+              <th></th>
+              <th></th>
+              <th></th>
+            </tr>
+            <tr>
+              <td>S. Sueldo Básico Mensual Mínimo (S/. ".$this->formatoMoneda(Input::get('rmv')).")</td>
+              <td></td>
+              <td align=right>".$this->formatoMoneda($diurno->sueldobasico)."</td>
+              <td align=right>".$this->formatoMoneda($nocturno->sueldobasico)."</td>
+            </tr>
+            <tr>
+              <td>AF. Asiganción Familiar</td>
+              <td>S*0.10</td>
+              <td align=right>".$this->formatoMoneda($diurno->asignacionfamiliar)."</td>
+              <td align=right>".$this->formatoMoneda($nocturno->asignacionfamiliar)."</td>
+            </tr>
+            <tr>
+              <td>JN. Bonificación por Jornada nocturna</td>
+              <td>S*0.35</td>
+              <td align=right>".$this->formatoMoneda($diurno->jornadanocturna)."</td>
+              <td align=right>".$this->formatoMoneda($nocturno->jornadanocturna)."</td>
+            </tr>
+            <tr>
+              <td>ST. Pago de Sobretiempos</td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td> -2 Primeras Horas al 25%</td>
+              <td>(((((S+AF)*1.25)/30)/8)*26)*2 pri hrs</td>
+              <td align=right>".$this->formatoMoneda($diurno->sobretiempo1)."</td>
+              <td align=right>".$this->formatoMoneda($nocturno->sobretiempo1)."</td>
+            </tr>
+            <tr>
+              <td> -2 Segundas Horas al 35%</td>
+              <td>(((((S+AF)*1.35)/30)/8)*26)*2 seg hrs</td>
+              <td align=right>".$this->formatoMoneda($diurno->sobretiempo2)."</td>
+              <td align=right>".$this->formatoMoneda($nocturno->sobretiempo2)."</td>
+            </tr>
+            <tr>
+              <th>SUBTOTAL</th>
+              <th></th>
+              <th align=right>".$this->formatoMoneda($subtotaldiurno)."</th>
+              <th align=right>".$this->formatoMoneda($subtotalnocturno)."</th>
+            </tr>
+            <tr>
+              <td>D. Descansero</td>
+              <td>Subtotal/6 dias</td>
+              <td align=right>".$this->formatoMoneda($diurno->descansero)."</td>
+              <td align=right>".$this->formatoMoneda($nocturno->descansero)."</td>
+            </tr>
+            <tr>
+              <td>F. Feriados</td>
+              <td>(Subtotal+D)/30 dias</td>
+              <td align=right>".$this->formatoMoneda($diurno->feriados)."</td>
+              <td align=right>".$this->formatoMoneda($nocturno->feriados)."</td>
+            </tr>
+            <tr>
+              <th>TOTAL DE REMUNERACIONES</th>
+              <th></th>
+              <th align=right>".$this->formatoMoneda($remuneracionesdiurno)."</th>
+              <th align=right>".$this->formatoMoneda($remuneracionesnocturno)."</th>
+            </tr>
+            <tr>
+              <td>G. Gratificaciones</td>
+              <td>(2*(Subtotal+AF)+D+2*F)/12 meses</td>
+              <td align=right>".$this->formatoMoneda($diurno->gratificaciones)."</td>
+              <td align=right>".$this->formatoMoneda($nocturno->gratificaciones)."</td>
+            </tr>
+            <tr>
+              <td>C.T.S.</td>
+              <td>(Totalremuneraciones+G)*0.0833</td>
+              <td align=right>".$this->formatoMoneda($diurno->cts)."</td>
+              <td align=right>".$this->formatoMoneda($nocturno->cts)."</td>
+            </tr>
+            <tr>
+              <td>V. Vacaciones</td>
+              <td>Totalremuneraciones*0.833</td>
+              <td align=right>".$this->formatoMoneda($diurno->vacaciones)."</td>
+              <td align=right>".$this->formatoMoneda($nocturno->vacaciones)."</td>
+            </tr>
+            <tr>
+              <th>TOTAL BENEFICIOS SOCIALES (BB.SS.)</th>
+              <th></th>
+              <th align=right>".$this->formatoMoneda($beneficiossocialesdiurno)."</th>
+              <th align=right>".$this->formatoMoneda($beneficiossocialesnocturno)."</th>
+            </tr>
+            <tr>
+              <td>EsSalud 9%</td>
+              <td>(Totalremuneraciones+G+V)*0.09</td>
+              <td align=right>".$this->formatoMoneda($diurno->essalud)."</td>
+              <td align=right>".$this->formatoMoneda($nocturno->essalud)."</td>
+            </tr>
+            <tr>
+              <td>S.C.T.R. ".Input::get('txt_sctr')."%</td>
+              <td>(Totalremuneraciones+G+V)*".(Input::get('txt_sctr')/100)."</td>
+              <td align=right>".$this->formatoMoneda($diurno->sctr)."</td>
+              <td align=right>".$this->formatoMoneda($nocturno->sctr)."</td>
+            </tr>
+            <tr>
+              <th>TOTAL CONTRIBUCIONES SOCIALES (CC.SS.)</th>
+              <th></th>
+              <th align=right>".$this->formatoMoneda($contribucionessocialesdiurno)."</th>
+              <th align=right>".$this->formatoMoneda($contribucionessocialesnocturno)."</th>
+            </tr>
+            <tr>
+              <th>TOTAL MANO DE OBRA (remuner+Benef.Soc+Contr.Soc)</th>
+              <th></th>
+              <th align=right>".$this->formatoMoneda($manodeobradiurno)."</th>
+              <th align=right>".$this->formatoMoneda($manodeobranocturno)."</th>
+            </tr>
+            <tr>
+              <td>Uniforme, Equipo, Armamento, Supervisión</td>
+              <td></td>
+              <td align=right>".$this->formatoMoneda($diurno->ueas)."</td>
+              <td align=right>".$this->formatoMoneda($nocturno->ueas)."</td>
+            </tr>
+            <tr>
+              <td>Entrenamiento-Capacitación</td>
+              <td></td>
+              <td align=right>".$this->formatoMoneda($diurno->capacitacion)."</td>
+              <td align=right>".$this->formatoMoneda($nocturno->capacitacion)."</td>
+            </tr>
+            <tr>
+              <th>TOTAL IMPLEMENTOS</th>
+              <th></th>
+              <th align=right>".$this->formatoMoneda($implementosdiurno)."</th>
+              <th align=right>".$this->formatoMoneda($implementosnocturno)."</th>
+            </tr>
+            <tr>
+              <td>Movilidad</td>
+              <td></td>
+              <td align=right>".$this->formatoMoneda($diurno->movilidad)."</td>
+              <td align=right>".$this->formatoMoneda($nocturno->movilidad)."</td>
+            </tr>
+            <tr>
+              <td>Refrigerio</td>
+              <td></td>
+              <td align=right>".$this->formatoMoneda($diurno->refrigerio)."</td>
+              <td align=right>".$this->formatoMoneda($nocturno->refrigerio)."</td>
+            </tr>
+            <tr>
+              <th>COSTO POR UN PUESTO DE 12 HORAS</th>
+              <th></th>
+              <th align=right>".$this->formatoMoneda($manodeobradiurno+$implementosdiurno
+                +$viaticosdiurno)."</th>
+              <th align=right>".$this->formatoMoneda($manodeobranocturno+$implementosnocturno
+                +$viaticosnocturno)."</th>
+            </tr>
+            <tr>
+              <td>Gastos Generales ".Input::get('gastosgenerales')."% </td>
+              <td></td>
+              <td align=right>".$this->formatoMoneda($diurno->gastosgenerale)."</td>
+              <td align=right>".$this->formatoMoneda($nocturno->gastosgenerale)."</td>
+            </tr>
+            <tr>
+              <td>Utilidad</td>
+              <td></td>
+              <td align=right>".$this->formatoMoneda($diurno->utilidad)."</td>
+              <td align=right>".$this->formatoMoneda($nocturno->utilidad)."</td>
+            </tr>
+            <tr>
+              <th>TOTAL DE GASTOS GENERALES + UTILIDAD</th>
+              <th></th>
+              <th align=right>".$this->formatoMoneda($diurno->gastosgenerale+$diurno->utilidad)."</th>
+              <th align=right>".$this->formatoMoneda($nocturno->gastosgenerale+$nocturno->utilidad)."</th>
+            </tr>
+            <tr>
+              <th>COSTO DEL SERVICIO POR 12 HORAS DIURNO Y 12 HORAS NOCTURNO</th>
+              <th></th>
+              <th align=right>".$this->formatoMoneda($manodeobradiurno+$implementosdiurno
+                +$viaticosdiurno+$diurno->gastosgenerale+$diurno->utilidad)."</th>
+              <th align=right>".$this->formatoMoneda($manodeobranocturno+$implementosnocturno
+                +$viaticosnocturno+$nocturno->gastosgenerale+$nocturno->utilidad)."</th>
+            </tr>
+            <tr>
+              <th>COSTO DEL SERVICIO POR ".$diurno->puestos." PUESTOS DIURNO Y ".$nocturno->puestos
+                ." PUESTOS NOCTURNO</th>
+              <th></th>
+              <th align=right>".$this->formatoMoneda($diurno->subtotal)."</th>
+              <th align=right>".$this->formatoMoneda($nocturno->subtotal)."</th>
+            </tr>
+            <tr>
+              <th>COSTO DEL SERVICIO POR ";
+              if(Input::get('nocturno') == 0 || Input::get('diurno') == 0){
+                $html .= "12";
+              }else{
+                $html .= "24";
+              }
+            $html .= " HORAS</th>
+              <th></th>
+              <th colspan='2' align=right>".$this->formatoMoneda($concepto->subtotal)."</th>
+            </tr>
+            <tr>
+              <th>IGV ";
+              if($concepto->igv == 0){
+                $html .= "EXONERADO POR LEY Nº 27037";
+              }
+            $html .= "</th>
+              <th></th>
+              <th colspan='2' align=right>".$this->formatoMoneda($concepto->igv)."</th>
+            </tr>
+            <tr>
+              <th>COSTO DEL SERVICIO MENSUAL</th>
+              <th></th>
+              <th colspan='2' align=right>".$this->formatoMoneda($concepto->total)."</th>
+            </tr>
+          </table>
+        </body>
+      </html>";
 
     define('BUDGETS_DIR', public_path('documentos/costos/'.$empresa->ruc.'/detalles'));
 
@@ -385,6 +385,8 @@ class CostoController extends BaseController{
     $respuesta = "";
       foreach($costo->conceptos as $concepto){
       $respuesta .= "<tr>
+          <td><button type='button' class='btn btn-warning btn-xs btnQuitar' target='_blank' value='".$concepto->id."'>Quitar</button></td>
+          <td><button type='button' class='btn btn-info btn-xs btnVer' target='_blank' value='".$concepto->id."'>Ver</button></td>
           <td>".$concepto->numero." AVP</td>
           <td>".$concepto->nombre."</td>
           <th style='text-align: right;'>";
@@ -399,7 +401,7 @@ class CostoController extends BaseController{
         </tr>";
       }
       $respuesta .= "<tr>
-        <th colspan='2' style='text-align: right;'>SUBTOTAL MENSUAL</th>
+        <th colspan='4' style='text-align: right;'>SUBTOTAL MENSUAL</th>
         <th style='text-align: right;'>";
           if(strpos($costo->subtotal, '.') === false){
             $respuesta .= $costo->subtotal.".00";
@@ -414,9 +416,9 @@ class CostoController extends BaseController{
       </tr>
       <tr>";
         if($costo->igv != 0){
-          $respuesta .= "<th colspan='2' style='text-align: right;'>IGV</th>";
+          $respuesta .= "<th colspan='4' style='text-align: right;'>IGV</th>";
         }else{
-          $respuesta .= "<th colspan='2' style='text-align: right;'>IGV EXONERADO POR LEY Nº 27037</th>";
+          $respuesta .= "<th colspan='4' style='text-align: right;'>IGV EXONERADO POR LEY Nº 27037</th>";
         }
       $respuesta .= "<th style='text-align: right;'>";
           if(strpos($costo->igv, '.') === false){
@@ -431,7 +433,7 @@ class CostoController extends BaseController{
       $respuesta .= "</th>
       </tr>
       <tr>
-        <th colspan='2' style='text-align: right;'>TOTAL</th>
+        <th colspan='4' style='text-align: right;'>TOTAL</th>
         <th style='text-align: right;'>";
           if(strpos($costo->total, '.') === false){
             $respuesta .= $costo->total.".00";
@@ -587,6 +589,107 @@ class CostoController extends BaseController{
     }
   }
 
+  public function postCancelar(){
+    $empresa = Empresa::find(Input::get('empresa_ruc'));
+    $costo = $empresa->costos()->where('estado', '=', 1)->first();
+    if ($costo) {
+      $costo = Costo::find($costo->id);
+      $ruc = $costo->empresa_ruc;
+      File::delete('documentos/costos/'.$ruc.'/'.$costo->id.'.pdf');
+      foreach ($costo->conceptos as $concepto) {
+        File::delete('documentos/costos/'.$ruc.'/detalles/'.$concepto->id.'.pdf');
+      }
+      $costo->delete();
+      return 1;
+    }else{
+      return 0;
+    }
+  }
+
+  public function getVerConcepto($id){
+    $concepto = Concepto::find($id);
+    return View::make('costo.concepto')->with('concepto', $concepto);
+  }
+
+  public function postQuitarConcepto(){
+    $concepto = Concepto::find(Input::get('concepto_id'));
+    $costo = $concepto->costo;
+    File::delete('documentos/costos/'.$costo->empresa_ruc.'/detalles/'.$concepto->id.'.pdf');
+    if(count($costo->conceptos) == 1){
+      $costo->delete();
+      $respuesta = "";
+    }else{
+      $costo = $this->actualizarCosto($costo->id, -$concepto->subtotal, -$concepto->igv, 
+        -$concepto->total);
+      $concepto->delete();
+      $respuesta = "";
+        foreach($costo->conceptos as $concepto){
+        $respuesta .= "<tr>
+            <td><button type='button' class='btn btn-warning btn-xs' target='_blank' id='btnQuitar' value='".$concepto->id."'>Quitar</button></td>
+            <td><button type='button' class='btn btn-info btn-xs' target='_blank' id='btnVer' value='".$concepto->id."'>Ver</button></td>
+            <td>".$concepto->numero." AVP</td>
+            <td>".$concepto->nombre."</td>
+            <th style='text-align: right;'>";
+              if(strpos($concepto->total, '.') === false){
+                $respuesta .= $concepto->total.".00";
+              }elseif(strlen(substr($concepto->total, strpos($concepto->total, '.'))) == 3){
+                $respuesta .= $concepto->total;
+              }else{
+                $respuesta .= $concepto->total."0";
+              }
+            $respuesta .= "</th>
+          </tr>";
+        }
+        $respuesta .= "<tr>
+          <th colspan='4' style='text-align: right;'>SUBTOTAL MENSUAL</th>
+          <th style='text-align: right;'>";
+            if(strpos($costo->subtotal, '.') === false){
+              $respuesta .= $costo->subtotal.".00";
+            }else{
+              if(strlen(substr($costo->subtotal, strpos($costo->subtotal, '.'))) == 3){
+                $respuesta .= $costo->subtotal;
+              }else{
+                $respuesta .= $costo->subtotal."0";
+              }
+            }
+        $respuesta .= "</th>
+        </tr>
+        <tr>";
+          if($costo->igv != 0){
+            $respuesta .= "<th colspan='4' style='text-align: right;'>IGV</th>";
+          }else{
+            $respuesta .= "<th colspan='4' style='text-align: right;'>IGV EXONERADO POR LEY Nº 27037</th>";
+          }
+        $respuesta .= "<th style='text-align: right;'>";
+            if(strpos($costo->igv, '.') === false){
+              $respuesta .= $costo->igv.".00";
+            }else{
+              if(strlen(substr($costo->igv, strpos($costo->igv, '.'))) == 3){
+                $respuesta .= $costo->igv;
+              }else{
+                $respuesta .= $costo->igv."0";
+              }
+            }
+        $respuesta .= "</th>
+        </tr>
+        <tr>
+          <th colspan='4' style='text-align: right;'>TOTAL</th>
+          <th style='text-align: right;'>";
+            if(strpos($costo->total, '.') === false){
+              $respuesta .= $costo->total.".00";
+            }else{
+              if(strlen(substr($costo->total, strpos($costo->total, '.'))) == 3){
+                $respuesta .= $costo->total;
+              }else{
+                $respuesta .= $costo->total."0";
+              }
+            }
+        $respuesta .= "</th>
+        </tr>";
+    }
+
+    echo $respuesta;
+  }
 
   /*Funciones privadas********************************************************************/
 

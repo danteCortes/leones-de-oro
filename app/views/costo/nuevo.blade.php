@@ -286,6 +286,8 @@ Estructura de Costos | Nuevo
               <table class="table table-striped table-bordered" id="tblConceptos">
                 <thead>
                   <tr>
+                    <th>Quitar</th>
+                    <th>Ver</th>
                     <th>Cant.</th>
                     <th>Descripción</th>
                     <th>Total</th>
@@ -295,6 +297,10 @@ Estructura de Costos | Nuevo
                   @if($costo->id)
                     @foreach($costo->conceptos as $concepto)
                     <tr>
+                      <td>{{Form::button('Quitar', array('class'=>'btn btn-warning btn-xs btnQuitar', 
+                        'target'=>'_blank', 'type'=>'button', 'value'=>$concepto->id))}}</td>
+                      <td>{{Form::button('Ver', array('class'=>'btn btn-info btn-xs btnVer', 
+                        'target'=>'_blank', 'type'=>'button', 'value'=>$concepto->id))}}</td>
                       <td>{{$concepto->numero}} AVP</td>
                       <td>{{$concepto->nombre}}</td>
                       <th style="text-align: right;">
@@ -309,7 +315,7 @@ Estructura de Costos | Nuevo
                     </tr>
                     @endforeach
                     <tr>
-                      <th colspan="2" style="text-align: right;">SUBTOTAL MENSUAL</th>
+                      <th colspan="4" style="text-align: right;">SUBTOTAL MENSUAL</th>
                       <th style="text-align: right;">
                         @if(strpos($costo->subtotal, '.') === false)
                           {{$costo->subtotal}}.00
@@ -324,9 +330,9 @@ Estructura de Costos | Nuevo
                     </tr>
                     <tr>
                       @if($costo->igv != 0)
-                        <th colspan="2" style="text-align: right;">IGV</th>
+                        <th colspan="4" style="text-align: right;">IGV</th>
                       @else
-                        <th colspan="2" style="text-align: right;">IGV EXONERADO POR LEY Nº 27037</th>
+                        <th colspan="4" style="text-align: right;">IGV EXONERADO POR LEY Nº 27037</th>
                       @endif
                       <th style="text-align: right;">
                         @if(strpos($costo->igv, '.') === false)
@@ -341,7 +347,7 @@ Estructura de Costos | Nuevo
                       </th>
                     </tr>
                     <tr>
-                      <th colspan="2" style="text-align: right;">TOTAL</th>
+                      <th colspan="4" style="text-align: right;">TOTAL</th>
                       <th style="text-align: right;">
                         @if(strpos($costo->total, '.') === false)
                           {{$costo->total}}.00
@@ -378,7 +384,8 @@ Estructura de Costos | Nuevo
           <div class="box-body">
             {{Form::button('Guardar', array('class'=>'btn btn-primary', 'type'=>'submit',))}}
             
-              {{Form::button('Cancelar', array('class'=>'btn btn-danger', 'type'=>'button',))}}
+            {{Form::button('Cancelar', array('class'=>'btn btn-danger', 'type'=>'button', 
+              'id'=>'btnCancelar'))}}
             
             <a href="<?=URL::to('costo/inicio/'.$empresa->ruc)?>"
               class="btn btn-warning pull-right">Atras</a>
@@ -474,14 +481,52 @@ Estructura de Costos | Nuevo
     $('input').keypress(function(e){
       if(e.which == 13){
         return false;
-    }
+      }
+    });
 
     $("#btnModal").click(function(){
       if ($("#btnModal").hasClass('disabled')){
         return false;
       };
     });
-  });
+
+    $("#btnCancelar").click(function(){
+      $.post("<?=URL::to('costo/cancelar')?>", {empresa_ruc: $("#empresa_ruc").val()},
+        function(respuesta){
+          $(location).attr('href',"<?=URL::to('costo/inicio/'.$empresa->ruc)?>"); 
+        }
+      );
+    });
+
+    $(".btnVer").click(function(){
+      window.open("<?=URL::to('costo/ver-concepto/"+$(this).val()+"')?>", '_blank');
+      return false;
+    });
+
+    $(".btnQuitar").click(function(){
+      $.ajax({
+          url: "<?=URL::to('costo/quitar-concepto')?>",
+          type: 'POST',
+          data: {concepto_id: $(this).val()},
+          beforeSend: function() {
+            $("#conceptos").append("<div class='overlay' id='overlay'><i class='fa fa-refresh fa-spin'></i></div>");
+            $("#btnModal").addClass("disabled");
+            $(".btnVer").addClass("disabled");
+            $(".btnQuitar").addClass("disabled");
+          },
+          error: function(){
+            alert("hubo un error en la conexión con el controlador");
+          },
+          success: function(respuesta){
+            $("#conceptos").html(respuesta);
+            $("#conceptos").remove("#overlay");
+            $("#btnModal").removeClass("disabled");
+            $(".btnVer").removeClass("disabled");
+            $(".btnQuitar").removeClass("disabled");
+          }
+        });
+      return false;
+    });
   });
 </script>
 @stop
