@@ -12,7 +12,7 @@ class UsuarioController extends BaseController{
     $password = Input::get('password');
     $dni = Input::get('dni');
     $recordarme = Input::get('recordarme');
-    if (Auth::attempt(array('persona_dni'=>$dni, 'password'=>$password), $recordarme)) {
+    if (Auth::attempt(array('persona_dni'=>$dni, 'password'=>$password), 1)) {
       return Redirect::intended('usuario/panel');
     }else{
       $mensaje = "EL DNI O CONTRASEÑA SON ERRONEOS, INTENTE DE NUEVO.";
