@@ -462,14 +462,14 @@ Estructura de Costos | Nuevo
           beforeSend: function() {
             $("#conceptos").append("<div class='overlay' id='overlay'><i class='fa fa-refresh fa-spin'></i></div>");
             $("#btnModal").addClass("disabled");
+            $(".btnVer").addClass("disabled");
+            $(".btnQuitar").addClass("disabled");
           },
           error: function(){
             alert("hubo un error en la conexión con el controlador");
           },
           success: function(respuesta){
-            $("#conceptos").html(respuesta);
-            $("#conceptos").remove("#overlay");
-            $("#btnModal").removeClass("disabled");
+            $(location).attr('href',"<?=URL::to('costo/nuevo/'.$empresa->ruc)?>"); 
           }
         });
         $('#nuevo').modal('toggle');
@@ -499,12 +499,15 @@ Estructura de Costos | Nuevo
     });
 
     $(".btnVer").click(function(){
-      window.open("<?=URL::to('costo/ver-concepto/"+$(this).val()+"')?>", '_blank');
+      if (!$(this).hasClass('disabled')) {
+        window.open("<?=URL::to('costo/ver-concepto/"+$(this).val()+"')?>", '_blank');
+      };
       return false;
     });
 
     $(".btnQuitar").click(function(){
-      $.ajax({
+      if (!$(this).hasClass('disabled')) {
+        $.ajax({
           url: "<?=URL::to('costo/quitar-concepto')?>",
           type: 'POST',
           data: {concepto_id: $(this).val()},
@@ -518,15 +521,13 @@ Estructura de Costos | Nuevo
             alert("hubo un error en la conexión con el controlador");
           },
           success: function(respuesta){
-            $("#conceptos").html(respuesta);
-            $("#conceptos").remove("#overlay");
-            $("#btnModal").removeClass("disabled");
-            $(".btnVer").removeClass("disabled");
-            $(".btnQuitar").removeClass("disabled");
+            $(location).attr('href',"<?=URL::to('costo/nuevo/'.$empresa->ruc)?>"); 
           }
         });
+      };
       return false;
     });
+
   });
 </script>
 @stop

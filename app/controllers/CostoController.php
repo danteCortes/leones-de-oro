@@ -5,7 +5,6 @@ class CostoController extends BaseController{
   public function getInicio($ruc){
     $empresa = Empresa::find($ruc);
     if($empresa){
-      $clientes = Cliente::all();
       $costos = Costo::where('empresa_ruc', '=', $ruc)->get();
       return View::make('costo.inicio')->with('costos', $costos)
         ->with('empresa', $empresa);
@@ -381,73 +380,75 @@ class CostoController extends BaseController{
 
     $pdf = PDF::loadHtml($html);
     $pdf->setPaper('a4')->save($ruta);
+
+    return Redirect::to('costo/nuevo/'.$empresa->ruc);
     
-    $respuesta = "";
-      foreach($costo->conceptos as $concepto){
-      $respuesta .= "<tr>
-          <td><button type='button' class='btn btn-warning btn-xs btnQuitar' target='_blank' value='".$concepto->id."'>Quitar</button></td>
-          <td><button type='button' class='btn btn-info btn-xs btnVer' target='_blank' value='".$concepto->id."'>Ver</button></td>
-          <td>".$concepto->numero." AVP</td>
-          <td>".$concepto->nombre."</td>
-          <th style='text-align: right;'>";
-            if(strpos($concepto->total, '.') === false){
-              $respuesta .= $concepto->total.".00";
-            }elseif(strlen(substr($concepto->total, strpos($concepto->total, '.'))) == 3){
-              $respuesta .= $concepto->total;
-            }else{
-              $respuesta .= $concepto->total."0";
-            }
-          $respuesta .= "</th>
-        </tr>";
-      }
-      $respuesta .= "<tr>
-        <th colspan='4' style='text-align: right;'>SUBTOTAL MENSUAL</th>
-        <th style='text-align: right;'>";
-          if(strpos($costo->subtotal, '.') === false){
-            $respuesta .= $costo->subtotal.".00";
-          }else{
-            if(strlen(substr($costo->subtotal, strpos($costo->subtotal, '.'))) == 3){
-              $respuesta .= $costo->subtotal;
-            }else{
-              $respuesta .= $costo->subtotal."0";
-            }
-          }
-      $respuesta .= "</th>
-      </tr>
-      <tr>";
-        if($costo->igv != 0){
-          $respuesta .= "<th colspan='4' style='text-align: right;'>IGV</th>";
-        }else{
-          $respuesta .= "<th colspan='4' style='text-align: right;'>IGV EXONERADO POR LEY Nº 27037</th>";
-        }
-      $respuesta .= "<th style='text-align: right;'>";
-          if(strpos($costo->igv, '.') === false){
-            $respuesta .= $costo->igv.".00";
-          }else{
-            if(strlen(substr($costo->igv, strpos($costo->igv, '.'))) == 3){
-              $respuesta .= $costo->igv;
-            }else{
-              $respuesta .= $costo->igv."0";
-            }
-          }
-      $respuesta .= "</th>
-      </tr>
-      <tr>
-        <th colspan='4' style='text-align: right;'>TOTAL</th>
-        <th style='text-align: right;'>";
-          if(strpos($costo->total, '.') === false){
-            $respuesta .= $costo->total.".00";
-          }else{
-            if(strlen(substr($costo->total, strpos($costo->total, '.'))) == 3){
-              $respuesta .= $costo->total;
-            }else{
-              $respuesta .= $costo->total."0";
-            }
-          }
-      $respuesta .= "</th>
-      </tr>";
+    // $respuesta = "";
+    //   foreach($costo->conceptos as $concepto){
+    //   $respuesta .= "<tr>
+    //       <td><button type='button' class='btn btn-warning btn-xs btnQuitar' target='_blank' value='".$concepto->id."'>Quitar</button></td>
+    //       <td><button type='button' class='btn btn-info btn-xs btnVer' target='_blank' value='".$concepto->id."'>Ver</button></td>
+    //       <td>".$concepto->numero." AVP</td>
+    //       <td>".$concepto->nombre."</td>
+    //       <th style='text-align: right;'>";
+    //         if(strpos($concepto->total, '.') === false){
+    //           $respuesta .= $concepto->total.".00";
+    //         }elseif(strlen(substr($concepto->total, strpos($concepto->total, '.'))) == 3){
+    //           $respuesta .= $concepto->total;
+    //         }else{
+    //           $respuesta .= $concepto->total."0";
+    //         }
+    //       $respuesta .= "</th>
+    //     </tr>";
+    //   }
+    //   $respuesta .= "<tr>
+    //     <th colspan='4' style='text-align: right;'>SUBTOTAL MENSUAL</th>
+    //     <th style='text-align: right;'>";
+    //       if(strpos($costo->subtotal, '.') === false){
+    //         $respuesta .= $costo->subtotal.".00";
+    //       }else{
+    //         if(strlen(substr($costo->subtotal, strpos($costo->subtotal, '.'))) == 3){
+    //           $respuesta .= $costo->subtotal;
+    //         }else{
+    //           $respuesta .= $costo->subtotal."0";
+    //         }
+    //       }
+    //   $respuesta .= "</th>
+    //   </tr>
+    //   <tr>";
+    //     if($costo->igv != 0){
+    //       $respuesta .= "<th colspan='4' style='text-align: right;'>IGV</th>";
+    //     }else{
+    //       $respuesta .= "<th colspan='4' style='text-align: right;'>IGV EXONERADO POR LEY Nº 27037</th>";
+    //     }
+    //   $respuesta .= "<th style='text-align: right;'>";
+    //       if(strpos($costo->igv, '.') === false){
+    //         $respuesta .= $costo->igv.".00";
+    //       }else{
+    //         if(strlen(substr($costo->igv, strpos($costo->igv, '.'))) == 3){
+    //           $respuesta .= $costo->igv;
+    //         }else{
+    //           $respuesta .= $costo->igv."0";
+    //         }
+    //       }
+    //   $respuesta .= "</th>
+    //   </tr>
+    //   <tr>
+    //     <th colspan='4' style='text-align: right;'>TOTAL</th>
+    //     <th style='text-align: right;'>";
+    //       if(strpos($costo->total, '.') === false){
+    //         $respuesta .= $costo->total.".00";
+    //       }else{
+    //         if(strlen(substr($costo->total, strpos($costo->total, '.'))) == 3){
+    //           $respuesta .= $costo->total;
+    //         }else{
+    //           $respuesta .= $costo->total."0";
+    //         }
+    //       }
+    //   $respuesta .= "</th>
+    //   </tr>";
     
-    echo $respuesta;
+    // echo $respuesta;
   }
 
   public function postNuevo($ruc){
