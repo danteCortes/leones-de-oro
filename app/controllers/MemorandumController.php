@@ -55,6 +55,8 @@ class MemorandumController extends BaseController{
   }
 
   public function postNuevoMultiple(){
+    set_time_limit(300);
+
     if(Input::get('contenido') == ''){
       $mensaje = "EL CONTENIDO DEL MEMORANDUM NO DEBE SER VACIO. INTENTE NUEVAMENTE.";
       return Redirect::to('memorandum/nuevo/'.Input::get('empresa_ruc'))
@@ -223,6 +225,8 @@ class MemorandumController extends BaseController{
   }
   
   public function postNuevo(){
+    set_time_limit(300);
+
     if(Input::get('contenido') == ''){
       $mensaje = "EL CONTENIDO DEL MEMORANDUM NO DEBE SER VACIO. INTENTE NUEVAMENTE.";
       return Redirect::to('memorandum/nuevo/'.Input::get('empresa_ruc'))
@@ -417,6 +421,8 @@ class MemorandumController extends BaseController{
   }
 
   public function putEditar($id){
+    set_time_limit(300);
+
     if(Input::get('contenido') == ''){
       $mensaje = "EL CONTENIDO DEL MEMORANDUM NO DEBE SER VACIO. INTENTE NUEVAMENTE.";
       return Redirect::to('memorandum/editar/'.$id)
@@ -529,6 +535,8 @@ class MemorandumController extends BaseController{
   }
 
   public function putEditarMultiple($id){
+    set_time_limit(300);
+
     $memorandum = Memorandum::find($id);
     $remite = Usuario::find(Input::get('remite'));
     $empresa = $memorandum->empresa;
@@ -653,6 +661,8 @@ class MemorandumController extends BaseController{
   }
 
   public function deleteBorrar($id){
+    set_time_limit(300);
+    
     $memorandum = Memorandum::find($id);
     $ruc = $memorandum->empresa_ruc;
     if(Hash::check(Input::get('password'), Auth::user()->password)){

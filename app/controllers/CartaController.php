@@ -63,6 +63,9 @@ class CartaController extends BaseController{
   }
 
   public function postNuevo(){
+
+    set_time_limit(300);
+    
     if(Input::get('contenido') == ''){
       $mensaje = "EL CONTENIDO DE LA CARTA NO DEBE SER VACIO. INTENTE NUEVAMENTE.";
       return Redirect::to('carta/nuevo/'.Input::get('empresa_ruc'))
@@ -212,6 +215,8 @@ class CartaController extends BaseController{
       return Redirect::to('carta/nuevo/'.Input::get('empresa_ruc'))
         ->with('rojo', $mensaje);
     }
+    set_time_limit(300);
+
     $carta = Carta::find($id);
 
     $empresa = $carta->empresa;
@@ -229,6 +234,7 @@ class CartaController extends BaseController{
     $carta->referencia = mb_strtoupper(Input::get('referencia'));
     $carta->contenido = Input::get('contenido');
     $carta->save();
+
 
     $html = "
     <!DOCTYPE html>
@@ -299,6 +305,7 @@ class CartaController extends BaseController{
   }
 
   public function deleteBorrar($id){
+    set_time_limit(300);
     $carta = Carta::find($id);
     $ruc = $carta->empresa_ruc;
     if(Hash::check(Input::get('password'), Auth::user()->password)){

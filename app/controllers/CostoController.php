@@ -32,6 +32,8 @@ class CostoController extends BaseController{
   }
 
   public function postGuardarConcepto(){
+    set_time_limit(300);
+
     $empresa = Empresa::find(Input::get('empresa_ruc'));
     $costo = $empresa->costos()->where('estado', '=', 1)->first();
 
@@ -452,6 +454,8 @@ class CostoController extends BaseController{
   }
 
   public function postNuevo($ruc){
+    set_time_limit(300);
+
     if(Input::get('saludo') == ''){
       $mensaje = "EL SALUDO DE LA ESTRUCTURA DE COSTOS NO DEBE SER VACIO. INTENTE NUEVAMENTE.";
       return Redirect::to('costo/nuevo/'.$ruc)
@@ -574,6 +578,8 @@ class CostoController extends BaseController{
   }
 
   public function deleteBorrar($id){
+    set_time_limit(300);
+
     $costo = Costo::find($id);
     $ruc = $costo->empresa_ruc;
     if(Hash::check(Input::get('password'), Auth::user()->password)){
@@ -591,6 +597,8 @@ class CostoController extends BaseController{
   }
 
   public function postCancelar(){
+    set_time_limit(300);
+
     $empresa = Empresa::find(Input::get('empresa_ruc'));
     $costo = $empresa->costos()->where('estado', '=', 1)->first();
     if ($costo) {
@@ -613,6 +621,8 @@ class CostoController extends BaseController{
   }
 
   public function postQuitarConcepto(){
+    set_time_limit(300);
+    
     $concepto = Concepto::find(Input::get('concepto_id'));
     $costo = $concepto->costo;
     File::delete('documentos/costos/'.$costo->empresa_ruc.'/detalles/'.$concepto->id.'.pdf');

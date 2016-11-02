@@ -63,6 +63,9 @@ class InformeController extends BaseController{
   }
 
   public function postNuevo(){
+
+    set_time_limit(300);
+
     if(Input::get('contenido') == ''){
       $mensaje = "EL CONTENIDO DE LA CARTA NO DEBE SER VACIO. INTENTE NUEVAMENTE.";
       return Redirect::to('informe/nuevo/'.Input::get('empresa_ruc'))
@@ -217,6 +220,9 @@ class InformeController extends BaseController{
   }
 
   public function putEditar($id){
+
+    set_time_limit(300);
+
     if(Input::get('contenido') == ''){
       $mensaje = "EL CONTENIDO DE LA CARTA NO DEBE SER VACIO. INTENTE NUEVAMENTE.";
       return Redirect::to('informe/nuevo/'.Input::get('empresa_ruc'))
@@ -315,6 +321,9 @@ class InformeController extends BaseController{
   }
 
   public function deleteBorrar($id){
+
+    set_time_limit(300);
+    
     $informe = Informe::find($id);
     $ruc = $informe->empresa_ruc;
     if(Hash::check(Input::get('password'), Auth::user()->password)){
