@@ -124,189 +124,262 @@
       </div>
       <ul class="sidebar-menu">
         @if(Auth::user()->nivel == 0)
-        <li class="header">MENU ADMINISTRADOR</li>
-        <li>
-          <a href="<?=URL::to('empresa')?>">
-            <i class="fa fa-bank"></i> <span>Empresas</span>
-          </a>
-        </li>
-        <li>
-          <a href="<?=URL::to('usuario/inicio')?>">
-            <i class="fa fa-user"></i> <span>Usuarios</span>
-          </a>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-briefcase"></i> <span>Cliente</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            @foreach(Empresa::all() as $empresa)
-            <li><a href="<?=URL::to('cliente/inicio/'.$empresa->ruc)?>"><i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
-            @endforeach
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-users"></i> <span>Personal</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            @foreach(Empresa::all() as $empresa)
-            <li><a href="<?=URL::to('trabajador/inicio/'.$empresa->ruc)?>">
-              <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
-            @endforeach
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-file-text"></i> <span>Contratos</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            @foreach(Empresa::all() as $empresa)
-            <li><a href="<?=URL::to('contrato/inicio/'.$empresa->ruc)?>">
-              <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
-            @endforeach
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-file-text"></i> <span>Memorandums</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            @foreach(Empresa::all() as $empresa)
-            <li><a href="<?=URL::to('memorandum/inicio/'.$empresa->ruc)?>">
-              <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
-            @endforeach
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-file-text"></i> <span>Cartas</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            @foreach(Empresa::all() as $empresa)
-            <li><a href="<?=URL::to('carta/inicio/'.$empresa->ruc)?>">
-              <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
-            @endforeach
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-file-text"></i> <span>Informes</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            @foreach(Empresa::all() as $empresa)
-            <li><a href="<?=URL::to('informe/inicio/'.$empresa->ruc)?>">
-              <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
-            @endforeach
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-file-text"></i> <span>Estructura de costos</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            @foreach(Empresa::all() as $empresa)
-            <li><a href="<?=URL::to('costo/inicio/'.$empresa->ruc)?>">
-              <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
-            @endforeach
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-gear"></i> <span>Configuración</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="<?=URL::to('documento')?>"><i class="fa fa-circle-o"></i> 
-              Documentos</a></li>
-            <li><a href="<?=URL::to('cargo')?>"><i class="fa fa-circle-o"></i> 
-              Cargos</a></li>
-            <li><a href="<?=URL::to('area')?>"><i class="fa fa-circle-o"></i> 
-              Areas</a></li>
-            <li><a href="<?=URL::to('tipoMemorandum')?>"><i class="fa fa-circle-o"></i> 
-              Tipo Memorandums</a></li>
-          </ul>
-        </li>
+          <li class="header">MENU ADMINISTRADOR</li>
+          <li>
+            <a href="<?=URL::to('empresa')?>">
+              <i class="fa fa-bank"></i> <span>Empresas</span>
+            </a>
+          </li>
+          <li>
+            <a href="<?=URL::to('usuario/inicio')?>">
+              <i class="fa fa-user"></i> <span>Usuarios</span>
+            </a>
+          </li>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-briefcase"></i> <span>Cliente</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              @foreach(Empresa::all() as $empresa)
+              <li><a href="<?=URL::to('cliente/inicio/'.$empresa->ruc)?>"><i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
+              @endforeach
+            </ul>
+          </li>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-users"></i> <span>Personal</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              @foreach(Empresa::all() as $empresa)
+              <li><a href="<?=URL::to('trabajador/inicio/'.$empresa->ruc)?>">
+                <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
+              @endforeach
+            </ul>
+          </li>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-file-text"></i> <span>Contratos</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              @foreach(Empresa::all() as $empresa)
+              <li><a href="<?=URL::to('contrato/inicio/'.$empresa->ruc)?>">
+                <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
+              @endforeach
+            </ul>
+          </li>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-file-text"></i> <span>Memorandums</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              @foreach(Empresa::all() as $empresa)
+              <li><a href="<?=URL::to('memorandum/inicio/'.$empresa->ruc)?>">
+                <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
+              @endforeach
+            </ul>
+          </li>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-file-text"></i> <span>Cartas</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              @foreach(Empresa::all() as $empresa)
+              <li><a href="<?=URL::to('carta/inicio/'.$empresa->ruc)?>">
+                <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
+              @endforeach
+            </ul>
+          </li>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-file-text"></i> <span>Informes</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              @foreach(Empresa::all() as $empresa)
+              <li><a href="<?=URL::to('informe/inicio/'.$empresa->ruc)?>">
+                <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
+              @endforeach
+            </ul>
+          </li>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-file-text"></i> <span>Estructura de costos</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              @foreach(Empresa::all() as $empresa)
+              <li><a href="<?=URL::to('costo/inicio/'.$empresa->ruc)?>">
+                <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
+              @endforeach
+            </ul>
+          </li>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-gear"></i> <span>Configuración</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              <li><a href="<?=URL::to('documento')?>"><i class="fa fa-circle-o"></i> 
+                Documentos</a></li>
+              <li><a href="<?=URL::to('cargo')?>"><i class="fa fa-circle-o"></i> 
+                Cargos</a></li>
+              <li><a href="<?=URL::to('area')?>"><i class="fa fa-circle-o"></i> 
+                Areas</a></li>
+              <li><a href="<?=URL::to('tipoMemorandum')?>"><i class="fa fa-circle-o"></i> 
+                Tipo Memorandums</a></li>
+            </ul>
+          </li>
         @elseif(Auth::user()->nivel == 1)
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-file-text"></i> <span>Memorandums</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            @foreach(Empresa::all() as $empresa)
-            <li><a href="<?=URL::to('memorandum/inicio/'.$empresa->ruc)?>">
-              <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
-            @endforeach
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-file-text"></i> <span>Cartas</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            @foreach(Empresa::all() as $empresa)
-            <li><a href="<?=URL::to('carta/inicio/'.$empresa->ruc)?>">
-              <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
-            @endforeach
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-file-text"></i> <span>Informes</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            @foreach(Empresa::all() as $empresa)
-            <li><a href="<?=URL::to('informe/inicio/'.$empresa->ruc)?>">
-              <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
-            @endforeach
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-file-text"></i> <span>Estructura de costos</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            @foreach(Empresa::all() as $empresa)
-            <li><a href="<?=URL::to('costo/inicio/'.$empresa->ruc)?>">
-              <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
-            @endforeach
-          </ul>
-        </li>
+          <li class="header">MENU USUARIO</li>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-file-text"></i> <span>Memorandums</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              @foreach(Empresa::all() as $empresa)
+              <li><a href="<?=URL::to('memorandum/inicio/'.$empresa->ruc)?>">
+                <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
+              @endforeach
+            </ul>
+          </li>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-file-text"></i> <span>Cartas</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              @foreach(Empresa::all() as $empresa)
+              <li><a href="<?=URL::to('carta/inicio/'.$empresa->ruc)?>">
+                <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
+              @endforeach
+            </ul>
+          </li>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-file-text"></i> <span>Informes</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              @foreach(Empresa::all() as $empresa)
+              <li><a href="<?=URL::to('informe/inicio/'.$empresa->ruc)?>">
+                <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
+              @endforeach
+            </ul>
+          </li>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-file-text"></i> <span>Estructura de costos</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              @foreach(Empresa::all() as $empresa)
+              <li><a href="<?=URL::to('costo/inicio/'.$empresa->ruc)?>">
+                <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
+              @endforeach
+            </ul>
+          </li>
+        @elseif(Auth::user()->nivel == 2)
+          <li class="header">MENU ASISTENTE</li>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-users"></i> <span>Personal</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              @foreach(Empresa::all() as $empresa)
+              <li><a href="<?=URL::to('trabajador/inicio/'.$empresa->ruc)?>">
+                <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
+              @endforeach
+            </ul>
+          </li>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-file-text"></i> <span>Memorandums</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              @foreach(Empresa::all() as $empresa)
+              <li><a href="<?=URL::to('memorandum/inicio/'.$empresa->ruc)?>">
+                <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
+              @endforeach
+            </ul>
+          </li>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-file-text"></i> <span>Cartas</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              @foreach(Empresa::all() as $empresa)
+              <li><a href="<?=URL::to('carta/inicio/'.$empresa->ruc)?>">
+                <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
+              @endforeach
+            </ul>
+          </li>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-file-text"></i> <span>Informes</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              @foreach(Empresa::all() as $empresa)
+              <li><a href="<?=URL::to('informe/inicio/'.$empresa->ruc)?>">
+                <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
+              @endforeach
+            </ul>
+          </li>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-file-text"></i> <span>Estructura de costos</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              @foreach(Empresa::all() as $empresa)
+              <li><a href="<?=URL::to('costo/inicio/'.$empresa->ruc)?>">
+                <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
+              @endforeach
+            </ul>
+          </li>
         @endif
       </ul>
     </section>
