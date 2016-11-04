@@ -71,6 +71,8 @@ Usuario | Mostrar
 			              			ADMINISTRADOR
 			              		@elseif($usuario->nivel == 1)
 			              			USUARIO
+			              		@elseif($usuario->nivel == 2)
+			              			ASISTENTE
 			              		@endif
 			              	</td>
 			            </tr>

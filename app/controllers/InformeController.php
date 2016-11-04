@@ -193,6 +193,8 @@ class InformeController extends BaseController{
     </html>
     ";
 
+    $html = str_replace("&ndash;", "-", $html);
+
     define('BUDGETS_DIR', public_path('documentos/informes/'.$empresa->ruc));
 
     if (!is_dir(BUDGETS_DIR)){
@@ -307,6 +309,8 @@ class InformeController extends BaseController{
       </body>
     </html>
     ";
+
+    $html = str_replace("&ndash;", "-", $html);
 
     define('BUDGETS_DIR', public_path('documentos/informes/'.$empresa->ruc));
 

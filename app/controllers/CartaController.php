@@ -183,6 +183,8 @@ class CartaController extends BaseController{
     </html>
     ";
 
+    $html = str_replace("&ndash;", "-", $html);
+
     define('BUDGETS_DIR', public_path('documentos/cartas/'.$empresa->ruc));
 
     if (!is_dir(BUDGETS_DIR)){
@@ -287,6 +289,8 @@ class CartaController extends BaseController{
       </body>
     </html>
     ";
+
+    $html = str_replace("&ndash;", "-", $html);
 
     define('BUDGETS_DIR', public_path('documentos/cartas/'.$empresa->ruc));
 

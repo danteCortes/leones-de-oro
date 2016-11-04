@@ -84,10 +84,10 @@ Usuario | Inicio
                 			</label><br>
                 			<label>
                 				{{Form::radio('nivel', 0)}} Administrador
-                			</label>
+                			</label><br>
                 			<label>
                 				{{Form::radio('nivel', 2)}} Asistente
-                			</label><br>
+                			</label>
                 		</div>
                 	</div>
                 </div>

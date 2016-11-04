@@ -201,6 +201,8 @@ class MemorandumController extends BaseController{
       </html>
       ";
 
+    $html = str_replace("&ndash;", "-", $html);
+
     define('BUDGETS_DIR', public_path('documentos/memorandums/'.$empresa->ruc));
 
     if (!is_dir(BUDGETS_DIR)){
@@ -345,6 +347,8 @@ class MemorandumController extends BaseController{
         </body>
       </html>
       ";
+
+    $html = str_replace("&ndash;", "-", $html);
 
     define('BUDGETS_DIR', public_path('documentos/memorandums/'.$empresa->ruc));
 
@@ -518,6 +522,8 @@ class MemorandumController extends BaseController{
       </html>
       ";
 
+    $html = str_replace("&ndash;", "-", $html);
+
     define('BUDGETS_DIR', public_path('documentos/memorandums/'.$empresa->ruc));
 
     if (!is_dir(BUDGETS_DIR)){
@@ -647,6 +653,8 @@ class MemorandumController extends BaseController{
         </body>
       </html>
       ";
+
+    $html = str_replace("&ndash;", "-", $html);
 
     define('BUDGETS_DIR', public_path('documentos/memorandums/'.$empresa->ruc));
 
