@@ -50,7 +50,7 @@ class CostoController extends BaseController{
         Input::get('descansero'), Input::get('feriados'), Input::get('gratificaciones'),
         Input::get('cts'), Input::get('vacaciones'), Input::get('essalud'), Input::get('txt_sctr'),
         Input::get('ueas'), Input::get('capacitacion'), Input::get('movilidad'), Input::get('refrigerio'),
-        Input::get('gastosgenerales'), Input::get('utilidad'), Input::get('txt_igv'));
+        Input::get('gastosgenerales'), Input::get('utilidadDia'), Input::get('txt_igv'));
     }else{
       $this->nuevoConceptoTurno(1, $concepto->id, Input::get('diurno'), 0, 
         Input::get('asignacionfamiliar'), 0, Input::get('txt_st'),
@@ -65,7 +65,7 @@ class CostoController extends BaseController{
       Input::get('descansero'), Input::get('feriados'), Input::get('gratificaciones'),
       Input::get('cts'), Input::get('vacaciones'), Input::get('essalud'), Input::get('txt_sctr'),
       Input::get('ueas'), Input::get('capacitacion'), Input::get('movilidad'), Input::get('refrigerio'),
-      Input::get('gastosgenerales'), Input::get('utilidad'), Input::get('txt_igv'));
+      Input::get('gastosgenerales'), Input::get('utilidadNoche'), Input::get('txt_igv'));
     }else{
       $this->nuevoConceptoTurno(2, $concepto->id, Input::get('nocturno'), 0, 
       Input::get('asignacionfamiliar'), Input::get('jornadanocturna'), Input::get('txt_st'),
@@ -720,19 +720,19 @@ class CostoController extends BaseController{
     $remuneraciones = $descansero + $feriados + $subtotal;
 
     if($gratificaciones){
-      $gratificaciones = round((2*($subtotal-$asignacionfamiliar)+$descansero+(2*$feriados))/12*100)/100;
+      $gratificaciones = round(($subtotal-$jornadanocturna)*16.67)/100;
     }else{
       $gratificaciones = 0;
     }
 
     if($cts){
-      $cts = round(($remuneraciones + $gratificaciones)*0.0833*100)/100;
+      $cts = round(($subtotal-$jornadanocturna)*8.333)/100;
     }else{
       $cts = 0;
     }
 
     if($vacaciones){
-      $vacaciones = round($remuneraciones*0.0833*100)/100;
+      $vacaciones = round(($subtotal-$jornadanocturna)*9.72)/100;
     }else{
       $vacaciones = 0;
     }
@@ -740,7 +740,7 @@ class CostoController extends BaseController{
     $beneficiossociales = $gratificaciones+$cts+$vacaciones;
 
     if($essalud){
-      $essalud = round(($remuneraciones+$gratificaciones+$vacaciones)*0.09*100)/100;
+      $essalud = round(((($subtotal-$jornadanocturna)/6) + $feriados + $subtotal - $jornadanocturna +$gratificaciones+$vacaciones)*0.09*100)/100;
     }else{
       $essalud = 0;
     }
