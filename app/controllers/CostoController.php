@@ -50,7 +50,7 @@ class CostoController extends BaseController{
         Input::get('descansero'), Input::get('feriados'), Input::get('gratificaciones'),
         Input::get('cts'), Input::get('vacaciones'), Input::get('essalud'), Input::get('txt_sctr'),
         Input::get('ueas'), Input::get('capacitacion'), Input::get('movilidad'), Input::get('refrigerio'),
-        Input::get('gastosgenerales'), Input::get('utilidad'), Input::get('txt_igv'));
+        Input::get('gastosgenerales'), Input::get('utilidadDia'), Input::get('txt_igv'));
     }else{
       $this->nuevoConceptoTurno(1, $concepto->id, Input::get('diurno'), 0, 
         Input::get('asignacionfamiliar'), 0, Input::get('txt_st'),
@@ -65,7 +65,7 @@ class CostoController extends BaseController{
       Input::get('descansero'), Input::get('feriados'), Input::get('gratificaciones'),
       Input::get('cts'), Input::get('vacaciones'), Input::get('essalud'), Input::get('txt_sctr'),
       Input::get('ueas'), Input::get('capacitacion'), Input::get('movilidad'), Input::get('refrigerio'),
-      Input::get('gastosgenerales'), Input::get('utilidad'), Input::get('txt_igv'));
+      Input::get('gastosgenerales'), Input::get('utilidadNoche'), Input::get('txt_igv'));
     }else{
       $this->nuevoConceptoTurno(2, $concepto->id, Input::get('nocturno'), 0, 
       Input::get('asignacionfamiliar'), Input::get('jornadanocturna'), Input::get('txt_st'),
@@ -384,73 +384,7 @@ class CostoController extends BaseController{
     $pdf->setPaper('a4')->save($ruta);
 
     return Redirect::to('costo/nuevo/'.$empresa->ruc);
-    
-    // $respuesta = "";
-    //   foreach($costo->conceptos as $concepto){
-    //   $respuesta .= "<tr>
-    //       <td><button type='button' class='btn btn-warning btn-xs btnQuitar' target='_blank' value='".$concepto->id."'>Quitar</button></td>
-    //       <td><button type='button' class='btn btn-info btn-xs btnVer' target='_blank' value='".$concepto->id."'>Ver</button></td>
-    //       <td>".$concepto->numero." AVP</td>
-    //       <td>".$concepto->nombre."</td>
-    //       <th style='text-align: right;'>";
-    //         if(strpos($concepto->total, '.') === false){
-    //           $respuesta .= $concepto->total.".00";
-    //         }elseif(strlen(substr($concepto->total, strpos($concepto->total, '.'))) == 3){
-    //           $respuesta .= $concepto->total;
-    //         }else{
-    //           $respuesta .= $concepto->total."0";
-    //         }
-    //       $respuesta .= "</th>
-    //     </tr>";
-    //   }
-    //   $respuesta .= "<tr>
-    //     <th colspan='4' style='text-align: right;'>SUBTOTAL MENSUAL</th>
-    //     <th style='text-align: right;'>";
-    //       if(strpos($costo->subtotal, '.') === false){
-    //         $respuesta .= $costo->subtotal.".00";
-    //       }else{
-    //         if(strlen(substr($costo->subtotal, strpos($costo->subtotal, '.'))) == 3){
-    //           $respuesta .= $costo->subtotal;
-    //         }else{
-    //           $respuesta .= $costo->subtotal."0";
-    //         }
-    //       }
-    //   $respuesta .= "</th>
-    //   </tr>
-    //   <tr>";
-    //     if($costo->igv != 0){
-    //       $respuesta .= "<th colspan='4' style='text-align: right;'>IGV</th>";
-    //     }else{
-    //       $respuesta .= "<th colspan='4' style='text-align: right;'>IGV EXONERADO POR LEY Nº 27037</th>";
-    //     }
-    //   $respuesta .= "<th style='text-align: right;'>";
-    //       if(strpos($costo->igv, '.') === false){
-    //         $respuesta .= $costo->igv.".00";
-    //       }else{
-    //         if(strlen(substr($costo->igv, strpos($costo->igv, '.'))) == 3){
-    //           $respuesta .= $costo->igv;
-    //         }else{
-    //           $respuesta .= $costo->igv."0";
-    //         }
-    //       }
-    //   $respuesta .= "</th>
-    //   </tr>
-    //   <tr>
-    //     <th colspan='4' style='text-align: right;'>TOTAL</th>
-    //     <th style='text-align: right;'>";
-    //       if(strpos($costo->total, '.') === false){
-    //         $respuesta .= $costo->total.".00";
-    //       }else{
-    //         if(strlen(substr($costo->total, strpos($costo->total, '.'))) == 3){
-    //           $respuesta .= $costo->total;
-    //         }else{
-    //           $respuesta .= $costo->total."0";
-    //         }
-    //       }
-    //   $respuesta .= "</th>
-    //   </tr>";
-    
-    // echo $respuesta;
+
   }
 
   public function postNuevo($ruc){
@@ -783,19 +717,19 @@ class CostoController extends BaseController{
     $remuneraciones = $descansero + $feriados + $subtotal;
 
     if($gratificaciones){
-      $gratificaciones = round((2*($subtotal-$asignacionfamiliar)+$descansero+(2*$feriados))/12*100)/100;
+      $gratificaciones = round(($subtotal-$jornadanocturna)*16.67)/100;
     }else{
       $gratificaciones = 0;
     }
 
     if($cts){
-      $cts = round(($remuneraciones + $gratificaciones)*0.0833*100)/100;
+      $cts = round(($subtotal-$jornadanocturna)*8.333)/100;
     }else{
       $cts = 0;
     }
 
     if($vacaciones){
-      $vacaciones = round($remuneraciones*0.0833*100)/100;
+      $vacaciones = round(($subtotal-$jornadanocturna)*9.72)/100;
     }else{
       $vacaciones = 0;
     }
@@ -803,7 +737,7 @@ class CostoController extends BaseController{
     $beneficiossociales = $gratificaciones+$cts+$vacaciones;
 
     if($essalud){
-      $essalud = round(($remuneraciones+$gratificaciones+$vacaciones)*0.09*100)/100;
+      $essalud = round(((($subtotal-$jornadanocturna)/6) + $feriados + $subtotal - $jornadanocturna +$gratificaciones+$vacaciones)*0.09*100)/100;
     }else{
       $essalud = 0;
     }

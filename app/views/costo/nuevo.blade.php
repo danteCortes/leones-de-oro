@@ -256,10 +256,17 @@ Estructura de Costos | Nuevo
                         {{Form::text('cmb_st', null, array('class'=>'form-control input-sm mayuscula',
                           'placeholder'=>'% GASTOS GENERALES', 'id'=>'gastosgenerales'))}}
                       </div>
-                      {{Form::label(null, 'Utilidad:', array('class'=>'col-xs-3 control-label'))}}
+                      {{Form::label(null, 'Utilidad día:', array('class'=>'col-xs-3 control-label'))}}
                       <div class="col-xs-3">
                         {{Form::text('cmb_st', null, array('class'=>'form-control input-sm mayuscula',
-                          'placeholder'=>'UTILIDAD', 'id'=>'utilidad'))}}
+                          'placeholder'=>'UT. DIA', 'id'=>'utilidadDia', 'readonly'=>''))}}
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      {{Form::label(null, 'Utilidad noche:', array('class'=>'col-xs-9 control-label'))}}
+                      <div class="col-xs-3">
+                        {{Form::text('cmb_st', null, array('class'=>'form-control input-sm mayuscula',
+                          'placeholder'=>'UT. NOCHE', 'id'=>'utilidadNoche', 'readonly'=>''))}}
                       </div>
                     </div><hr>
                     <div class="form-group">
@@ -309,7 +316,7 @@ Estructura de Costos | Nuevo
                         @elseif(strlen(substr($concepto->total, strpos($concepto->total, '.'))) == 3)
                           {{$concepto->total}}
                         @else
-                          {{$concepto->total}}.0
+                          {{$concepto->total}}0
                         @endif
                       </th>
                     </tr>
@@ -409,6 +416,24 @@ Estructura de Costos | Nuevo
 
     CKEDITOR.replace('despedida');
 
+    $("#diurno").focusout(function(){
+      if ($(this).val() == "") {
+        $("#utilidadDia").prop('readonly', true);
+        $("#utilidadDia").val("");
+      }else{
+        $("#utilidadDia").prop('readonly', false);
+      };
+    });
+
+    $("#nocturno").focusout(function(){
+      if ($(this).val() == "") {
+        $("#utilidadNoche").prop('readonly', true);
+        $("#utilidadNoche").val("");
+      }else{
+        $("#utilidadNoche").prop('readonly', false);
+      };
+    });
+
     $("#chb_st").change(function(){
       $("#txt_st").val('');
       if($("#chb_st").prop("checked")){
@@ -458,7 +483,8 @@ Estructura de Costos | Nuevo
             essalud: $("#essalud:checked").val(), txt_sctr: $("#txt_sctr").val(), ueas: $("#ueas").val(),
             capacitacion: $("#capacitacion").val(), movilidad: $("#movilidad").val(), 
             refrigerio: $("#refrigerio").val(), gastosgenerales: $("#gastosgenerales").val(),
-            utilidad: $("#utilidad").val(), txt_igv: $("#txt_igv").val()},
+            utilidadDia: $("#utilidadDia").val(), utilidadNoche: $("#utilidadNoche").val(), 
+            txt_igv: $("#txt_igv").val()},
           beforeSend: function() {
             $("#conceptos").append("<div class='overlay' id='overlay'><i class='fa fa-refresh fa-spin'></i></div>");
             $("#btnModal").addClass("disabled");
