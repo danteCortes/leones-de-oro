@@ -46,9 +46,17 @@ Route::group(array('before' => 'auth'), function(){
   Route::controller('numeracion', 'NumeracionController');
 
   Route::controller('costo', 'CostoController');
+
+  Route::resource('turno', 'TurnoController', array('only'=>array('index', 'store', 'destroy')));
+
 });
 
-Route::get('prueba', function(){
-  $datos = Session::all();
-  return $datos;
+Route::controller('asistencia', 'AsistenciaController');
+
+Route::controller('prueba', 'PruebaController');
+
+Route::get('prueba2', function(){
+  $trabajador = Trabajador::find(8);
+  $cliente = $trabajador->clientes()->find('20120710436');
+  return ClienteTrabajador::find($cliente->id)->asistencia;
 });

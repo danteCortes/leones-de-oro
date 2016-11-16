@@ -21,7 +21,7 @@ class Trabajador extends Eloquent{
 
 	public function clientes(){
 		return $this->belongsToMany('Cliente', 'cliente_trabajador', 'trabajador_id', 'cliente_ruc')
-			->withPivot('cargo_id', 'unidad', 'id');
+			->withPivot('cargo_id', 'unidad', 'id', 'latitud', 'longitud');
 	}
 
 	public function memorandums(){

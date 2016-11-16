@@ -94,6 +94,8 @@ return array(
 	*/
 
 	'providers' => array(
+		'Torann\GeoIP\GeoIPServiceProvider',
+		'SimpleSoftwareIO\QrCode\QrCodeServiceProvider',
 		'Barryvdh\DomPDF\ServiceProvider',
 		'Illuminate\Foundation\Providers\ArtisanServiceProvider',
 		'Illuminate\Auth\AuthServiceProvider',
@@ -149,6 +151,8 @@ return array(
 	*/
 
 	'aliases' => array(
+		'GeoIP' 		  => 'Torann\GeoIP\GeoIPFacade',
+		'QrCode'		  => 'SimpleSoftwareIO\QrCode\Facades\QrCode',
 		'PDF' 			  => 'Barryvdh\DomPDF\Facade',
 		'App'             => 'Illuminate\Support\Facades\App',
 		'Artisan'         => 'Illuminate\Support\Facades\Artisan',

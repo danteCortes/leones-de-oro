@@ -6,7 +6,9 @@
 	"require": {
 		"laravel/framework": "4.2.*",
 		"barryvdh/laravel-dompdf": "0.4.*",
-		"doctrine/dbal": "2.5.1"
+		"doctrine/dbal": "2.5.1",
+		"simplesoftwareio/simple-qrcode": "~1",
+		"torann/geoip": "0.1.*@dev"
 	},
 	"autoload": {
 		"classmap": [
