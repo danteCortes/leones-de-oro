@@ -7,4 +7,8 @@ class Asistencia extends Eloquent{
   public function cliente(){
     return $this->belongsTo('Cliente', 'cliente_ruc', 'id');
   }
+
+  public function trabajadores(){
+    return $this->belongsToMany('Trabajador')->withPivot('entrada', 'salida');
+  }
 }

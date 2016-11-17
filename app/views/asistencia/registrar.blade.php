@@ -11,23 +11,42 @@
         height: 200px;
         border: 1px solid #d0d0d0;
       }
+      h1{
+        font-size: 15px;
+      }
     </style>
   </head>
   <body onLoad="localize()">
     <div class="container-fluid">
       <div class="page-header">
-        <h1>Registro de asistencia {{$trabajador->persona->nombre}} <small id="estado"></small></h1>
+        <h1>Registro de asistencia {{$trabajador->persona->nombre}} 
+          {{$trabajador->persona->apellidos}} <small id="estado"></small></h1>
       </div>
       <div class="row">
         <div class="col-xs-12">
           <div>
             {{Form::open(array('url'=>'asistencia/registrar'))}}
               <div class="form-group">
-                <select class="form-control" id="trabajo">
-                  <option>TRABAJO</option>
+                <select class="form-control input-sm" id="trabajo" required=''>
+                  <option value="">TRABAJO</option>
                   @foreach($trabajador->clientes as $cliente)
                     <option value="{{$cliente->ruc}}">{{$cliente->nombre}}</option>
                   @endforeach
+                </select>
+              </div>
+              <div class="form-group">
+                <select class="form-control input-sm" id="turno_id" disabled='' required='' name='turno_id'>
+                  <option value="">TURNO</option>
+                  @foreach(Turno::all() as $turno)
+                    <option value="{{$turno->id}}">{{$turno->nombre}}</option>
+                  @endforeach
+                </select>
+              </div>
+              <div class="form-group">
+                <select class="form-control input-sm" id="registro" disabled='' required='' name='registro'>
+                  <option value="">REGISTRO</option>
+                  <option value="1">ENTRADA</option>
+                  <option value="0">SALIDA</option>
                 </select>
               </div>
               <div class="form-group">
@@ -39,7 +58,8 @@
                 {{Form::label('entrada', date('H:i:s'))}}
               </div>
               <div class="form-group">
-                {{Form::button('Registrar', array('type'=>'submit'))}}
+                {{Form::button('Registrar', array('type'=>'submit', 'disabled'=>'',
+                'id'=>'boton'))}}
               </div>
               {{Form::hidden('latitud', null, array('id'=>'latitud'))}}
               {{Form::hidden('longitud', null, array('id'=>'longitud'))}}
@@ -132,12 +152,23 @@
                 if(respuesta != 0){
                   $("#cliente_ruc").val(respuesta['ruc']);
                   $("#estado").html("Puede marcar su asistencia");
+                  $("#turno_id").prop("disabled", false);
+                  $("#registro").prop("disabled", false);
+                  $("#boton").prop("disabled", false);
                 }else{
                   alert("no esta en el punto trabajo");
                   $("#estado").html("");
+                  $("#turno_id").prop("disabled", true);
+                  $("#registro").prop("disabled", true);
+                  $("#boton").prop("disabled", true);
                 }
               }
             });
+          }else{
+            $("#estado").html("");
+            $("#turno_id").prop("disabled", true);
+            $("#registro").prop("disabled", true);
+            $("#boton").prop("disabled", true);
           }
         });
       });

@@ -22,7 +22,7 @@ class CrearTablaAsistenciaTrabajador extends Migration {
       $table->foreign('trabajador_id')->references('id')->on('trabajadores')
         ->onUpdate('cascade')->onDelete('cascade');
       $table->time('entrada');
-      $table->time('salida');
+      $table->time('salida')->nullable();
     });
   }
 

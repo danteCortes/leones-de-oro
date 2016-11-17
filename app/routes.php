@@ -56,7 +56,5 @@ Route::controller('asistencia', 'AsistenciaController');
 Route::controller('prueba', 'PruebaController');
 
 Route::get('prueba2', function(){
-  $trabajador = Trabajador::find(8);
-  $cliente = $trabajador->clientes()->find('20120710436');
-  return ClienteTrabajador::find($cliente->id)->asistencia;
+  return utf8_encode('Ó®ôß­7ïNxÓ4ã7ãMüÓ4ß½8ïMúÓ~4ãM:×];×^õ×');
 });

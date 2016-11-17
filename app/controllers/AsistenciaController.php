@@ -12,7 +12,7 @@ class AsistenciaController extends BaseController{
     $latitud = Input::get('latitud');
     $longitud = Input::get('longitud');
     $cliente = Cliente::find(Input::get('cliente_ruc'));
-    $trabajador = Trabajador::find('trabajador_id');
+    $trabajador = Trabajador::find(Input::get('trabajador_id'));
     if ($cliente) {
       $trabajador = $cliente->trabajadores()->find(Input::get('trabajador_id'));
       if($trabajador){
@@ -30,23 +30,42 @@ class AsistenciaController extends BaseController{
   }
 
   public function postRegistrar(){
-    foreach (Turno::all() as $turno) {
-      if ($turno->entrada ) {
-        # code...
-      }
-    }
     $asistencia = Asistencia::where('fecha', '=', date('Y-m-d'))->where('cliente_ruc',
       '=', Input::get('cliente_ruc'))->first();
-    return $asistencia;
+    
     if ($asistencia) {
-      
+      if(Input::get('registro') == 1){
+        $asistencia->trabajadores()->attach(Input::get('trabajador_id'), 
+        array('entrada'=>date('H:i:s')));
+      }else{
+        $asistencia->trabajadores()->updateExistingPivot(Input::get('trabajador_id'), 
+        array('salida'=>date('H:i:s')));
+      }
+
     }else{
 
       $asistencia = new Asistencia;
       $asistencia->cliente_ruc = Input::get('cliente_ruc');
-      $asistencia->
+      $asistencia->turno_id = Input::get('turno_id');
+      $asistencia->fecha = date('Y-m-d');
+      $asistencia->save();
+
+      $asistencia->trabajadores()->attach(Input::get('trabajador_id'), 
+        array('entrada'=>date('H:i:s')));
+
     }
-    return $asistencia;
-    return Input::get('cliente_ruc');
+    
+    return Redirect::to('asistencia/estado/'.Input::get('trabajador_id').'/'.$asistencia->id);
+  }
+
+  public function getEstado($trabajador_id, $asistencia_id){
+    $trabajador = Trabajador::find($trabajador_id);
+    $asistencia = $trabajador->asistencias()->find($asistencia_id);
+
+    return View::make('asistencia.estado')->with('asistencia', $asistencia);
+  }
+
+  public function getInicio(){
+    return View::make('asistencia.inicio');
   }
 }
