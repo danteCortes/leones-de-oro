@@ -107,6 +107,8 @@ Trabajador | Ver
           </table>
         </div>
       </div>
+      <a href="<?=URL::to('trabajador/codigo/'.$trabajador->id)?>" class="btn btn-success"
+        target="_blank">Generar Código QR</a>
       <a href="<?=URL::to('trabajador/inicio/'.$empresa->ruc)?>" class="btn btn-primary">
         Volver a {{$empresa->nombre}}</a>
     </div>
@@ -165,6 +167,10 @@ Trabajador | Ver
               <div class="form-group">
                   {{Form::label(null, 'Pto de Trabajo:', array('class'=>'control-label'))}}
                   {{Form::text('unidad', null, array('class'=>'form-control input-sm mayuscula'))}}
+              </div>
+              <div class="form-group">
+                  {{Form::label(null, 'Coordenadas:', array('class'=>'control-label'))}}
+                  {{Form::text('coordenadas', null, array('class'=>'form-control input-sm'))}}
               </div>
             </div>
             <div class="box-footer">

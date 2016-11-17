@@ -25,6 +25,8 @@ class CrearTablaClienteTrabajador extends Migration {
 			$table->foreign('cargo_id')->references('id')->on('cargos')
 				->onUpdate('cascade')->onDelete('cascade');
 			$table->string('unidad')->nullable();
+			$table->double('latitud')->nullable();
+			$table->double('longitud')->nullable();
 		});
 	}
 

@@ -16,6 +16,8 @@ class CrearTablaTurnos extends Migration {
 		{
 			$table->increments('id');
 			$table->string('nombre');
+			$table->time('entrada');
+			$table->time('salida');
 		});
 	}
 

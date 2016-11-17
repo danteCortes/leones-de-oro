@@ -46,9 +46,15 @@ Route::group(array('before' => 'auth'), function(){
   Route::controller('numeracion', 'NumeracionController');
 
   Route::controller('costo', 'CostoController');
+
+  Route::resource('turno', 'TurnoController', array('only'=>array('index', 'store', 'destroy')));
+
 });
 
-Route::get('prueba', function(){
-  $datos = Session::all();
-  return $datos;
+Route::controller('asistencia', 'AsistenciaController');
+
+Route::controller('prueba', 'PruebaController');
+
+Route::get('prueba2', function(){
+  return utf8_encode('Ó®ôß­7ïNxÓ4ã7ãMüÓ4ß½8ïMúÓ~4ãM:×];×^õ×');
 });
