@@ -20,7 +20,7 @@
 		<div class="col-sm-12">
 		  	<div class="row">
 		  		<div class="page-header">
-					<h1>Sistema de Gestión Administrativa Leones <small>Configuración</small></h1>
+					<h1>Sistema de Gestión Múltiple <small>Configuración</small></h1>
 		  		</div>
 		  	</div>
 		  	<div class="row">

@@ -38,9 +38,9 @@
     <!-- Logo -->
     <a href="<?=URL::to('usuario/panel')?>" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>L</b>dO</span>
+      <span class="logo-mini"><b>S</b>GM</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Leones</b> de Oro</span>
+      <span class="logo-lg"><b>SISGEM</b> 1.0</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -192,6 +192,63 @@
           </li>
           <li class="treeview">
             <a href="#">
+              <i class="fa fa-money"></i> <span>Pagos</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              @foreach(Empresa::all() as $empresa)
+              <li><a href="#">
+                <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
+              @endforeach
+            </ul>
+          </li>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-money"></i> <span>Descuentos</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              @foreach(Empresa::all() as $empresa)
+              <li><a href="#">
+                <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
+              @endforeach
+            </ul>
+          </li>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-gears"></i> <span>Herramientas</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              @foreach(Empresa::all() as $empresa)
+              <li><a href="<?=URL::to('asistencia/inicio/'.$empresa->ruc)?>">
+                <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
+              @endforeach
+            </ul>
+          </li>
+
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-user"></i> <span>Uniformes</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              @foreach(Empresa::all() as $empresa)
+              <li><a href="<?=URL::to('asistencia/inicio/'.$empresa->ruc)?>">
+                <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
+              @endforeach
+            </ul>
+          </li>
+          <li class="treeview">
+            <a href="#">
               <i class="fa fa-file-text"></i> <span>Memorandums</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
@@ -242,6 +299,20 @@
             <ul class="treeview-menu">
               @foreach(Empresa::all() as $empresa)
               <li><a href="<?=URL::to('costo/inicio/'.$empresa->ruc)?>">
+                <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
+              @endforeach
+            </ul>
+          </li>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-file-text"></i> <span>Estructura de costos</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              @foreach(Empresa::all() as $empresa)
+              <li><a href="#">
                 <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
               @endforeach
             </ul>

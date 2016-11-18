@@ -26,7 +26,7 @@
 		<div class="col-sm-12">
 		  	<div class="row">
 		  		<div class="page-header">
-					<h1>Sistema de Gestión Administrativa Leones <small>Configuración</small></h1>
+					<h1>Sistema de Gestión Múltiple <small>Configuración</small></h1>
 		  		</div>
 		  	</div>
 		  	<div class="row">
@@ -35,7 +35,7 @@
 			  		<p>
 			  			Es hora de gestionar nuestros procesos de todas las empresas. Entonces primero guardaremos
 			  			nuestros datos personales para registrarnos como administradores del sistema, para esto
-			  			rellene los campos del formulario, escoja una empresa y de clic en siguiente para terminar.
+			  			rellene los campos del formulario y de clic en siguiente para terminar.
 			  		</p>
 		  		</div>
 		  	</div>

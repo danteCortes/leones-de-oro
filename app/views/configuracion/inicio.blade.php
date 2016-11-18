@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Configuración | Primera Empresa</title>
+    <title>Configuración | Primer Paso</title>
     <!-- Bootstrap -->
     <link href="<?=URL::to('css/bootstrap.min.css')?>" rel="stylesheet">
 
@@ -20,7 +20,7 @@
 		<div class="col-sm-12">
 		  	<div class="row">
 		  		<div class="page-header">
-					<h1>Sistema de Gestión Administrativa Leones <small>Configuración</small></h1>
+					<h1>Sistema de Gestión Múltiple <small>Configuración</small></h1>
 		  		</div>
 		  	</div>
 		  	<div class="row">
@@ -29,7 +29,7 @@
 			  		<p>Le ayudaremos en sus primeros pasos por su nuevo sistema de gestión
 			  			administrativa, en donde usted y otros usuarios de su empresa podrán
 			  			automatizar la mayoría de sus procesos, como gestionar el control de
-			  			uniformes del personal, control de las armas, control de pagos al personal,
+			  			uniformes del personal, control de las herramientas, control de pagos al personal,
 			  			supervisión de asistencia del personal de trabajo, emisión de proformas,
 			  			emisión	de boletas y facturas, gestión de clientes, proveedores, y mucho más.
 			  		</p>

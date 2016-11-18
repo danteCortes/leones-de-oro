@@ -27,7 +27,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="<?=URL::to('/')?>"><b>Leones </b>de Oro</a>
+    <a href="<?=URL::to('/')?>"><b>SISGEM </b>1.0</a>
   </div>
   @if(Session::has('rojo'))
       <div class="alert alert-danger alert-dismissable">
@@ -77,8 +77,6 @@
         <!-- /.col -->
       </div>
     {{Form::close()}}
-
-    <a href="#">Olvidé mi password</a><br>
 
   </div>
   <!-- /.login-box-body -->

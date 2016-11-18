@@ -5,7 +5,7 @@ class UsuarioController extends BaseController{
   public function __construct(){
 
         $this->beforeFilter('auth', array('except' => 'postLoguearse'));
-    }
+  }
 
   public function postLoguearse(){
     
@@ -83,8 +83,8 @@ class UsuarioController extends BaseController{
       }
     }else{
       //Si la persona no existe, guardamos sus datos en la tabla personas y usuarios.
-      $persona = $this->guardarPersona(Input::get('dni'), strtoupper(Input::get('nombre')), 
-        strtoupper(Input::get('apellidos')), strtoupper(Input::get('direccion')),
+      $persona = $this->guardarPersona(Input::get('dni'), mb_strtoupper(Input::get('nombre')), 
+        mb_strtoupper(Input::get('apellidos')), mb_strtoupper(Input::get('direccion')),
         Input::get('telefono'));
       $this->guardarUsuario($persona->dni, Input::get('nivel'));
       $mensaje = "EL USUARIO FUE GUARDADO CON EXITO.";
@@ -100,8 +100,8 @@ class UsuarioController extends BaseController{
     if($persona->dni == Input::get('dni')){
       //si el dni es igual con el que se ingreso es la misma persona.
       //actualizamos los datos de la persona.
-      $persona = $this->actualizarPersona($persona->dni, Input::get('dni'), strtoupper(Input::get('nombre')),
-        strtoupper(Input::get('apellidos')), strtoupper(Input::get('direccion')),
+      $persona = $this->actualizarPersona($persona->dni, Input::get('dni'), mb_strtoupper(Input::get('nombre')),
+        mb_strtoupper(Input::get('apellidos')), mb_strtoupper(Input::get('direccion')),
         Input::get('telefono'));
       $this->actualizarUsuario($id, $persona->dni, Input::get('nivel'));
       $mensaje = "EL USUARIO FUE ACTUALIZADO CON EXITO.";
@@ -118,8 +118,8 @@ class UsuarioController extends BaseController{
       }else{
         //Si el registro no existe es por que el DNI ingresado por el formulario esta disponible 
         //para guardarlo con el usuario. Actualizamos los datos de la persona y usuario.
-        $persona = $this->actualizarPersona($persona->dni, Input::get('dni'), strtoupper(Input::get('nombre')),
-          strtoupper(Input::get('apellidos')), strtoupper(Input::get('direccion')),
+        $persona = $this->actualizarPersona($persona->dni, Input::get('dni'), mb_strtoupper(Input::get('nombre')),
+          mb_strtoupper(Input::get('apellidos')), mb_strtoupper(Input::get('direccion')),
           Input::get('telefono'));
         $this->actualizarUsuario($id, $persona->dni, Input::get('nivel'));
         $mensaje = "EL USUARIO FUE ACTUALIZADO CON EXITO.";
