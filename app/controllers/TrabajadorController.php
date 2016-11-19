@@ -11,7 +11,6 @@ class TrabajadorController extends BaseController{
   }
 
   public function postContratar(){
-
     $persona = Persona::find(Input::get('dni'));
     if ($persona) {
 
@@ -274,10 +273,10 @@ class TrabajadorController extends BaseController{
 
     $persona = new Persona;
     $persona->dni = $dni;
-    $persona->nombre = strtoupper($nombre);
-    $persona->apellidos = strtoupper($apellidos);
-    $persona->direccion = strtoupper($direccion);
-    $persona->telefono = strtoupper($telefono);
+    $persona->nombre = mb_strtoupper($nombre);
+    $persona->apellidos = mb_strtoupper($apellidos);
+    $persona->direccion = mb_strtoupper($direccion);
+    $persona->telefono = mb_strtoupper($telefono);
     $persona->save();
 
     return Persona::find($dni);
@@ -291,8 +290,8 @@ class TrabajadorController extends BaseController{
     $trabajador->empresa_ruc = $empresa_ruc;
     $trabajador->inicio = $inicio;
     $trabajador->fin = $fin;
-    $trabajador->cuenta = strtoupper($cuenta);
-    $trabajador->banco = strtoupper($banco);
+    $trabajador->cuenta = mb_strtoupper($cuenta);
+    $trabajador->banco = mb_strtoupper($banco);
     $trabajador->cci = $cci;
     $trabajador->foto = "usuario.jpg";
     $trabajador->save();
@@ -363,10 +362,10 @@ class TrabajadorController extends BaseController{
       
       $persona = Persona::find($id);
       $persona->dni = $dni;
-      $persona->nombre = strtoupper($nombre);
-      $persona->apellidos = strtoupper($apellidos);
-      $persona->direccion = strtoupper($direccion);
-      $persona->telefono = strtoupper($telefono);
+      $persona->nombre = mb_strtoupper($nombre);
+      $persona->apellidos = mb_strtoupper($apellidos);
+      $persona->direccion = mb_strtoupper($direccion);
+      $persona->telefono = mb_strtoupper($telefono);
       $persona->save();
 
       return true;
@@ -380,10 +379,10 @@ class TrabajadorController extends BaseController{
 
         $persona = Persona::find($id);
         $persona->dni = $dni;
-        $persona->nombre = strtoupper($nombre);
-        $persona->apellidos = strtoupper($apellidos);
-        $persona->direccion = strtoupper($direccion);
-        $persona->telefono = strtoupper($telefono);
+        $persona->nombre = mb_strtoupper($nombre);
+        $persona->apellidos = mb_strtoupper($apellidos);
+        $persona->direccion = mb_strtoupper($direccion);
+        $persona->telefono = mb_strtoupper($telefono);
         $persona->save();
 
         return true;
@@ -396,8 +395,8 @@ class TrabajadorController extends BaseController{
     $trabajador = Trabajador::find($id);
     $trabajador->inicio = $inicio;
     $trabajador->fin = $fin;
-    $trabajador->cuenta = strtoupper($cuenta);
-    $trabajador->banco = strtoupper($banco);
+    $trabajador->cuenta = mb_strtoupper($cuenta);
+    $trabajador->banco = mb_strtoupper($banco);
     $trabajador->cci = $cci;
     $trabajador->save();
 

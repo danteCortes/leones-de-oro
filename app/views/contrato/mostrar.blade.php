@@ -5,6 +5,19 @@ contrato | mostrar
 @stop
 
 @section('contenido')
+<?php
+  function moneda($moneda){
+    $aux = explode('.', $moneda);
+    if (count($aux) > 1) {
+      if (strlen($aux[1]) == 1) {
+        $moneda = $moneda."0";
+      }
+    }else{
+      $moneda = $moneda.".00";
+    }
+    return $moneda;
+  }
+?>
 <section class="content-header">
   	<h1>
 	    Contrato
@@ -68,17 +81,17 @@ contrato | mostrar
             @if($contrato->igv)
               <tr>
                 <th>Sub Total</th>
-                <td>S/. {{$contrato->subtotal}}.00</td>
+                <td>S/. {{moneda($contrato->subtotal)}}</td>
               </tr>
             	<tr>
               	<th>IGV</th>
-              	<td>S/. {{$contrato->igv}}.00</td>
+              	<td>S/. {{moneda($contrato->igv)}}</td>
             	</tr>
             @endif
             <tr>
               <th>Total</th>
               <td>
-                S/. {{$contrato->total}}.00</td>
+                S/. {{moneda($contrato->total)}}</td>
             </tr>
         	</table>
         </div>
@@ -128,17 +141,36 @@ contrato | mostrar
 	        			<th>PORCENTAJE</th>
 	        			<th>PARTES</th>
 	        			<th>MONTO</th>
+                <th>VER PAGOS</th>
 	        			<th>BORRAR</th>
 	        		</tr>
 	            <tr>
 	            	<th>{{$contrato->retencion->porcentaje}} %</th>
 	            	<td>{{$contrato->retencion->partes}}</td>
-	            	<td>
-	            		@if(strpos($contrato->subtotal * $contrato->retencion->porcentaje / 100, '.') !== false)
-              			S/. {{$contrato->subtotal * $contrato->retencion->porcentaje / 100}}0
-              		@else
-              			S/. {{$contrato->subtotal * $contrato->retencion->porcentaje / 100}}.00
-              		@endif</td>
+	            	<td>{{moneda(round($contrato->subtotal * $contrato->retencion->porcentaje)/100)}}</td>
+                <td>
+                  {{Form::button('Ver Pagos', array('class'=>'btn btn-info btn-xs', 'data-toggle'=>'modal'
+                    , 'data-target'=>'#verPagos'.$contrato->retencion->id))}}
+                  <div class="modal fade modal-info" id="verPagos{{$contrato->retencion->id}}" tabindex="-1" role="dialog"
+                    aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                          <h4 class="modal-title">PAGOS DE {{$contrato->cliente->nombre}}</h4>
+                        </div>
+                        <div class="modal-body">
+                          
+                        </div>
+                        <div class="modal-footer clearfix">
+                          <button type="button" class="btn btn-outline" data-dismiss="modal">Cancelar</button>
+                          <button type="submit" class="btn btn-outline pull-left">Guardar</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
 	            	<td>
 	            		{{Form::button('Borrar', array('class'=>'btn btn-danger btn-xs', 'data-toggle'=>'modal'
 	            			, 'data-target'=>'#borrar'.$contrato->retencion->id))}}
