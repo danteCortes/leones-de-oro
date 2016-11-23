@@ -49,6 +49,8 @@ Route::group(array('before' => 'auth'), function(){
 
   Route::resource('turno', 'TurnoController', array('only'=>array('index', 'store', 'destroy')));
 
+  Route::resource('punto', 'PuntoController', array('only'=>array('store', 'destroy')));
+
 });
 
 Route::controller('asistencia', 'AsistenciaController');
@@ -56,5 +58,12 @@ Route::controller('asistencia', 'AsistenciaController');
 Route::controller('prueba', 'PruebaController');
 
 Route::get('prueba2', function(){
-  return utf8_encode('Ó®ôß­7ïNxÓ4ã7ãMüÓ4ß½8ïMúÓ~4ãM:×];×^õ×');
+  $cliente = Cliente::find('20103221540');
+  $contratos = Contrato::where('cliente_ruc', '=', $cliente->ruc)
+    ->where('empresa_ruc', '=', '20489468795')->get();
+  foreach ($contratos as $contrato) {
+    if (strtotime($contrato->fin) > strtotime(date('Y-m-d'))) {
+      return $contrato->puntos;
+    }
+  }
 });

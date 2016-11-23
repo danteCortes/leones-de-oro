@@ -197,7 +197,13 @@ class TrabajadorController extends BaseController{
     $clientes = $empresa->clientes;
     foreach ($clientes as $cliente) {
       if ($cliente->nombre == $nombre) {
-        return Response::json($cliente->ruc);
+        $contratos = Contrato::where('cliente_ruc', '=', $cliente->ruc)
+          ->where('empresa_ruc', '=', $empresa->ruc)->get();
+        foreach ($contratos as $contrato) {
+          if (strtotime($contrato->fin) > strtotime(date('Y-m-d'))) {
+            return $contrato->puntos;
+          }
+        }
       }
     }
     return 0;
@@ -206,8 +212,8 @@ class TrabajadorController extends BaseController{
   //funcion para guardar un cargo de un trabajador en un cliente en la tabla pivote
   //cliente_trabajador.
   public function postCargo(){
-    //Buscamos al cliente mediante el ruc que nos envia el formulario.
-    $cliente = Cliente::find(Input::get('ruc'));
+    //Buscamos al cliente mediante el nombre que nos envia el formulario.
+    $cliente = Cliente::find(Input::get('nombre'));
     //Verificamos si existe el cliente
     if ($cliente) {
       //separamos la latitud y la longitud de coordenadas.

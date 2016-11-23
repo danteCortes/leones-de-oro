@@ -129,6 +129,7 @@ return array(
     'CrearTablaMemorandums' => $baseDir . '/app/database/migrations/2016_10_04_191458_crear_tabla_memorandums.php',
     'CrearTablaPersonas' => $baseDir . '/app/database/migrations/2016_08_30_090629_crear_tabla_personas.php',
     'CrearTablaPrendas' => $baseDir . '/app/database/migrations/2016_08_23_204312_crear_tabla_prendas.php',
+    'CrearTablaPuntos' => $baseDir . '/app/database/migrations/2016_11_22_152457_crear_tabla_puntos.php',
     'CrearTablaRetenciones' => $baseDir . '/app/database/migrations/2016_09_17_104038_crear_tabla_retenciones.php',
     'CrearTablaTipoMemorandums' => $baseDir . '/app/database/migrations/2016_10_04_190823_crear_tabla_tipo_memorandums.php',
     'CrearTablaTrabajadores' => $baseDir . '/app/database/migrations/2016_08_30_144903_crear_tabla_trabajadores.php',

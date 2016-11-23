@@ -16,10 +16,10 @@ class ClienteController extends \BaseController {
 		if (!$cliente) {
 			$cliente = new Cliente;
 			$cliente->ruc = Input::get('ruc');
-			$cliente->nombre = strtoupper(Input::get('nombre'));
-			$cliente->direccion = strtoupper(Input::get('direccion'));
+			$cliente->nombre = mb_strtoupper(Input::get('nombre'));
+			$cliente->direccion = mb_strtoupper(Input::get('direccion'));
 			$cliente->telefono = Input::get('telefono');
-			$cliente->contacto = strtoupper(Input::get('contacto'));
+			$cliente->contacto = mb_strtoupper(Input::get('contacto'));
 			$cliente->save();
 		}
 
@@ -56,10 +56,10 @@ class ClienteController extends \BaseController {
 		if ($ruc == Input::get('ruc')) {
 			
 			$cliente = Cliente::find($ruc);
-			$cliente->nombre = strtoupper(Input::get('nombre'));
-			$cliente->direccion = strtoupper(Input::get('direccion'));
+			$cliente->nombre = mb_strtoupper(Input::get('nombre'));
+			$cliente->direccion = mb_strtoupper(Input::get('direccion'));
 			$cliente->telefono = Input::get('telefono');
-			$cliente->contacto = strtoupper(Input::get('contacto'));
+			$cliente->contacto = mb_strtoupper(Input::get('contacto'));
 			$cliente->save();
 
 			$mensaje = "EL CLIENTE FUE MODIFICADO CON EXITO.";
@@ -78,10 +78,10 @@ class ClienteController extends \BaseController {
 
 				$cliente = Cliente::find($ruc);
 				$cliente->ruc = Input::get('ruc');
-				$cliente->nombre = strtoupper(Input::get('nombre'));
-				$cliente->direccion = strtoupper(Input::get('direccion'));
+				$cliente->nombre = mb_strtoupper(Input::get('nombre'));
+				$cliente->direccion = mb_strtoupper(Input::get('direccion'));
 				$cliente->telefono = Input::get('telefono');
-				$cliente->contacto = strtoupper(Input::get('contacto'));
+				$cliente->contacto = mb_strtoupper(Input::get('contacto'));
 				$cliente->save();
 
 				$mensaje = "EL CLIENTE FUE MODIFICADO CON EXITO.";

@@ -4,6 +4,9 @@
 contrato | mostrar
 @stop
 
+@section('estilos')
+@stop
+
 @section('contenido')
 <?php
   function moneda($moneda){
@@ -19,15 +22,15 @@ contrato | mostrar
   }
 ?>
 <section class="content-header">
-  	<h1>
-	    Contrato
-	    <small>mostrar</small>
-  	</h1>
-  	<ol class="breadcrumb">
-	    <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-	    <li><a href="#">Contrato</a></li>
-	    <li class="active">Mostrar</li>
-  	</ol>
+	<h1>
+    Contrato
+    <small>mostrar</small>
+	</h1>
+	<ol class="breadcrumb">
+    <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+    <li><a href="#">Contrato</a></li>
+    <li class="active">Mostrar</li>
+	</ol>
 </section>
 <section class="content">
 	<div class="row">
@@ -126,6 +129,33 @@ contrato | mostrar
         	</div>
         {{Form::close()}}
       </div>
+      <div class="box box-info">
+        <div class="box-header with-border">
+          <h3 class="box-title">Agregar Punto de Trabajo</h3>
+        </div>
+        {{Form::open(array('url'=>'punto', 'class'=>'form-horizontal'))}}
+          <div class="box-body">
+            <div class="form-group">
+              {{Form::label(null, 'Nombre*:', array('class'=>'control-label col-sm-4'))}}
+              <div class="col-sm-8">
+                {{Form::text('nombre', null, array('class'=>'form-control input-sm mayuscula',
+                  'placeholder'=>'NOMBRE', 'required'=>''))}}
+              </div>
+            </div>
+            <div class="form-group">
+              {{Form::label(null, 'Coordenadas*:', array('class'=>'control-label col-sm-4'))}}
+              <div class="col-sm-8">
+                {{Form::text('coordenadas', null, array('class'=>'form-control input-sm',
+                  'placeholder'=>'COORDENADAS', 'required'=>''))}}
+              </div>
+            </div>
+          </div>
+          <div class="box-footer">
+            {{Form::hidden('contrato_id', $contrato->id)}}
+            <button type="submit" class="btn btn-primary">Agregar</button>
+          </div>
+        {{Form::close()}}
+      </div>
     </div>
   </div>
   @if($contrato->retencion)
@@ -214,6 +244,66 @@ contrato | mostrar
 	    </div>
 		</div>
 	@endif
+  @if($contrato->puntos)
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box">
+          <div class="box-header">
+              <h3 class="box-title">Puntos de Trabajo</h3>
+          </div>
+          <div class="box-body no-padding">
+            <table class="table table-striped">
+              <tr>
+                <th>NOMBRE</th>
+                <th>BORRAR</th>
+              </tr>
+              @foreach($contrato->puntos as $punto)
+              <tr>
+                <th>{{$punto->nombre}}</th>
+                <td>
+                  {{Form::button('Borrar', array('class'=>'btn btn-danger btn-xs', 'data-toggle'=>'modal'
+                    , 'data-target'=>'#borrarPunto'.$punto->id))}}
+                  <div class="modal fade modal-danger" id="borrarPunto{{$punto->id}}" tabindex="-1" role="dialog"
+                    aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                          <h4 class="modal-title">Borrar Punto {{$punto->nombre}} en {{$contrato->cliente->nombre}}</h4>
+                        </div>
+                        {{Form::open(array('url'=>'punto/'.$punto->id,
+                          'class'=>'form-horizontal', 'method'=>'delete'))}}
+                          <div class="modal-body">
+                            <div class="form-group">
+                              <p class="col-sm-12">PARA BORRAR EL PUNTO DE TRABAJO DE ESTE CONTRATO DEBE INTRODUCIR
+                                SU CONTRASEÑA PARA AUTORIZAR ESTE PROCESO.</p>
+                            </div>
+                            <div class="form-group">
+                                {{Form::label(null, 'Contraseña:', array('class'=>'control-label col-sm-2'))}}
+                                <div class="col-sm-10">
+                                  {{Form::password('password', array('class'=>'form-control input-sm',
+                                    'required'=>''))}}
+                                </div>
+                            </div>
+                          </div>
+                          <div class="modal-footer clearfix">
+                            <button type="button" class="btn btn-outline" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-outline pull-left">Guardar</button>
+                          </div>
+                        {{Form::close()}}
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              @endforeach
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  @endif
 	<div class="row">
     <div class="col-md-12">
       	<div class="box">
@@ -244,4 +334,7 @@ contrato | mostrar
     </div>
 	</div>
 </section>
+@stop
+
+@section('scripts')
 @stop

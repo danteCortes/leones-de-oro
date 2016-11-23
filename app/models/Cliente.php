@@ -25,4 +25,8 @@ class Cliente extends Eloquent{
   public function asistencias(){
     return $this->hasMany('Asistencia', 'cliente_ruc', 'id');
   }
+
+  public function contratos(){
+    return $this->hasMany('Contrato', 'cliente_ruc', 'id');
+  }
 }

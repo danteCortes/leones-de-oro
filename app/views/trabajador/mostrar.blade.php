@@ -156,6 +156,12 @@ Trabajador | Ver
                   ,'required'=>''))}}
               </div>
               <div class="form-group">
+                  {{Form::label(null, 'Pto de Trabajo:', array('class'=>'control-label'))}}
+                  <select name="punto" class="form-control input-sm" id="punto" required disabled="">
+                    <option value="">SELECCIONAR</option>
+                  </select>
+              </div>
+              <div class="form-group">
                   {{Form::label(null, 'Cargo:*', array('class'=>'control-label'))}}
                   <select name="cargo" class="form-control input-sm" required>
                     <option value="">SELECCIONAR</option>
@@ -163,14 +169,6 @@ Trabajador | Ver
                       <option value="{{$cargo->id}}">{{$cargo->nombre}}</option>
                     @endforeach
                   </select>
-              </div>
-              <div class="form-group">
-                  {{Form::label(null, 'Pto de Trabajo:', array('class'=>'control-label'))}}
-                  {{Form::text('unidad', null, array('class'=>'form-control input-sm mayuscula'))}}
-              </div>
-              <div class="form-group">
-                  {{Form::label(null, 'Coordenadas:', array('class'=>'control-label'))}}
-                  {{Form::text('coordenadas', null, array('class'=>'form-control input-sm'))}}
               </div>
             </div>
             <div class="box-footer">
@@ -333,9 +331,14 @@ Trabajador | Ver
         },
         success: function(respuesta) {
           if (respuesta) {
-            $("#ruc").val(respuesta);
+            $("#ruc").val('');
+            $("#punto").prop('disabled', false);
+            $(respuesta).each(function(i, v){
+              $("#punto").append('<option value="' + v.id + '">' + v.nombre + '</option>');
+            });
           } else {
-            $("#ruc").val('No se encontro ningun cliente con ese nombre.');
+            $("#ruc").val('No se encontro al cliente.');
+            $("#punto").prop('disabled', true);
           }
         }
       });

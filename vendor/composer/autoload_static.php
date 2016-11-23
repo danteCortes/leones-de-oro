@@ -418,6 +418,7 @@ class ComposerStaticInit2c92f31fa0a27173b5807b0cb9be3523
         'CrearTablaMemorandums' => __DIR__ . '/../..' . '/app/database/migrations/2016_10_04_191458_crear_tabla_memorandums.php',
         'CrearTablaPersonas' => __DIR__ . '/../..' . '/app/database/migrations/2016_08_30_090629_crear_tabla_personas.php',
         'CrearTablaPrendas' => __DIR__ . '/../..' . '/app/database/migrations/2016_08_23_204312_crear_tabla_prendas.php',
+        'CrearTablaPuntos' => __DIR__ . '/../..' . '/app/database/migrations/2016_11_22_152457_crear_tabla_puntos.php',
         'CrearTablaRetenciones' => __DIR__ . '/../..' . '/app/database/migrations/2016_09_17_104038_crear_tabla_retenciones.php',
         'CrearTablaTipoMemorandums' => __DIR__ . '/../..' . '/app/database/migrations/2016_10_04_190823_crear_tabla_tipo_memorandums.php',
         'CrearTablaTrabajadores' => __DIR__ . '/../..' . '/app/database/migrations/2016_08_30_144903_crear_tabla_trabajadores.php',
