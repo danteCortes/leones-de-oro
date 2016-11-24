@@ -14,10 +14,14 @@ class LlenarTablaTurnos extends Migration {
   {
     $turno = new Turno;
     $turno->nombre = 'DIURNO';
+    $turno->entrada = '8:00:00';
+    $turno->salida = '20:00:00';
     $turno->save();
 
     $turno = new Turno;
     $turno->nombre = 'NOCTURNO';
+    $turno->entrada = '20:00:00';
+    $turno->salida = '8:00:00';
     $turno->save();
   }
 

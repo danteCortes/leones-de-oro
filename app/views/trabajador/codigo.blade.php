@@ -57,8 +57,7 @@
   <h1 class="no-print">Codigo QR para {{$trabajador->persona->nombre}}
     {{$trabajador->persona->apellidos}}</h1>
   <div class="visible-print text-center">
-    {{ QrCode::size(200)->generate('http://sistema.leonesdeoro.com/asistencia/registrar/'
-      .$trabajador->id); }}
+    {{ QrCode::size(200)->generate(URL::to('asistencia/registrar/'.$trabajador->id)); }}
   </div>
   <button type="submit" class="imprimir no-print"  name="imprimir" onclick="window.print();">
     Imprimir

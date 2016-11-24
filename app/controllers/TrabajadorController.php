@@ -212,32 +212,57 @@ class TrabajadorController extends BaseController{
   //funcion para guardar un cargo de un trabajador en un cliente en la tabla pivote
   //cliente_trabajador.
   public function postCargo(){
+    $trabajador = Trabajador::find(Input::get('trabajador_id'));
+    $empresa = $trabajador->empresa;
+    $clientes = $empresa->clientes;
+    $cliente = [];
+    $punto = [];
     //Buscamos al cliente mediante el nombre que nos envia el formulario.
-    $cliente = Cliente::find(Input::get('nombre'));
+    foreach($clientes as $cli){
+      if ($cli->nombre == Input::get('cliente')) {
+        $cliente = $cli;
+      }
+    }
     //Verificamos si existe el cliente
     if ($cliente) {
-      //separamos la latitud y la longitud de coordenadas.
-      $latitud = explode(',', Input::get('coordenadas'))[0];
-      $longitud = explode(',', Input::get('coordenadas'))[1];
-      //Si el cliente existe verificamos si el trabajador ya tiene un cargo en ese cliente 
-      //mediante el hidden 'trabajador_id' que nos envia el formulario.
-      if($cliente->trabajadores()->find(Input::get('trabajador_id'))){
-        //Si el trabajador ya cumple con un cargo con el cliente actualizamos
-        //el cargo y la unidad por el cargo nuevo.
-        $cliente->trabajadores()->updateExistingPivot(Input::get('trabajador_id'),
-          array('unidad'=>strtoupper(Input::get('unidad')), 'cargo_id'=>Input::get('cargo')
-          , 'latitud'=>$latitud, 'longitud'=>$longitud));
-      }else{
-        //Si el trabajador no cumple con un cargo con el cliente guardamos un nuevo registro
-        //en la tabla pivote cliente_trabajadores.
-        $cliente->trabajadores()->attach(Input::get('trabajador_id'), array(
-          'unidad'=>strtoupper(Input::get('unidad')), 'cargo_id'=>Input::get('cargo')
-          , 'latitud'=>$latitud, 'longitud'=>$longitud));
+      //Si el cliente existe buscamos sus contratos vigentes.
+      foreach ($cliente->contratos as $contrato) {
+        if (strtotime($contrato->fin) > strtotime(date('Y-m-d'))) {
+          //Si el contrato está vigente buscamos sus puntos de trabajo.
+          foreach ($contrato->puntos as $p) {
+            //comprobamos si algun punto coincide con el que mandamos por el formulario.
+            if ($p->id == Input::get('punto')) {
+              $punto = $p;
+              break;
+            }
+          }
+        }
       }
-      //Regresamos a la vista de ver trabajador enviando un mensaje de satisfaccion en el
-      //registro del cargo con el cliente.
-      $mensaje = "EL TRABAJADOR FUE ASIGNADO A ".$cliente->nombre.".";
-      return Redirect::to('trabajador/ver/'.Input::get('trabajador_id'))->with('verde', $mensaje);
+      //verificamos si existe un punto de trabajo
+      if ($punto) {
+        //Si existe el punto de trabajo, verificamos si el trabajador ya esta relacionado
+        //con este punto.
+        if ($punto->trabajadores->find(Input::get('trabajador_id'))) {
+          //Si el trabajador ya esta relacionado con el punto de trabajo, actualizamos los
+          //datos del registro
+          $punto->trabajadores()->updateExistingPivot(Input::get('trabajador_id'), 
+            array('cargo_id'=>Input::get('cargo')));
+        }else{
+          //si no esta relacionado, creamos un nuevo registro en la tabla punto_trabajador
+          //con los datos correspondientes.
+          $punto->trabajadores()->attach(Input::get('trabajador_id'), array('cargo_id'=>
+            Input::get('cargo')));
+        }
+        //Si el punto no existe regresamos a la vista de ver trabajador con un mensaje 
+        //informando el error.
+        $mensaje = "EL PUNTO DE TRABAJO FUE AGREGADO CORRECTAMENTE AL TRABAJADOR.";
+        return Redirect::to('trabajador/ver/'.Input::get('trabajador_id'))->with('verde', $mensaje);
+      }else{
+        //Si el punto no existe regresamos a la vista de ver trabajador con un mensaje 
+        //informando el error.
+        $mensaje = "HUBO UN ERROR CON EL PUNTO DE TRABAJO, VUELVA A INTENTARLO";
+        return Redirect::to('trabajador/ver/'.Input::get('trabajador_id'))->with('rojo', $mensaje);
+      }
     }else{
       //Si el cliente no existe regresamos a la vista de ver trabajador con un mensaje 
       //informando el error.
@@ -253,10 +278,10 @@ class TrabajadorController extends BaseController{
       //si es correcto hallamos al trabajador mediante el hidden trabajador_id.
       $trabajador = Trabajador::find(Input::get('trabajador_id'));
       //Hallamos el cargo del trabajador en la tabla pivote cliente_trabajador.
-      $cargo = $trabajador->clientes()->where('id', '=', $id)->first()->pivot;
+      $punto = $trabajador->puntos()->find($id);
       //borramos el registro de la tabla pivote cliente_trabajador con el metodo detach pasandole
       //como argumento un arreglo clave=>valor.
-      $trabajador->clientes()->detach($cargo->cliente_ruc);
+      $trabajador->puntos()->detach($punto->punto_id);
       //Regresamos a la vista de mostrar trabajador con el mensaje de cargo borrado.
       $mensaje = "EL CARGO DEL TRABAJADOR FUE BORRADO.";
         return Redirect::to('trabajador/ver/'.Input::get('trabajador_id'))

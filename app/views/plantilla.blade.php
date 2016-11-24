@@ -232,7 +232,6 @@
               @endforeach
             </ul>
           </li>
-
           <li class="treeview">
             <a href="#">
               <i class="fa fa-user"></i> <span>Uniformes</span>
@@ -305,14 +304,14 @@
           </li>
           <li class="treeview">
             <a href="#">
-              <i class="fa fa-file-text"></i> <span>Estructura de costos</span>
+              <i class="fa fa-file-text"></i> <span>Emisión de recibos</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
             </a>
             <ul class="treeview-menu">
               @foreach(Empresa::all() as $empresa)
-              <li><a href="#">
+              <li><a href="<?=URL::to('costo/inicio/'.$empresa->ruc)?>">
                 <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
               @endforeach
             </ul>
@@ -330,7 +329,7 @@
               <li><a href="<?=URL::to('cargo')?>"><i class="fa fa-circle-o"></i> 
                 Cargos</a></li>
               <li><a href="<?=URL::to('area')?>"><i class="fa fa-circle-o"></i> 
-                AreasA</a></li>
+                Areas</a></li>
               <li><a href="<?=URL::to('tipoMemorandum')?>"><i class="fa fa-circle-o"></i> 
                 Tipo Memorandums</a></li>
               <li><a href="<?=URL::to('turno')?>"><i class="fa fa-circle-o"></i> 

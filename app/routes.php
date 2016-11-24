@@ -58,12 +58,5 @@ Route::controller('asistencia', 'AsistenciaController');
 Route::controller('prueba', 'PruebaController');
 
 Route::get('prueba2', function(){
-  $cliente = Cliente::find('20103221540');
-  $contratos = Contrato::where('cliente_ruc', '=', $cliente->ruc)
-    ->where('empresa_ruc', '=', '20489468795')->get();
-  foreach ($contratos as $contrato) {
-    if (strtotime($contrato->fin) > strtotime(date('Y-m-d'))) {
-      return $contrato->puntos;
-    }
-  }
+  return URL::to('asistencia/registrar');
 });

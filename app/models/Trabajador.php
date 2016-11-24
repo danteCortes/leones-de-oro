@@ -19,11 +19,6 @@ class Trabajador extends Eloquent{
       'trabajador_id', 'documento_id')->withPivot('nombre');
   }
 
-  public function clientes(){
-    return $this->belongsToMany('Cliente', 'cliente_trabajador', 'trabajador_id', 'cliente_ruc')
-      ->withPivot('cargo_id', 'unidad', 'id', 'latitud', 'longitud');
-  }
-
   public function memorandums(){
     return $this->belongsToMany('Memorandum');
   }
@@ -31,5 +26,10 @@ class Trabajador extends Eloquent{
   public function asistencias(){
     return $this->belongsToMany('Asistencia', 'asistencia_trabajador', 'trabajador_id', 'asistencia_id')
     ->withPivot('entrada', 'salida');
+  }
+
+  public function puntos(){
+    return $this->belongsToMany('Punto', 'punto_trabajador', 'trabajador_id', 'punto_id')
+      ->withPivot('cargo_id');
   }
 }

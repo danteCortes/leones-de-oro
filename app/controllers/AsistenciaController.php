@@ -11,18 +11,17 @@ class AsistenciaController extends BaseController{
   public function getPosicion(){
     $latitud = Input::get('latitud');
     $longitud = Input::get('longitud');
-    $cliente = Cliente::find(Input::get('cliente_ruc'));
+    $punto = Punto::find(Input::get('punto'));
+    $cliente = $punto->contrato->cliente;
     $trabajador = Trabajador::find(Input::get('trabajador_id'));
-    if ($cliente) {
-      $trabajador = $cliente->trabajadores()->find(Input::get('trabajador_id'));
-      if($trabajador){
-        if($latitud <= $trabajador->latitud+0.0002 && $latitud >= $trabajador->latitud-0.0002 &&
-          $longitud <= $trabajador->longitud+0.0002 && $longitud >= $trabajador->longitud-0.0002){
-          
-          return $cliente;
-        }else{
-          return 0;
-        }
+    //verificamos si el trabajador esta relacionado con ese punto.
+    if ($trabajador->puntos()->find(Input::get('punto'))) {
+      //si esta relacionado, verificamos que esta en el punto.
+      if($latitud <= $punto->latitud+0.0002 && $latitud >= $punto->latitud-0.0002 &&
+        $longitud <= $punto->longitud+0.0002 && $longitud >= $punto->longitud-0.0002){
+        return $punto->contrato->cliente;
+      }else{
+        return 0;
       }
     }else{
       return 0;
@@ -30,31 +29,63 @@ class AsistenciaController extends BaseController{
   }
 
   public function postRegistrar(){
-    $asistencia = Asistencia::where('fecha', '=', date('Y-m-d'))->where('cliente_ruc',
-      '=', Input::get('cliente_ruc'))->first();
-    
+    //verificamos si ya existe una asistencia abierta en este punto de trabajo.
+    $asistencia = Asistencia::where('fecha', '=', date('Y-m-d'))->where('punto_id',
+      '=', Input::get('punto_id'))->where('turno_id', '=', Input::get('turno_id'))->first();
     if ($asistencia) {
+      //si la asistencia ya esta abierta para el dia de hoy, verificamos si se va a 
+      //registrar entrada o salida.
       if(Input::get('registro') == 1){
-        $asistencia->trabajadores()->attach(Input::get('trabajador_id'), 
-        array('entrada'=>date('H:i:s')));
+        //Si se registra entrada, verificamos si no registró su entrada el dia de hoy.
+        if($asistencia->trabajadores()->find(Input::get('trabajador_id'))){
+          //si ya registro su entrada lo redirecciona a una pagina con el error.
+          $mensaje = "YA REGISTRO SU ENTRADA EL DIA DE HOY A LAS ".date('h:i:s', 
+            strtotime($asistencia->trabajadores()->find(Input::get('trabajador_id'))
+            ->entrada));
+          return Redirect::to('asistencia/registrar/'.Input::get('trabajador_id'))
+            ->with('rojo', $mensaje);
+        }else{
+          //Si aun no registra su entrada, registramos su entrada para este dia este punto de 
+          //trabajo.
+          $asistencia->trabajadores()->attach(Input::get('trabajador_id'), 
+          array('entrada'=>date('H:i:s')));
+        }
       }else{
-        $asistencia->trabajadores()->updateExistingPivot(Input::get('trabajador_id'), 
-        array('salida'=>date('H:i:s')));
+        //Si se registra salida, verificamos si registró entrada.
+        if($asistencia->trabajadores()->find(Input::get('trabajador_id'))){
+          //si ya registro su entrada verificamos si registro su salida.
+          $salida = $asistencia->trabajadores()->find(Input::get('trabajador_id'));
+          if ($salida->salida) {
+            //si registró su salida redireccionamos al inicio con su mensaje correspondiente.
+            $mensaje = "YA REGISTRO SU SALIDA EL DIA DE HOY A LAS ".$salida->salida;
+            return Redirect::to('asistencia/registrar/'.Input::get('trabajador_id'))
+              ->with('rojo', $mensaje);
+          }else{
+            //Si aún no registra su salida, registramos su salida.
+            $asistencia->trabajadores()->updateExistingPivot(Input::get('trabajador_id'), 
+            array('salida'=>date('H:i:s')));
+          }
+        }else{
+          //Si aun no registra su entrada, registramos su entrada para este dia este punto de 
+          //trabajo.
+          $mensaje = "AUN NO REGISTRA SU ENTRADA EL DIA DE HOY.";
+          return Redirect::to('asistencia/registrar/'.Input::get('trabajador_id'))
+            ->with('rojo', $mensaje);
+        }
       }
 
     }else{
-
+      //Si no existe, creamos la asistencia para este dia y este punto de trabajo.
       $asistencia = new Asistencia;
-      $asistencia->cliente_ruc = Input::get('cliente_ruc');
+      $asistencia->punto_id = Input::get('punto_id');
       $asistencia->turno_id = Input::get('turno_id');
       $asistencia->fecha = date('Y-m-d');
       $asistencia->save();
-
+      //registramos la entrada del trabajador para esta asistencia.
       $asistencia->trabajadores()->attach(Input::get('trabajador_id'), 
         array('entrada'=>date('H:i:s')));
-
     }
-    
+    //nos redireccionamos a una ruta que nos mostrara el estado de nuestro registro.
     return Redirect::to('asistencia/estado/'.Input::get('trabajador_id').'/'.$asistencia->id);
   }
 
@@ -67,5 +98,9 @@ class AsistenciaController extends BaseController{
 
   public function getInicio(){
     return View::make('asistencia.inicio');
+  }
+
+  public function getError(){
+    return View::make('asistencia.error');
   }
 }

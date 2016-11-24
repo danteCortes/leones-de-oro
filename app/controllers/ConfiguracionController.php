@@ -26,10 +26,10 @@ class ConfiguracionController extends BaseController{
 				//Si no existe guardamos sus datos como persona y como usuario.
 				$persona = new Persona;
 				$persona->dni = Input::get('dni');
-				$persona->nombre = strtoupper(Input::get('nombre'));
-				$persona->apellidos = strtoupper(Input::get('apellidos'));
-				$persona->direccion = strtoupper(Input::get('direccion'));
-				$persona->telefono = strtoupper(Input::get('telefono'));
+				$persona->nombre = mb_strtoupper(Input::get('nombre'));
+				$persona->apellidos = mb_strtoupper(Input::get('apellidos'));
+				$persona->direccion = mb_strtoupper(Input::get('direccion'));
+				$persona->telefono = mb_strtoupper(Input::get('telefono'));
 				$persona->save();
 
 				$usuario = new Usuario;

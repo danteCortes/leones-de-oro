@@ -32,5 +32,6 @@
     <script src="<?=URL::to('plugins/jQuery/jquery-2.2.3.min.js')?>"></script>
     <!-- Bootstrap 3.3.6 -->
     <script src="<?=URL::to('bootstrap/js/bootstrap.min.js')?>"></script>
+    <script language="javascript">setTimeout("self.close();",7000)</script>
   </body>
 </html>

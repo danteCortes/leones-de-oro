@@ -177,7 +177,7 @@ contrato | mostrar
 	            <tr>
 	            	<th>{{$contrato->retencion->porcentaje}} %</th>
 	            	<td>{{$contrato->retencion->partes}}</td>
-	            	<td>{{moneda(round($contrato->subtotal * $contrato->retencion->porcentaje)/100)}}</td>
+	            	<td>S/. {{moneda(round($contrato->subtotal * $contrato->retencion->porcentaje)/100)}}</td>
                 <td>
                   {{Form::button('Ver Pagos', array('class'=>'btn btn-info btn-xs', 'data-toggle'=>'modal'
                     , 'data-target'=>'#verPagos'.$contrato->retencion->id))}}
@@ -255,11 +255,15 @@ contrato | mostrar
             <table class="table table-striped">
               <tr>
                 <th>NOMBRE</th>
+                <th>LATITUD</th>
+                <th>LONGITUD</th>
                 <th>BORRAR</th>
               </tr>
               @foreach($contrato->puntos as $punto)
               <tr>
-                <th>{{$punto->nombre}}</th>
+                <td>{{$punto->nombre}}</td>
+                <td>{{$punto->latitud}}</td>
+                <td>{{$punto->longitud}}</td>
                 <td>
                   {{Form::button('Borrar', array('class'=>'btn btn-danger btn-xs', 'data-toggle'=>'modal'
                     , 'data-target'=>'#borrarPunto'.$punto->id))}}
