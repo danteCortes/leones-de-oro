@@ -398,6 +398,33 @@
           <li class="header">MENU ASISTENTE</li>
           <li class="treeview">
             <a href="#">
+              <i class="fa fa-briefcase"></i> <span>Clientes</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              @foreach(Empresa::all() as $empresa)
+              <li><a href="<?=URL::to('cliente/inicio/'.$empresa->ruc)?>"><i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
+              @endforeach
+            </ul>
+          </li>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-file-text"></i> <span>Contratos</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              @foreach(Empresa::all() as $empresa)
+              <li><a href="<?=URL::to('contrato/inicio/'.$empresa->ruc)?>">
+                <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
+              @endforeach
+            </ul>
+          </li>
+          <li class="treeview">
+            <a href="#">
               <i class="fa fa-users"></i> <span>Personal</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>

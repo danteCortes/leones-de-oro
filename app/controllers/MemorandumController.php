@@ -98,6 +98,7 @@ class MemorandumController extends BaseController{
     $codigo = 'MEMORANDUM MULTIPLE Nº '.$nro.'-'.date('Y').'/'.$area->abreviatura.'/'
       .$empresa->nombre;
     $trabajadores = [];
+    $cliente = Cliente::find(Input::get('cliente'));
 
     if (Input::get('todos') != null) {
       foreach ($empresa->trabajadores as $trabajador) {
@@ -105,14 +106,36 @@ class MemorandumController extends BaseController{
       }
     }elseif (Input::get('cliente') != null) {
       $cliente = Cliente::find(Input::get('cliente'));
-      foreach ($cliente->trabajadores as $trabajador) {
-        array_push($trabajadores, $trabajador);
+      $contratos = $cliente->contratos;
+      foreach ($contratos as $contrato) {
+        foreach ($contrato->puntos as $punto) {
+          foreach ($punto->trabajadores as $trabajador) {
+            if (count($trabajadores) != 0) {
+              foreach ($trabajadores as $key) {
+                if ($trabajador->id != $key->id) {
+                  array_push($trabajadores, $trabajador);
+                }else{
+                  break;
+                }
+              }
+            }else{
+              array_push($trabajadores, $trabajador);
+            }
+          }
+        }
       }
     }
     
     foreach ($empresa->trabajadores as $trabajador) {
       if(Input::get('trabajador'.$trabajador->persona_dni) == $trabajador->persona_dni){
-        array_push($trabajadores, $trabajador);
+        foreach ($trabajadores as $key) {
+          if ($trabajador->id != $key->id) {
+            array_push($trabajadores, $trabajador);
+            break;
+          }else{
+            break;
+          }
+        }
       }
     }
 
@@ -560,14 +583,36 @@ class MemorandumController extends BaseController{
       }
     }elseif (Input::get('cliente') != null) {
       $cliente = Cliente::find(Input::get('cliente'));
-      foreach ($cliente->trabajadores as $trabajador) {
-        array_push($trabajadores, $trabajador);
+      $contratos = $cliente->contratos;
+      foreach ($contratos as $contrato) {
+        foreach ($contrato->puntos as $punto) {
+          foreach ($punto->trabajadores as $trabajador) {
+            if (count($trabajadores) != 0) {
+              foreach ($trabajadores as $key) {
+                if ($trabajador->id != $key->id) {
+                  array_push($trabajadores, $trabajador);
+                }else{
+                  break;
+                }
+              }
+            }else{
+              array_push($trabajadores, $trabajador);
+            }
+          }
+        }
       }
     }
     
     foreach ($empresa->trabajadores as $trabajador) {
       if(Input::get('trabajador'.$trabajador->persona_dni) == $trabajador->persona_dni){
-        array_push($trabajadores, $trabajador);
+        foreach ($trabajadores as $key) {
+          if ($trabajador->id != $key->id) {
+            array_push($trabajadores, $trabajador);
+            break;
+          }else{
+            break;
+          }
+        }
       }
     }
 
