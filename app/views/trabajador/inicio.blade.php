@@ -28,110 +28,116 @@ Trabajador | Inicio
 <section class="content">
   <div class="row">
     <div class="col-xs-12">
-          <a class="btn btn-primary" data-toggle="modal" data-target="#nuevo">
-            <i class="fa fa-plus-square"></i> Nuevo Trabajador
-          </a>
-          <div class="modal fade modal-primary" id="nuevo" tabindex="-1" role="dialog"
+      <a class="btn btn-primary" data-toggle="modal" data-target="#nuevo">
+        <i class="fa fa-plus-square"></i> Nuevo Trabajador
+      </a>
+      <div class="modal fade modal-primary" id="nuevo" tabindex="-1" role="dialog"
         aria-labelledby="myModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
-                  <h4 class="modal-title">Nuevo Trabajador de {{$empresa->nombre}}</h4>
+        <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Nuevo Trabajador de {{$empresa->nombre}}</h4>
+              </div>
+              {{Form::open(array('url'=>'trabajador/contratar', 'class'=>'form-horizontal', 'method'=>'post', 'files'=>true))}}
+                <div class="modal-body">
+                      <div class="form-group">
+                        {{Form::label(null, 'DNI*:', array('class'=>'col-sm-3 control-label'))}}
+                          <div class="col-sm-9">
+                            {{Form::text('dni', null, array('class'=>'form-control dni input-sm', 'placeholder'=>'DNI',
+                            'required'=>''))}}
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          {{Form::label(null, 'Nombre*:', array('class'=>'col-sm-3 control-label'))}}
+                          <div class="col-sm-9">
+                            {{Form::text('nombre', null, array('class'=>'form-control mayuscula input-sm', 'placeholder'=>'NOMBRE',
+                            'required'=>''))}}
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          {{Form::label(null, 'Apellidos*:', array('class'=>'col-sm-3 control-label'))}}
+                          <div class="col-sm-9">
+                            {{Form::text('apellidos', null, array('class'=>'form-control mayuscula input-sm', 'placeholder'=>'APELLIDOS',
+                            'required'=>''))}}
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          {{Form::label(null, 'Dirección:', array('class'=>'col-sm-3 control-label'))}}
+                          <div class="col-sm-9">
+                            {{Form::text('direccion', null, array('class'=>'form-control mayuscula input-sm', 'placeholder'=>'DIRECCION'))}}
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          {{Form::label(null, 'Teléfono:', array('class'=>'col-sm-3 control-label'))}}
+                          <div class="col-sm-9">
+                            {{Form::text('telefono', null, array('class'=>'form-control mayuscula input-sm', 'placeholder'=>'TELEFONO'))}}
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          {{Form::label(null, 'Inicio*:', array('class'=>'col-sm-3 control-label'))}}
+                          <div class="col-sm-9">
+                            {{Form::text('inicio', null, array('class'=>'form-control input-sm', 'placeholder'=>'INICIO',
+                            'data-inputmask'=>"'alias': 'dd/mm/yyyy'", 'data-mask'=>'', 'required'=>''))}}
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          {{Form::label(null, 'Fin*:', array('class'=>'col-sm-3 control-label'))}}
+                          <div class="col-sm-9">
+                            {{Form::text('fin', null, array('class'=>'form-control input-sm', 'placeholder'=>'FIN',
+                            'data-inputmask'=>"'alias': 'dd/mm/yyyy'", 'data-mask'=>'', 'required'=>''))}}
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          {{Form::label(null, 'Sueldo:', array('class'=>'col-sm-3 control-label'))}}
+                          <div class="col-sm-9">
+                            {{Form::text('sueldo', null, array('class'=>'form-control moneda input-sm', 'placeholder'=>'SUELDO'))}}
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          {{Form::label(null, 'Nro Cuenta:', array('class'=>'col-sm-3 control-label'))}}
+                          <div class="col-sm-9">
+                            {{Form::text('cuenta', null, array('class'=>'form-control mayuscula input-sm', 'placeholder'=>'NRO DE CUENTA'))}}
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          {{Form::label(null, 'Banco:', array('class'=>'col-sm-3 control-label'))}}
+                          <div class="col-sm-9">
+                            {{Form::text('banco', null, array('class'=>'form-control mayuscula input-sm', 'placeholder'=>'BANCO'))}}
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          {{Form::label(null, 'CCI:', array('class'=>'col-sm-3 control-label'))}}
+                          <div class="col-sm-9">
+                            <div class="checkbox">
+                              <label>
+                                {{Form::checkbox('cci', 1)}}
+                              </label>
+                            </div>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          {{Form::label(null, 'Foto:', array('class'=>'col-sm-3 control-label'))}}
+                          <div class="col-sm-9">
+                            {{Form::file('foto')}}
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          {{Form::label(null, 'Contrato*:', array('class'=>'col-sm-3 control-label'))}}
+                          <div class="col-sm-9">
+                            {{Form::file('contrato', array('required'=>''))}}
+                          </div>
+                      </div>
                 </div>
-                {{Form::open(array('url'=>'trabajador/contratar', 'class'=>'form-horizontal', 'method'=>'post', 'files'=>true))}}
-                  <div class="modal-body">
-                        <div class="form-group">
-                          {{Form::label(null, 'DNI*:', array('class'=>'col-sm-3 control-label'))}}
-                            <div class="col-sm-9">
-                              {{Form::text('dni', null, array('class'=>'form-control dni input-sm', 'placeholder'=>'DNI',
-                              'required'=>''))}}
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            {{Form::label(null, 'Nombre*:', array('class'=>'col-sm-3 control-label'))}}
-                            <div class="col-sm-9">
-                              {{Form::text('nombre', null, array('class'=>'form-control mayuscula input-sm', 'placeholder'=>'NOMBRE',
-                              'required'=>''))}}
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            {{Form::label(null, 'Apellidos*:', array('class'=>'col-sm-3 control-label'))}}
-                            <div class="col-sm-9">
-                              {{Form::text('apellidos', null, array('class'=>'form-control mayuscula input-sm', 'placeholder'=>'APELLIDOS',
-                              'required'=>''))}}
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            {{Form::label(null, 'Dirección:', array('class'=>'col-sm-3 control-label'))}}
-                            <div class="col-sm-9">
-                              {{Form::text('direccion', null, array('class'=>'form-control mayuscula input-sm', 'placeholder'=>'DIRECCION'))}}
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            {{Form::label(null, 'Teléfono:', array('class'=>'col-sm-3 control-label'))}}
-                            <div class="col-sm-9">
-                              {{Form::text('telefono', null, array('class'=>'form-control mayuscula input-sm', 'placeholder'=>'TELEFONO'))}}
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            {{Form::label(null, 'Inicio*:', array('class'=>'col-sm-3 control-label'))}}
-                            <div class="col-sm-9">
-                              {{Form::text('inicio', null, array('class'=>'form-control input-sm', 'placeholder'=>'INICIO',
-                              'data-inputmask'=>"'alias': 'dd/mm/yyyy'", 'data-mask'=>'', 'required'=>''))}}
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            {{Form::label(null, 'Fin*:', array('class'=>'col-sm-3 control-label'))}}
-                            <div class="col-sm-9">
-                              {{Form::text('fin', null, array('class'=>'form-control input-sm', 'placeholder'=>'FIN',
-                              'data-inputmask'=>"'alias': 'dd/mm/yyyy'", 'data-mask'=>'', 'required'=>''))}}
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            {{Form::label(null, 'Nro Cuenta:', array('class'=>'col-sm-3 control-label'))}}
-                            <div class="col-sm-9">
-                              {{Form::text('cuenta', null, array('class'=>'form-control mayuscula input-sm', 'placeholder'=>'NRO DE CUENTA'))}}
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            {{Form::label(null, 'Banco:', array('class'=>'col-sm-3 control-label'))}}
-                            <div class="col-sm-9">
-                              {{Form::text('banco', null, array('class'=>'form-control mayuscula input-sm', 'placeholder'=>'BANCO'))}}
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            {{Form::label(null, 'CCI:', array('class'=>'col-sm-3 control-label'))}}
-                            <div class="col-sm-9">
-                              <div class="checkbox">
-                                <label>
-                                  {{Form::checkbox('cci', 1)}}
-                                </label>
-                              </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            {{Form::label(null, 'Foto:', array('class'=>'col-sm-3 control-label'))}}
-                            <div class="col-sm-9">
-                              {{Form::file('foto')}}
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            {{Form::label(null, 'Contrato*:', array('class'=>'col-sm-3 control-label'))}}
-                            <div class="col-sm-9">
-                              {{Form::file('contrato', array('required'=>''))}}
-                            </div>
-                        </div>
-                  </div>
-                  <div class="modal-footer clearfix">
-                    {{Form::hidden('empresa', $empresa->ruc)}}
-                    <button type="button" class="btn btn-outline" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-outline pull-left">Guardar</button>
-                  </div>
-                {{Form::close()}}
-            </div>
+                <div class="modal-footer clearfix">
+                  {{Form::hidden('empresa', $empresa->ruc)}}
+                  <button type="button" class="btn btn-outline" data-dismiss="modal">Cancelar</button>
+                  <button type="submit" class="btn btn-outline pull-left">Guardar</button>
+                </div>
+              {{Form::close()}}
           </div>
+        </div>
       </div>
     </div>
   </div>

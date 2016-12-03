@@ -178,35 +178,21 @@
           </li>
           <li class="treeview">
             <a href="#">
-              <i class="fa fa-users"></i> <span>Asistencia</span>
+              <i class="fa fa-users"></i> <span>Asistencia *</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
             </a>
             <ul class="treeview-menu">
               @foreach(Empresa::all() as $empresa)
-              <li><a href="<?=URL::to('asistencia/inicio/'.$empresa->ruc)?>">
+              <li><a href="<?=URL::to('asistencia/reporte/'.$empresa->ruc)?>">
                 <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
               @endforeach
             </ul>
           </li>
           <li class="treeview">
             <a href="#">
-              <i class="fa fa-money"></i> <span>Pagos</span>
-              <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-            </a>
-            <ul class="treeview-menu">
-              @foreach(Empresa::all() as $empresa)
-              <li><a href="#">
-                <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
-              @endforeach
-            </ul>
-          </li>
-          <li class="treeview">
-            <a href="#">
-              <i class="fa fa-money"></i> <span>Descuentos</span>
+              <i class="fa fa-money"></i> <span>Pagos *</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
@@ -220,7 +206,21 @@
           </li>
           <li class="treeview">
             <a href="#">
-              <i class="fa fa-gears"></i> <span>Herramientas</span>
+              <i class="fa fa-money"></i> <span>Descuentos *</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              @foreach(Empresa::all() as $empresa)
+              <li><a href="#">
+                <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
+              @endforeach
+            </ul>
+          </li>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-gears"></i> <span>Herramientas *</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
@@ -234,7 +234,7 @@
           </li>
           <li class="treeview">
             <a href="#">
-              <i class="fa fa-user"></i> <span>Uniformes</span>
+              <i class="fa fa-user"></i> <span>Uniformes *</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
@@ -304,7 +304,7 @@
           </li>
           <li class="treeview">
             <a href="#">
-              <i class="fa fa-file-text"></i> <span>Emisión de recibos</span>
+              <i class="fa fa-file-text"></i> <span>Emisión de recibos *</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>

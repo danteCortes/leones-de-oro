@@ -23,8 +23,8 @@ class TrabajadorController extends BaseController{
           ->with('rojo', $mensaje);
       }else{
         $trabajador = $this->guardarTrabajador($persona->dni, Input::get('empresa'),
-          Input::get('inicio'), Input::get('fin'), Input::get('cuenta'),
-          Input::get('banco'), Input::get('cci'));
+          $this->formatoFecha(Input::get('inicio')), $this->formatoFecha(Input::get('fin')),
+          Input::get('sueldo'), Input::get('cuenta'), Input::get('banco'), Input::get('cci'));
 
         if ($this->guardarFoto(Input::file('foto'), $trabajador->id)) {
           
@@ -64,7 +64,7 @@ class TrabajadorController extends BaseController{
 
       $trabajador = $this->guardarTrabajador($persona->dni, Input::get('empresa'),
         $this->formatoFecha(Input::get('inicio')), $this->formatoFecha(Input::get('fin')),
-        Input::get('cuenta'), Input::get('banco'), Input::get('cci'));
+        Input::get('sueldo'), Input::get('cuenta'), Input::get('banco'), Input::get('cci'));
 
       if ($this->guardarFoto(Input::file('foto'), $trabajador->id)) {
           
@@ -138,8 +138,8 @@ class TrabajadorController extends BaseController{
       Input::get('apellidos'), Input::get('direccion'), Input::get('telefono'))) {
 
       $this->actualizarTrabajador($id, $this->formatoFecha(Input::get('inicio')),
-        $this->formatoFecha(Input::get('fin')), Input::get('cuenta'), Input::get('banco')
-        , Input::get('cci'));
+        $this->formatoFecha(Input::get('fin')), Input::get('sueldo'), Input::get('cuenta'),
+        Input::get('banco'), Input::get('cci'));
       
       $mensaje = "LOS DATOS DEL TRABAJADOR SE ACTUALIZARON CON EXITO.";
       return Redirect::to('trabajador/inicio/'.$trabajador->empresa->ruc)->with('verde', $mensaje);
@@ -313,14 +313,15 @@ class TrabajadorController extends BaseController{
     return Persona::find($dni);
   }
 
-  private function guardarTrabajador($persona_dni, $empresa_ruc, $inicio, $fin, $cuenta, $banco, 
-    $cci){
+  private function guardarTrabajador($persona_dni, $empresa_ruc, $inicio, $fin, $sueldo, $cuenta,
+  $banco, $cci){
 
     $trabajador = new Trabajador;
     $trabajador->persona_dni = $persona_dni;
     $trabajador->empresa_ruc = $empresa_ruc;
     $trabajador->inicio = $inicio;
     $trabajador->fin = $fin;
+    $trabajador->sueldo = $sueldo;
     $trabajador->cuenta = mb_strtoupper($cuenta);
     $trabajador->banco = mb_strtoupper($banco);
     $trabajador->cci = $cci;
@@ -421,11 +422,12 @@ class TrabajadorController extends BaseController{
     }
   }
 
-  private function actualizarTrabajador($id, $inicio, $fin, $cuenta, $banco, $cci){
+  private function actualizarTrabajador($id, $inicio, $fin, $sueldo, $cuenta, $banco, $cci){
 
     $trabajador = Trabajador::find($id);
     $trabajador->inicio = $inicio;
     $trabajador->fin = $fin;
+    $trabajador->sueldo = $sueldo;
     $trabajador->cuenta = mb_strtoupper($cuenta);
     $trabajador->banco = mb_strtoupper($banco);
     $trabajador->cci = $cci;

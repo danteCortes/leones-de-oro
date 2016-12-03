@@ -9,6 +9,19 @@ Trabajador | Ver
 @stop
 
 @section('contenido')
+<?php
+  function moneda($moneda){
+    $aux = explode('.', $moneda);
+    if (count($aux) > 1) {
+      if (strlen($aux[1]) == 1) {
+        $moneda = $moneda."0";
+      }
+    }else{
+      $moneda = $moneda.".00";
+    }
+    return $moneda;
+  }
+?>
 <section class="content-header">
   <h1>
     Trabajador
@@ -91,6 +104,10 @@ Trabajador | Ver
             <tr>
                 <th>Fin</th>
                 <td>{{date('d-m-Y', strtotime($trabajador->fin))}}</td>
+            </tr>
+            <tr>
+                <th>Sueldo</th>
+                <td>S/ {{moneda($trabajador->sueldo)}}</td>
             </tr>
             <tr>
                 <th>Nro Cuenta

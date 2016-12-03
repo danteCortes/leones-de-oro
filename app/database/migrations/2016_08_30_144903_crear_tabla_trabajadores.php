@@ -23,6 +23,7 @@ class CrearTablaTrabajadores extends Migration {
 				->onUpdate('cascade')->onDelete('cascade');
 			$table->date('inicio');
 			$table->date('fin');
+			$table->double('sueldo');
 			$table->string('cuenta')->nullable();
 			$table->string('banco')->nullable();
 			$table->boolean('cci')->nullable();
