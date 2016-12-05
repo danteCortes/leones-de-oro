@@ -51,6 +51,10 @@ Route::group(array('before' => 'auth'), function(){
 
   Route::resource('punto', 'PuntoController', array('only'=>array('store', 'destroy')));
 
+  Route::controller('pago', 'PagoController');
+
+  Route::resource('descuento', 'DescuentoController', array('only'=>array('index', 'store', 'destroy')));
+
 });
 
 Route::controller('asistencia', 'AsistenciaController');

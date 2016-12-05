@@ -178,7 +178,7 @@
           </li>
           <li class="treeview">
             <a href="#">
-              <i class="fa fa-users"></i> <span>Asistencia *</span>
+              <i class="fa fa-users"></i> <span>Asistencia</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
@@ -199,21 +199,21 @@
             </a>
             <ul class="treeview-menu">
               @foreach(Empresa::all() as $empresa)
-              <li><a href="#">
+              <li><a href="<?=URL::to('pago/reporte/'.$empresa->ruc)?>">
                 <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
               @endforeach
             </ul>
           </li>
           <li class="treeview">
             <a href="#">
-              <i class="fa fa-money"></i> <span>Descuentos *</span>
+              <i class="fa fa-money"></i> <span>Descuentos</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
             </a>
             <ul class="treeview-menu">
               @foreach(Empresa::all() as $empresa)
-              <li><a href="#">
+              <li><a href="<?=URL::to('trabajador/descuentos/'.$empresa->ruc)?>">
                 <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
               @endforeach
             </ul>
@@ -227,7 +227,7 @@
             </a>
             <ul class="treeview-menu">
               @foreach(Empresa::all() as $empresa)
-              <li><a href="<?=URL::to('asistencia/inicio/'.$empresa->ruc)?>">
+              <li><a href="#">
                 <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
               @endforeach
             </ul>
@@ -241,7 +241,7 @@
             </a>
             <ul class="treeview-menu">
               @foreach(Empresa::all() as $empresa)
-              <li><a href="<?=URL::to('asistencia/inicio/'.$empresa->ruc)?>">
+              <li><a href="#">
                 <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
               @endforeach
             </ul>
@@ -311,7 +311,7 @@
             </a>
             <ul class="treeview-menu">
               @foreach(Empresa::all() as $empresa)
-              <li><a href="<?=URL::to('costo/inicio/'.$empresa->ruc)?>">
+              <li><a href="#">
                 <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
               @endforeach
             </ul>
@@ -334,6 +334,8 @@
                 Tipo Memorandums</a></li>
               <li><a href="<?=URL::to('turno')?>"><i class="fa fa-circle-o"></i> 
                 Turnos</a></li>
+              <li><a href="<?=URL::to('descuento')?>"><i class="fa fa-circle-o"></i> 
+                Descuentos</a></li>
             </ul>
           </li>
         @elseif(Auth::user()->nivel == 1)

@@ -32,4 +32,9 @@ class Trabajador extends Eloquent{
     return $this->belongsToMany('Punto', 'punto_trabajador', 'trabajador_id', 'punto_id')
       ->withPivot('cargo_id');
   }
+
+  public function descuentos(){
+    return $this->belongsToMany('Descuento', 'descuento_trabajador',
+      'trabajador_id', 'descuento_id')->withPivot('fecha', 'monto', 'descripcion');
+  }
 }

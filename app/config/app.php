@@ -94,6 +94,7 @@ return array(
 	*/
 
 	'providers' => array(
+		'Maatwebsite\Excel\ExcelServiceProvider',
 		'Torann\GeoIP\GeoIPServiceProvider',
 		'SimpleSoftwareIO\QrCode\QrCodeServiceProvider',
 		'Barryvdh\DomPDF\ServiceProvider',
@@ -151,6 +152,7 @@ return array(
 	*/
 
 	'aliases' => array(
+		'Excel' 		  => 'Maatwebsite\Excel\Facades\Excel',
 		'GeoIP' 		  => 'Torann\GeoIP\GeoIPFacade',
 		'QrCode'		  => 'SimpleSoftwareIO\QrCode\Facades\QrCode',
 		'PDF' 			  => 'Barryvdh\DomPDF\Facade',

@@ -60,8 +60,13 @@
               <div class="alert alert-success col-xs-12">Su registro de Entrada fue satisfactorio a las 
                 {{$asistencia->entrada}}.</div>
             @else
+              @if($entrada - $entradaLegal <= 900)
+                <div class="alert alert-success col-xs-12">Su registro de Entrada fue satisfactorio a las 
+                {{$asistencia->entrada}}.</div>
+              @else
               <div class="alert alert-danger col-xs-12">Su registro de Entrada tiene una tardanza de 
-                {{diferencia($entrada-$entradaLegal)}}</div>
+                {{diferencia($entrada-$entradaLegal-900)}}</div>
+              @endif
             @endif
           @else
             @if($salida >= $salidaLegal)
@@ -76,7 +81,7 @@
       </div>
       <div class="row">
         <div class="col-xs-12">
-          <a class="btn btn-success" href="<?=URL::to('asistencia/inicio')?>">Salir</a>
+          <a class="btn btn-success" onclick="javascript:window.close();" href="<?=URL::to('asistencia/inicio')?>">Salir</a>
         </div>
       </div>
     </div>

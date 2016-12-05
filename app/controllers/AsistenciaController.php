@@ -2,6 +2,11 @@
 
 class AsistenciaController extends BaseController{
 
+  public function __construct(){
+
+        $this->beforeFilter('auth', array('only' => array('getReporte', 'getPdf')));
+  }
+
   public function getRegistrar($id){
 
     $trabajador = Trabajador::find($id);
@@ -29,29 +34,66 @@ class AsistenciaController extends BaseController{
   }
 
   public function postRegistrar(){
-    //verificamos si ya existe una asistencia abierta en este punto de trabajo.
-    $asistencia = Asistencia::where('fecha', '=', date('Y-m-d'))->where('punto_id',
-      '=', Input::get('punto_id'))->where('turno_id', '=', Input::get('turno_id'))->first();
-    if ($asistencia) {
-      //si la asistencia ya esta abierta para el dia de hoy, verificamos si se va a 
-      //registrar entrada o salida.
-      if(Input::get('registro') == 1){
-        //Si se registra entrada, verificamos si no registró su entrada el dia de hoy.
-        if($asistencia->trabajadores()->find(Input::get('trabajador_id'))){
-          //si ya registro su entrada lo redirecciona a una pagina con el error.
-          $mensaje = "YA REGISTRO SU ENTRADA EL DIA DE HOY A LAS ".date('h:i:s', 
-            strtotime($asistencia->trabajadores()->find(Input::get('trabajador_id'))
-            ->entrada));
-          return Redirect::to('asistencia/registrar/'.Input::get('trabajador_id'))
-            ->with('rojo', $mensaje);
+    //verificamos que se está registrando: entrada o salida.
+    if (Input::get('registro') == 1) {
+      //Si se va a registrar entrada verificamos si llega dentro del margen de tolerancia.
+      $tolerancia = $this->tiempoasegundos(Turno::find(Input::get('turno_id'))->entrada)+1800;
+      $llegada = $this->tiempoasegundos(date('H:i:s'));
+      if ($llegada <= $tolerancia) {
+        //si llego antes del tiempo de tolerancia verificamos si existe una asistencia para este
+        //día en este punto de trabajo.
+        $asistencia = Asistencia::where('fecha', '=', date('Y-m-d'))->where('punto_id',
+          '=', Input::get('punto_id'))->where('turno_id', '=', Input::get('turno_id'))->first();
+        if ($asistencia) {
+          //si la asistencia ya esta abierta para el dia de hoy,  verificamos si no registró su 
+          //entrada el dia de hoy.
+          if($asistencia->trabajadores()->find(Input::get('trabajador_id'))){
+            //si ya registro su entrada lo redirecciona a una pagina con el error.
+            $mensaje = "YA REGISTRO SU ENTRADA EL DIA DE HOY A LAS ".date('h:i:s', 
+              strtotime($asistencia->trabajadores()->find(Input::get('trabajador_id'))
+              ->entrada));
+            return Redirect::to('asistencia/registrar/'.Input::get('trabajador_id'))
+              ->with('rojo', $mensaje);
+          }else{
+            //Si aun no registra su entrada, registramos su entrada.
+            $asistencia->trabajadores()->attach(Input::get('trabajador_id'), 
+            array('entrada'=>date('H:i:s')));
+          }
         }else{
-          //Si aun no registra su entrada, registramos su entrada para este dia este punto de 
-          //trabajo.
+          //Si no existe, creamos la asistencia para este dia y este punto de trabajo.
+          $asistencia = new Asistencia;
+          $asistencia->punto_id = Input::get('punto_id');
+          $asistencia->turno_id = Input::get('turno_id');
+          $asistencia->fecha = date('Y-m-d');
+          $asistencia->save();
+          //registramos la entrada del trabajador para esta asistencia.
           $asistencia->trabajadores()->attach(Input::get('trabajador_id'), 
-          array('entrada'=>date('H:i:s')));
+            array('entrada'=>date('H:i:s')));
         }
       }else{
-        //Si se registra salida, verificamos si registró entrada.
+        //si llegó despues del tiempo de tolerancia, no puede registrar su asistencia y se le 
+        //reenvía a una vista con el mensaje de error.
+        $mensaje = "ESTA FUERA DEL TIEMPO DE TOLERANCIA. SE LE CONSIDERARÁ FALTA EL DÍA DE HOY.";
+        return Redirect::to('asistencia/registrar/'.Input::get('trabajador_id'))
+          ->with('rojo', $mensaje);
+      }
+    }else{
+      //si se va a registrar su salida verificamos si su salida es el mismo dia que su entrada.
+      $entrada = $this->tiempoasegundos(Turno::find(Input::get('turno_id'))->entrada);
+      $salida = $this->tiempoasegundos(Turno::find(Input::get('turno_id'))->salida);
+      if ($entrada < $salida) {
+        //Si la salida se registra el mismo día verificamos si registro su entrada.
+        $asistencia = Asistencia::where('fecha', '=', date('Y-m-d'))
+          ->where('punto_id', '=', Input::get('punto_id'))
+          ->where('turno_id', '=', Input::get('turno_id'))->first();
+      }else{
+        //Si la salida se registra al día siguiente verificamos si registró su entrada 
+        //el día anterior
+        $asistencia = Asistencia::where('fecha', '=', date('Y-m-d', strtotime('-1 day')))
+          ->where('punto_id', '=', Input::get('punto_id'))
+          ->where('turno_id', '=', Input::get('turno_id'))->first();
+      }
+      if ($asistencia) {
         if($asistencia->trabajadores()->find(Input::get('trabajador_id'))){
           //si ya registro su entrada verificamos si registro su salida.
           $salida = $asistencia->trabajadores()->find(Input::get('trabajador_id'));
@@ -66,25 +108,19 @@ class AsistenciaController extends BaseController{
             array('salida'=>date('H:i:s')));
           }
         }else{
-          //Si aun no registra su entrada, registramos su entrada para este dia este punto de 
-          //trabajo.
+          //Si aun no registra su entrada, lo redireccionamos al inicio con el mensaje 
+          //correspondiente.
           $mensaje = "AUN NO REGISTRA SU ENTRADA EL DIA DE HOY.";
           return Redirect::to('asistencia/registrar/'.Input::get('trabajador_id'))
             ->with('rojo', $mensaje);
         }
+      }else{
+        $mensaje = "AUN NO REGISTRA SU ENTRADA EL DIA DE HOY.";
+        return Redirect::to('asistencia/registrar/'.Input::get('trabajador_id'))
+          ->with('rojo', $mensaje);
       }
-
-    }else{
-      //Si no existe, creamos la asistencia para este dia y este punto de trabajo.
-      $asistencia = new Asistencia;
-      $asistencia->punto_id = Input::get('punto_id');
-      $asistencia->turno_id = Input::get('turno_id');
-      $asistencia->fecha = date('Y-m-d');
-      $asistencia->save();
-      //registramos la entrada del trabajador para esta asistencia.
-      $asistencia->trabajadores()->attach(Input::get('trabajador_id'), 
-        array('entrada'=>date('H:i:s')));
     }
+    
     //nos redireccionamos a una ruta que nos mostrara el estado de nuestro registro.
     return Redirect::to('asistencia/estado/'.Input::get('trabajador_id').'/'.$asistencia->id);
   }
@@ -220,8 +256,12 @@ class AsistenciaController extends BaseController{
                                 $salidaLegal = $salidaLegal[0]*3600 + $salidaLegal[1]*60 + $salidaLegal[2];
                                 $entrada = explode(':', $registro->pivot->entrada);
                                 $entrada = $entrada[0]*3600 + $entrada[1]*60 + $entrada[2];
-                                $salida = explode(':', $registro->pivot->salida);
-                                $salida = $salida[0]*3600 + $salida[1]*60 + $salida[2];
+                                if ($registro->pivot->salida) {
+                                  $salida = explode(':', $registro->pivot->salida);
+                                  $salida = $salida[0]*3600 + $salida[1]*60 + $salida[2];
+                                }else{
+                                  $salida = $entrada;
+                                }
                                 $tardanza = 0;
                                 if ($entrada > $entradaLegal) {
                                   $tardanza += $entrada-$entradaLegal;
@@ -253,5 +293,9 @@ class AsistenciaController extends BaseController{
     return $pdf->setPaper('a4')->setOrientation('landscape')
     ->download("REPORTE DE ASISTENCIA "
       .Input::get('fecha')." ".$empresa->nombre.".pdf");
+  }
+
+  private function tiempoasegundos($tiempo){
+    return explode(':', $tiempo)[0]*3600+explode(':', $tiempo)[1]*60+explode(':', $tiempo)[2];
   }
 }

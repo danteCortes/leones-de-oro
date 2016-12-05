@@ -300,6 +300,48 @@ class TrabajadorController extends BaseController{
     return View::make('trabajador.codigo')->with('trabajador', $trabajador);
   }
 
+  public function getDescuentos($ruc){
+    $empresa = Empresa::find($ruc);
+    return View::make('trabajador.descuentos')->with('empresa', $empresa);
+  }
+
+  public function postDescontar($id){
+    $trabajador = Trabajador::find($id);
+    $trabajador->descuentos()->attach(Input::get('descuento_id'), array('fecha'=>date('Y-m-d'),
+      'monto'=>Input::get('monto'), 'descripcion'=>mb_strtoupper(Input::get('descripcion'))));
+
+    $mensaje = "SE AGREGO UN DESCUENTO AL SEÑOR ".$trabajador->persona->nombre." ".
+      $trabajador->persona->apellidos." SATISFACTORIAMENTE.";
+    return Redirect::to('trabajador/ver-descuentos/'.$trabajador->id)->with('verde',
+      $mensaje);
+  }
+
+  public function getVerDescuentos($id){
+    $trabajador = Trabajador::find($id);
+    return View::make('trabajador.verdescuentos')->with('trabajador', $trabajador);
+  }
+
+  public function deleteBorrarDescuento($id){
+    if(Hash::check(Input::get('password'), Auth::user()->password)){
+      //si es correcto hallamos al trabajador mediante el hidden trabajador_id.
+      $trabajador = Trabajador::find(Input::get('trabajador_id'));
+      //Hallamos el descuento del trabajador en la tabla pivote descuento_trabajador.
+      $descuento_trabajador = DescuentoTrabajador::find($id);
+      $descuento_trabajador->delete();
+      $mensaje = "EL DESCUENTO DEL TRABAJADOR FUE BORRADO.";
+        return Redirect::to('trabajador/ver-descuentos/'.Input::get('trabajador_id'))
+          ->with('naranja', $mensaje);
+    }else{
+      //Si la contraseña es incorrecta regresamos a la vista de mostrar trabajador con
+      //el mensaje respectivo.
+      $mensaje = "NO SE BORRO EL DESCUENTO DEL TRABAJADOR. LA CONTRASEÑA QUE INTRODUJO ES INCORRECTO,
+      VUELVA A INTENTARLO.";
+      return Redirect::to('trabajador/ver-descuentos/'.Input::get('trabajador_id'))->with('rojo', $mensaje);
+    }
+  }
+
+  /****************************************************************************************/
+
   private function guardarPersona($dni, $nombre, $apellidos, $direccion, $telefono){
 
     $persona = new Persona;

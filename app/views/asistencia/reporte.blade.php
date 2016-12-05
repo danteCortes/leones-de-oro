@@ -36,13 +36,6 @@ Asistencia | Reporte
           </div>
         </div>
         <div class="box-footer">
-          {{Form::open(array('url'=>'asistencia/excel', 'method'=>'get', 'class'=>'pull-left'))}}
-            <button type="submit" class="btn btn-success" style="margin-right: 5px;" id="excel">
-              <i class="fa fa-download"></i> Descargar EXCEL <i class="fa fa-file-excel-o"></i>
-            </button>
-            {{Form::hidden('fecha', null, array('class'=>'fecha'))}}
-            {{Form::hidden('empresa_ruc', $empresa->ruc)}}
-          {{Form::close()}}
           {{Form::open(array('url'=>'asistencia/pdf', 'method'=>'get', 'class'=>'pull-right'))}}
             <button type="submit" class="btn btn-primary" style="margin-right: 5px;" id="pdf">
               <i class="fa fa-download"></i> Descargar PDF <i class="fa fa-file-pdf-o"></i>
@@ -65,6 +58,12 @@ Asistencia | Reporte
 
     $("#fecha").blur(function(){
       $(".fecha").val($("#fecha").val());
+    });
+
+    $("#pdf").click(function(){
+      if ($(".fecha").val() == "") {
+        return false;
+      };
     });
   });
 </script>
