@@ -55,6 +55,8 @@ Route::group(array('before' => 'auth'), function(){
 
   Route::resource('descuento', 'DescuentoController', array('only'=>array('index', 'store', 'destroy')));
 
+  Route::controller('prenda', 'PrendaController');
+
 });
 
 Route::controller('asistencia', 'AsistenciaController');

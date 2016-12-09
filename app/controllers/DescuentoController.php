@@ -11,7 +11,7 @@ class DescuentoController extends BaseController{
 	public function store(){
 		
 		$descuento = new Descuento;
-		$descuento->nombre = strtoupper(Input::get('nombre'));
+		$descuento->nombre = mb_strtoupper(Input::get('nombre'));
 		$descuento->save();
 
 		$mensaje = "NUEVO TIPO DE DESCUENTO CREADO.";

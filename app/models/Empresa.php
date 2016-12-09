@@ -46,4 +46,9 @@ class Empresa extends Eloquent{
   public function informes(){
     return $this->hasMany('Informe', 'empresa_ruc');
   }
+
+  public function prendas(){
+    return $this->belongsToMany('Prenda', 'empresa_prenda', 'empresa_ruc', 'prenda_id')
+      ->withPivot('codigo', 'cantidad_p', 'cantidad_s');
+  }
 }
