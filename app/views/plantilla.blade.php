@@ -220,14 +220,14 @@
           </li>
           <li class="treeview">
             <a href="#">
-              <i class="fa fa-gears"></i> <span>Herramientas *</span>
+              <i class="fa fa-gears"></i> <span>Herramientas</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
             </a>
             <ul class="treeview-menu">
               @foreach(Empresa::all() as $empresa)
-              <li><a href="#">
+              <li><a href="<?=URL::to('herramienta/inicio/'.$empresa->ruc)?>">
                 <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
               @endforeach
             </ul>

@@ -29,8 +29,8 @@ class CrearTablaEmpresaPrendaTrabajadorUsuario extends Migration {
 				->onUpdate('cascade')->onDelete('set null');
 			$table->integer('cantidad_p')->unsigned();
 			$table->integer('cantidad_s')->unsigned();
-			$table->string('observacion');
-			$table->boolean('estado');
+			$table->date('entrega');
+			$table->date('devolucion')->nullable();
 		});
 	}
 

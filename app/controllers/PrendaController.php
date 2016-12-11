@@ -160,6 +160,7 @@ class PrendaController extends BaseController{
       if ($empresa_prenda_trabajador_usuario) {
         $empresa_prenda_trabajador_usuario->cantidad_p += Input::get('cantidad_p');
         $empresa_prenda_trabajador_usuario->cantidad_s += Input::get('cantidad_s');
+        $empresa_prenda_trabajador_usuario->entrega = date('Y-m-d');
         $empresa_prenda_trabajador_usuario->usuario_id = Auth::user()->id;
         $empresa_prenda_trabajador_usuario->save();
       }else{
@@ -170,6 +171,7 @@ class PrendaController extends BaseController{
         $empresa_prenda_trabajador_usuario->usuario_id = Auth::user()->id;
         $empresa_prenda_trabajador_usuario->cantidad_p = Input::get('cantidad_p');
         $empresa_prenda_trabajador_usuario->cantidad_s = Input::get('cantidad_s');
+        $empresa_prenda_trabajador_usuario->entrega = date('Y-m-d');
         $empresa_prenda_trabajador_usuario->save();
       }
 
@@ -194,10 +196,12 @@ class PrendaController extends BaseController{
           
           $prenda->cantidad_p += Input::get('cantidad_p');
           $prenda->cantidad_s += Input::get('cantidad_s');
+          $empresa_prenda_trabajador_usuario->devolucion = date('Y-m-d');
           $prenda->save();
 
           $empresa_prenda_trabajador_usuario->cantidad_p -= Input::get('cantidad_p');
           $empresa_prenda_trabajador_usuario->cantidad_s -= Input::get('cantidad_s');
+          $empresa_prenda_trabajador_usuario->devolucion = date('Y-m-d');
           $empresa_prenda_trabajador_usuario->usuario_id = Auth::user()->id;
           $empresa_prenda_trabajador_usuario->save();
 
@@ -261,8 +265,7 @@ class PrendaController extends BaseController{
         <head>
           <meta http-equiv='Content-Type' content='text/html; charset=ISO-8859-1'>
           <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-          <title>REPORTE DE PRENDAS ".$trabajador->persona->nombre." "
-            .$trabajador->persona->nombre."</title>
+          <title>CONTROL DE UNIFORMES DEL PERSONAL DE VIGILANCIA DESTACADO</title>
           <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' 
             name='viewport'>
         </head>
@@ -288,8 +291,17 @@ class PrendaController extends BaseController{
               border: 1px solid #000000;
             }
           </style>
-          <h1 align='center'>REPORTE DE PRENDAS DE ".$trabajador->persona->nombre." "
-            .$trabajador->persona->apellidos."</h1>
+          <h1 align='center'>CONTROL DE UNIFORMES DEL PERSONAL DE VIGILANCIA DESTACADO</h1>
+          <P>Apellidos y nombres: ".$trabajador->persona->apellidos." ".
+            $trabajador->persona->nombre."</p>
+          <p>Dirección Domiciliaria: ".$trabajador->persona->direccion."</p>
+          <p>Nº Documento de Identidad: ".$trabajador->persona->dni."</p>
+          <p>Teléfono: ".$trabajador->persona->telefono."</p>
+          <p>Unidad Destacada: ";
+          foreach ($trabajador->puntos as $punto) {
+            $html .= $punto->contrato->cliente->nombre." - ".$punto->nombre.", ";
+          }
+          $html .= "</p>
           <table class='borde-tabla'>
             <tr>
               <th>CÓDIGO</th>
@@ -297,6 +309,7 @@ class PrendaController extends BaseController{
               <th>TALLA</th>
               <th>PRIMERA</th>
               <th>SEGUNDA</th>
+              <th>ENTREGA</th>
             </tr>";
             foreach ($trabajador->prendas as $prenda) {
               $html .= "
@@ -306,6 +319,7 @@ class PrendaController extends BaseController{
                 <td>".$prenda->talla."</td>
                 <td>".$prenda->pivot->cantidad_p."</td>
                 <td>".$prenda->pivot->cantidad_s."</td>
+                <td>".date('d-m-Y', strtotime($prenda->pivot->entrega))."</td>
               </tr>";
             }
           $html .= "</table>

@@ -57,6 +57,8 @@ Route::group(array('before' => 'auth'), function(){
 
   Route::controller('prenda', 'PrendaController');
 
+  Route::controller('herramienta', 'HerramientaController');
+
 });
 
 Route::controller('asistencia', 'AsistenciaController');

@@ -51,4 +51,9 @@ class Empresa extends Eloquent{
     return $this->belongsToMany('Prenda', 'empresa_prenda', 'empresa_ruc', 'prenda_id')
       ->withPivot('codigo', 'cantidad_p', 'cantidad_s');
   }
+
+  public function herramientas(){
+    return $this->belongsToMany('Herramienta', 'empresa_herramienta', 'empresa_ruc', 'herramienta_id')
+      ->withPivot('serie', 'marca', 'modelo', 'descripcion');
+  }
 }
