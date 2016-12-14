@@ -141,6 +141,19 @@ Trabajador | Editar
                 </div>
                   </div>
               </div>
+              <div class="form-group">
+                {{Form::label(null, 'Aseguradora:', array('class'=>'col-sm-3 control-label'))}}
+                <div class="col-sm-9">
+                  <select name="aseguradora_id" class="form-control input-sm">
+                    <option value="{{$trabajador->aseguradora_id}}">
+                      {{$trabajador->aseguradora->nombre}} (ACTUAL)</option>
+                    <option value="">SELECCIONAR</option>
+                    @foreach(Aseguradora::all() as $aseguradora)
+                      <option value="{{$aseguradora->id}}">{{$aseguradora->nombre}}</option>
+                    @endforeach
+                  </select>
+                </div>
+            </div>
             </div>
             <div class="box-footer">
               <button type="reset" class="btn btn-warning">Limpiar</button>

@@ -22,7 +22,7 @@ class TrabajadorController extends BaseController{
         return Redirect::to('trabajador/inicio/'.Input::get('empresa'))
           ->with('rojo', $mensaje);
       }else{
-        $trabajador = $this->guardarTrabajador($persona->dni, Input::get('empresa'),
+        $trabajador = $this->guardarTrabajador($persona->dni, Input::get('empresa'), Input::get('aseguradora_id'),
           $this->formatoFecha(Input::get('inicio')), $this->formatoFecha(Input::get('fin')),
           Input::get('sueldo'), Input::get('cuenta'), Input::get('banco'), Input::get('cci'));
 
@@ -62,7 +62,7 @@ class TrabajadorController extends BaseController{
       $persona = $this->guardarPersona(Input::get('dni'), Input::get('nombre'),
         Input::get('apellidos'), Input::get('direccion'), Input::get('telefono'));
 
-      $trabajador = $this->guardarTrabajador($persona->dni, Input::get('empresa'),
+      $trabajador = $this->guardarTrabajador($persona->dni, Input::get('empresa'), Input::get('aseguradora_id'),
         $this->formatoFecha(Input::get('inicio')), $this->formatoFecha(Input::get('fin')),
         Input::get('sueldo'), Input::get('cuenta'), Input::get('banco'), Input::get('cci'));
 
@@ -137,7 +137,7 @@ class TrabajadorController extends BaseController{
     if ($this->actualizarPersona($persona->dni, Input::get('dni'), Input::get('nombre'),
       Input::get('apellidos'), Input::get('direccion'), Input::get('telefono'))) {
 
-      $this->actualizarTrabajador($id, $this->formatoFecha(Input::get('inicio')),
+      $this->actualizarTrabajador($id, Input::get('aseguradora_id'), $this->formatoFecha(Input::get('inicio')),
         $this->formatoFecha(Input::get('fin')), Input::get('sueldo'), Input::get('cuenta'),
         Input::get('banco'), Input::get('cci'));
       
@@ -355,12 +355,13 @@ class TrabajadorController extends BaseController{
     return Persona::find($dni);
   }
 
-  private function guardarTrabajador($persona_dni, $empresa_ruc, $inicio, $fin, $sueldo, $cuenta,
+  private function guardarTrabajador($persona_dni, $empresa_ruc, $aseguradora_id, $inicio, $fin, $sueldo, $cuenta,
   $banco, $cci){
 
     $trabajador = new Trabajador;
     $trabajador->persona_dni = $persona_dni;
     $trabajador->empresa_ruc = $empresa_ruc;
+    $trabajador->aseguradora_id = $aseguradora_id;
     $trabajador->inicio = $inicio;
     $trabajador->fin = $fin;
     $trabajador->sueldo = $sueldo;
@@ -464,9 +465,10 @@ class TrabajadorController extends BaseController{
     }
   }
 
-  private function actualizarTrabajador($id, $inicio, $fin, $sueldo, $cuenta, $banco, $cci){
+  private function actualizarTrabajador($id, $aseguradora_id, $inicio, $fin, $sueldo, $cuenta, $banco, $cci){
 
     $trabajador = Trabajador::find($id);
+    $trabajador->aseguradora_id = $aseguradora_id;
     $trabajador->inicio = $inicio;
     $trabajador->fin = $fin;
     $trabajador->sueldo = $sueldo;

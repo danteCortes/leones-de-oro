@@ -15,15 +15,15 @@ Trabajador | Inicio
 
 @section('contenido')
 <section class="content-header">
-    <h1>
-      Trabajadores
-      <small>{{$empresa->nombre}}</small>
-    </h1>
-    <ol class="breadcrumb">
-      <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-      <li><a href="#">Trabajadores</a></li>
-      <li class="active">Inicio</li>
-    </ol>
+  <h1>
+    Trabajadores
+    <small>{{$empresa->nombre}}</small>
+  </h1>
+  <ol class="breadcrumb">
+    <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
+    <li><a href="#">Trabajadores</a></li>
+    <li class="active">Inicio</li>
+  </ol>
 </section>
 <section class="content">
   <div class="row">
@@ -118,6 +118,17 @@ Trabajador | Inicio
                           </div>
                       </div>
                       <div class="form-group">
+                          {{Form::label(null, 'Aseguradora:', array('class'=>'col-sm-3 control-label'))}}
+                          <div class="col-sm-9">
+                            <select name="aseguradora_id" class="form-control input-sm">
+                              <option value="">SELECCIONAR</option>
+                              @foreach(Aseguradora::all() as $aseguradora)
+                                <option value="{{$aseguradora->id}}">{{$aseguradora->nombre}}</option>
+                              @endforeach
+                            </select>
+                          </div>
+                      </div>
+                      <div class="form-group">
                           {{Form::label(null, 'Foto:', array('class'=>'col-sm-3 control-label'))}}
                           <div class="col-sm-9">
                             {{Form::file('foto')}}
@@ -164,83 +175,83 @@ Trabajador | Inicio
         @endif
     </div>
   </div>
-    <div class="row">
-      <div class="col-xs-12">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Trabajadores de {{$empresa->nombre}}</h3>
-            </div>
-            <div class="box-body">
-              <table id="trabajadores" class="table table-bordered table-striped">
-                <thead>
-                  <tr>
-                      <th>DNI</th>
-                      <th>Trabajador</th>
-                      <th>Ver</th>
-                      <th>Editar</th>
-                      <th>Borrar</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @foreach($trabajadores as $trabajador)
-                    <tr>
-                      <td>{{Trabajador::find($trabajador->id)->persona->dni}}</td>
-                      <td>{{Trabajador::find($trabajador->id)->persona->nombre}}
-                        {{Trabajador::find($trabajador->id)->persona->apellidos}}
-                        @if(!Trabajador::find($trabajador->id)->documentos(8)->first())
-                          <small class="label bg-yellow">Sin Contrato</small>
-                        @endif
-                      </td>
-                      <td>
-                        <a href="<?=URL::to('trabajador/ver/'.$trabajador->id)?>" class="btn btn-warning btn-xs">Ver</a>
-                      </td>
-                      <td>
-                        <a href="<?=URL::to('trabajador/editar/'.$trabajador->id)?>" class="btn btn-info btn-xs">Editar</a>
-                      </td>
-                      <td>
-                        <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#borrar{{$trabajador->id}}">
-                          Borrar
-                        </button>
-                        <div class="modal fade modal-danger" id="borrar{{$trabajador->id}}" tabindex="-1" role="dialog"
-                          aria-labelledby="myModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                              <div class="modal-content">
-                                  <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                      <span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title">Borrar Trabajador</h4>
-                                  </div>
-                                  {{Form::open(array('url'=>'trabajador/borrar/'.$trabajador->id, 'class'=>'', 'method'=>'delete'))}}
-                                    <div class="modal-body">
-                                          <div class="form-group">
-                                            <label>Está a punto de eliminar al trabajador "{{$trabajador->persona->nombre}}". Algunos datos como
-                                                documentos, uniformes, herramientas, etc. asociados a este trabajador serán borrados.<br>
-                                                Le recomendamos cambiar los registros asociados a este trabajador antes de eliminarlo.</label>
-                                          </div>
-                                          <div class="form-group">
-                                              <label>Para confirmar esta acción se necesita su contraseña, de lo contrario pulse cancelar para
-                                                declinar.</label>
-                                                {{Form::password('password', array('class'=>'form-control input-sm', 'placeholder'=>'PASSWORD',
-                                                'required'=>''))}}
-                                          </div>
-                                    </div>
-                                    <div class="modal-footer clearfix">
-                                      <button type="button" class="btn btn-outline" data-dismiss="modal">Cancelar</button>
-                                      <button type="submit" class="btn btn-outline pull-left">Borrar</button>
-                                    </div>
-                                  {{Form::close()}}
-                              </div>
-                            </div>
-                        </div>
-                      </td>
-                    </tr>
-                  @endforeach
-                </tbody>
-              </table>
-            </div>
+  <div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+          <div class="box-header">
+            <h3 class="box-title">Trabajadores de {{$empresa->nombre}}</h3>
           </div>
-      </div>
+          <div class="box-body">
+            <table id="trabajadores" class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                    <th>DNI</th>
+                    <th>Trabajador</th>
+                    <th>Ver</th>
+                    <th>Editar</th>
+                    <th>Borrar</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach($trabajadores as $trabajador)
+                  <tr>
+                    <td>{{Trabajador::find($trabajador->id)->persona->dni}}</td>
+                    <td>{{Trabajador::find($trabajador->id)->persona->nombre}}
+                      {{Trabajador::find($trabajador->id)->persona->apellidos}}
+                      @if(!Trabajador::find($trabajador->id)->documentos(8)->first())
+                        <small class="label bg-yellow">Sin Contrato</small>
+                      @endif
+                    </td>
+                    <td>
+                      <a href="<?=URL::to('trabajador/ver/'.$trabajador->id)?>" class="btn btn-warning btn-xs">Ver</a>
+                    </td>
+                    <td>
+                      <a href="<?=URL::to('trabajador/editar/'.$trabajador->id)?>" class="btn btn-info btn-xs">Editar</a>
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#borrar{{$trabajador->id}}">
+                        Borrar
+                      </button>
+                      <div class="modal fade modal-danger" id="borrar{{$trabajador->id}}" tabindex="-1" role="dialog"
+                        aria-labelledby="myModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span></button>
+                                  <h4 class="modal-title">Borrar Trabajador</h4>
+                                </div>
+                                {{Form::open(array('url'=>'trabajador/borrar/'.$trabajador->id, 'class'=>'', 'method'=>'delete'))}}
+                                  <div class="modal-body">
+                                        <div class="form-group">
+                                          <label>Está a punto de eliminar al trabajador "{{$trabajador->persona->nombre}}". Algunos datos como
+                                              documentos, uniformes, herramientas, etc. asociados a este trabajador serán borrados.<br>
+                                              Le recomendamos cambiar los registros asociados a este trabajador antes de eliminarlo.</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Para confirmar esta acción se necesita su contraseña, de lo contrario pulse cancelar para
+                                              declinar.</label>
+                                              {{Form::password('password', array('class'=>'form-control input-sm', 'placeholder'=>'PASSWORD',
+                                              'required'=>''))}}
+                                        </div>
+                                  </div>
+                                  <div class="modal-footer clearfix">
+                                    <button type="button" class="btn btn-outline" data-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-outline pull-left">Borrar</button>
+                                  </div>
+                                {{Form::close()}}
+                            </div>
+                          </div>
+                      </div>
+                    </td>
+                  </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+        </div>
     </div>
+  </div>
 </section>
 @stop
 

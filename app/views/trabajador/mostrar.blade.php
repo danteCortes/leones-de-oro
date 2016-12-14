@@ -121,6 +121,10 @@ Trabajador | Ver
                 <th>Banco</th>
                 <td>{{$trabajador->banco}}</td>
             </tr>
+            <tr>
+                <th>Aseguradora</th>
+                <td>{{$trabajador->aseguradora->nombre}}</td>
+            </tr>
           </table>
         </div>
       </div>

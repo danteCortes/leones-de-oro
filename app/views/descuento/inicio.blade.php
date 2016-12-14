@@ -11,7 +11,7 @@ Configuración | Descuentos
 <section class="content-header">
   <h1>
     Configuración
-    <small>dexuentos</small>
+    <small>descuentos</small>
   </h1>
   <ol class="breadcrumb">
     <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>

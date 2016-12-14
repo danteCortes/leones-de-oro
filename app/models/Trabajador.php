@@ -48,4 +48,8 @@ class Trabajador extends Eloquent{
     return $this->belongsToMany('HerramientaEmpresa', 'empresa_herramienta_trabajador',
       'trabajador_id', 'empresa_herramienta_id')->withPivot('entrega');
   }
+
+  public function aseguradora(){
+    return $this->belongsTo('Aseguradora');
+  }
 }

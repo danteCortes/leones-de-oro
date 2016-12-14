@@ -59,6 +59,8 @@ Route::group(array('before' => 'auth'), function(){
 
   Route::controller('herramienta', 'HerramientaController');
 
+  Route::resource('aseguradora', 'AseguradoraController', array('only'=>array('index', 'store', 'destroy')));
+
 });
 
 Route::controller('asistencia', 'AsistenciaController');

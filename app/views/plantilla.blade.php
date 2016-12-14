@@ -336,6 +336,8 @@
                 Turnos</a></li>
               <li><a href="<?=URL::to('descuento')?>"><i class="fa fa-circle-o"></i> 
                 Descuentos</a></li>
+              <li><a href="<?=URL::to('aseguradora')?>"><i class="fa fa-circle-o"></i> 
+                Aseguradoras</a></li>
             </ul>
           </li>
         @elseif(Auth::user()->nivel == 1)
