@@ -114,6 +114,27 @@ Trabajador | Editar
                   </div>
               </div>
               <div class="form-group">
+                {{Form::label(null, 'Asignación Familiar', array('class'=>'col-sm-2 control-label'))}}
+                <div class="col-sm-10">
+                  <div class="checkbox">
+                    <label>
+                      @if($trabajador->af)
+                        {{Form::checkbox('af', 1, true)}}
+                      @else
+                        {{Form::checkbox('af', 1, false)}}
+                      @endif
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                {{Form::label(null, 'Horas Extras', array('class'=>'col-sm-2 control-label'))}}
+                <div class="col-sm-10">
+                  {{Form::text('he', $trabajador->he, array('required'=>'',
+                    'class'=>'form-control input-sm mayuscula numero'))}}
+                </div>
+              </div>
+              <div class="form-group">
                 {{Form::label(null, 'Nro. Cuenta', array('class'=>'col-sm-2 control-label'))}}
                   <div class="col-sm-10">
                     {{Form::text('cuenta', $trabajador->cuenta, array(
@@ -145,8 +166,10 @@ Trabajador | Editar
                 {{Form::label(null, 'Aseguradora:', array('class'=>'col-sm-3 control-label'))}}
                 <div class="col-sm-9">
                   <select name="aseguradora_id" class="form-control input-sm">
+                    @if($trabajador->aseguradora_id)
                     <option value="{{$trabajador->aseguradora_id}}">
                       {{$trabajador->aseguradora->nombre}} (ACTUAL)</option>
+                    @endif
                     <option value="">SELECCIONAR</option>
                     @foreach(Aseguradora::all() as $aseguradora)
                       <option value="{{$aseguradora->id}}">{{$aseguradora->nombre}}</option>

@@ -110,12 +110,26 @@ Trabajador | Ver
                 <td>S/ {{moneda($trabajador->sueldo)}}</td>
             </tr>
             <tr>
-                <th>Nro Cuenta
-                  @if($trabajador->cci)
-                    (CCI)
-                  @endif
-                </th>
-                <td>{{$trabajador->cuenta}}</td>
+              <th>Asignación Familiar</th>
+              <td>
+                @if($trabajador->af)
+                  SI
+                @else
+                  NO
+                @endif
+              </td>
+            </tr>
+            <tr>
+              <th>Horas Extras</th>
+              <td>{{$trabajador->he}}</td>
+            </tr>
+            <tr>
+              <th>Nro Cuenta
+                @if($trabajador->cci)
+                  (CCI)
+                @endif
+              </th>
+              <td>{{$trabajador->cuenta}}</td>
             </tr>
             <tr>
                 <th>Banco</th>
@@ -123,7 +137,11 @@ Trabajador | Ver
             </tr>
             <tr>
                 <th>Aseguradora</th>
-                <td>{{$trabajador->aseguradora->nombre}}</td>
+                <td>
+                  @if($trabajador->aseguradora_id)
+                    {{$trabajador->aseguradora->nombre}}
+                  @endif
+                    </td>
             </tr>
           </table>
         </div>

@@ -30,17 +30,20 @@ Pago | Reporte
               <div class="input-group-addon">
                 <i class="fa fa-calendar"></i>
               </div>
-              <input type="text" class="form-control" data-inputmask="'alias': 'mm/yyyy'" 
+              <input type="text" class="form-control input-sm" data-inputmask="'alias': 'mm/yyyy'" 
               data-mask placeholder="MES" id="fecha">
             </div>
           </div>
         </div>
         <div class="box-footer">
-          {{Form::open(array('url'=>'pago/pdf', 'method'=>'get', 'class'=>'pull-right'))}}
-            <button type="submit" class="btn btn-primary" style="margin-right: 5px;" id="pdf">
+          {{Form::open(array('url'=>'pago/pdf', 'method'=>'get', 'class'=>'pull-right',
+            'target'=>'_blank'))}}
+            <button type="submit" class="btn btn-primary" style="margin-right: 5px;" id="pdf"
+              target="_blank">
               <i class="fa fa-download"></i> Descargar PDF <i class="fa fa-file-pdf-o"></i>
             </button>
             {{Form::hidden('fecha', null, array('class'=>'fecha'))}}
+            {{Form::hidden('cliente_id', null, array('class'=>'cliente_id'))}}
             {{Form::hidden('empresa_ruc', $empresa->ruc)}}
           {{Form::close()}}
         </div>

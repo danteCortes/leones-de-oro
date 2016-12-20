@@ -96,6 +96,22 @@ Trabajador | Inicio
                           </div>
                       </div>
                       <div class="form-group">
+                          {{Form::label(null, 'Asignación Familiar:', array('class'=>'col-sm-3 control-label'))}}
+                          <div class="col-sm-9">
+                            <div class="checkbox">
+                              <label>
+                                {{Form::checkbox('af', 1)}}
+                              </label>
+                            </div>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          {{Form::label(null, 'Horas Extras:', array('class'=>'col-sm-3 control-label'))}}
+                          <div class="col-sm-9">
+                            {{Form::text('he', null, array('class'=>'form-control input-sm', 'placeholder'=>'HORAS EXTRAS', 'required'=>''))}}
+                          </div>
+                      </div>
+                      <div class="form-group">
                           {{Form::label(null, 'Nro Cuenta:', array('class'=>'col-sm-3 control-label'))}}
                           <div class="col-sm-9">
                             {{Form::text('cuenta', null, array('class'=>'form-control mayuscula input-sm', 'placeholder'=>'NRO DE CUENTA'))}}

@@ -220,6 +220,20 @@
           </li>
           <li class="treeview">
             <a href="#">
+              <i class="fa fa-money"></i> <span>Bonificaciones</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              @foreach(Empresa::all() as $empresa)
+              <li><a href="<?=URL::to('trabajador/bonificaciones/'.$empresa->ruc)?>">
+                <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
+              @endforeach
+            </ul>
+          </li>
+          <li class="treeview">
+            <a href="#">
               <i class="fa fa-gears"></i> <span>Herramientas</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
@@ -336,6 +350,8 @@
                 Turnos</a></li>
               <li><a href="<?=URL::to('descuento')?>"><i class="fa fa-circle-o"></i> 
                 Descuentos</a></li>
+              <li><a href="<?=URL::to('bonificacion')?>"><i class="fa fa-circle-o"></i> 
+                Bonificaciones</a></li>
               <li><a href="<?=URL::to('aseguradora')?>"><i class="fa fa-circle-o"></i> 
                 Aseguradoras</a></li>
             </ul>

@@ -52,4 +52,9 @@ class Trabajador extends Eloquent{
   public function aseguradora(){
     return $this->belongsTo('Aseguradora');
   }
+
+  public function bonificaciones(){
+    return $this->belongsToMany('Bonificacion', 'bonificacion_trabajador',
+      'trabajador_id', 'bonificacion_id');
+  }
 }

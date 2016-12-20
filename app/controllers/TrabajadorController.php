@@ -11,6 +11,7 @@ class TrabajadorController extends BaseController{
   }
 
   public function postContratar(){
+    
     $persona = Persona::find(Input::get('dni'));
     if ($persona) {
 
@@ -24,7 +25,8 @@ class TrabajadorController extends BaseController{
       }else{
         $trabajador = $this->guardarTrabajador($persona->dni, Input::get('empresa'), Input::get('aseguradora_id'),
           $this->formatoFecha(Input::get('inicio')), $this->formatoFecha(Input::get('fin')),
-          Input::get('sueldo'), Input::get('cuenta'), Input::get('banco'), Input::get('cci'));
+          Input::get('sueldo'), Input::get('af'), Input::get('he'), Input::get('cuenta'), 
+          Input::get('banco'), Input::get('cci'));
 
         if ($this->guardarFoto(Input::file('foto'), $trabajador->id)) {
           
@@ -64,7 +66,8 @@ class TrabajadorController extends BaseController{
 
       $trabajador = $this->guardarTrabajador($persona->dni, Input::get('empresa'), Input::get('aseguradora_id'),
         $this->formatoFecha(Input::get('inicio')), $this->formatoFecha(Input::get('fin')),
-        Input::get('sueldo'), Input::get('cuenta'), Input::get('banco'), Input::get('cci'));
+        Input::get('sueldo'), Input::get('af'), Input::get('he'), Input::get('cuenta'), 
+        Input::get('banco'), Input::get('cci'));
 
       if ($this->guardarFoto(Input::file('foto'), $trabajador->id)) {
           
@@ -138,7 +141,7 @@ class TrabajadorController extends BaseController{
       Input::get('apellidos'), Input::get('direccion'), Input::get('telefono'))) {
 
       $this->actualizarTrabajador($id, Input::get('aseguradora_id'), $this->formatoFecha(Input::get('inicio')),
-        $this->formatoFecha(Input::get('fin')), Input::get('sueldo'), Input::get('cuenta'),
+        $this->formatoFecha(Input::get('fin')), Input::get('sueldo'), Input::get('af'), Input::get('he'), Input::get('cuenta'),
         Input::get('banco'), Input::get('cci'));
       
       $mensaje = "LOS DATOS DEL TRABAJADOR SE ACTUALIZARON CON EXITO.";
@@ -340,6 +343,45 @@ class TrabajadorController extends BaseController{
     }
   }
 
+  public function getBonificaciones($ruc){
+    $empresa = Empresa::find($ruc);
+    return View::make('trabajador.bonificaciones')->with('empresa', $empresa);
+  }
+
+  public function postBonificar($id){
+    $trabajador = Trabajador::find($id);
+    $trabajador->bonificaciones()->attach(Input::get('bonificacion_id'));
+
+    $mensaje = "SE AGREGÓ UNA BONIFICACIÓN AL SEÑOR ".$trabajador->persona->nombre." ".
+      $trabajador->persona->apellidos." SATISFACTORIAMENTE.";
+    return Redirect::to('trabajador/ver-bonificaciones/'.$trabajador->id)->with('verde',
+      $mensaje);
+  }
+
+  public function getVerBonificaciones($id){
+    $trabajador = Trabajador::find($id);
+    return View::make('trabajador.verbonificaciones')->with('trabajador', $trabajador);
+  }
+
+  public function deleteBorrarBonificacion($id){
+    if(Hash::check(Input::get('password'), Auth::user()->password)){
+      //si es correcto hallamos al trabajador mediante el hidden trabajador_id.
+      $trabajador = Trabajador::find(Input::get('trabajador_id'));
+      //Hallamos el descuento del trabajador en la tabla pivote descuento_trabajador.
+      $bonificacion_trabajador = BonificacionTrabajador::find($id);
+      $bonificacion_trabajador->delete();
+      $mensaje = "LA BONIFICACIÓN DEL TRABAJADOR FUE BORRADO.";
+        return Redirect::to('trabajador/ver-bonificaciones/'.Input::get('trabajador_id'))
+          ->with('naranja', $mensaje);
+    }else{
+      //Si la contraseña es incorrecta regresamos a la vista de mostrar trabajador con
+      //el mensaje respectivo.
+      $mensaje = "NO SE BORRO LA BONIFICACIÓN DEL TRABAJADOR. LA CONTRASEÑA QUE INTRODUJO ES INCORRECTO,
+      VUELVA A INTENTARLO.";
+      return Redirect::to('trabajador/ver-bonificaciones/'.Input::get('trabajador_id'))->with('rojo', $mensaje);
+    }
+  }
+
   /****************************************************************************************/
 
   private function guardarPersona($dni, $nombre, $apellidos, $direccion, $telefono){
@@ -355,8 +397,8 @@ class TrabajadorController extends BaseController{
     return Persona::find($dni);
   }
 
-  private function guardarTrabajador($persona_dni, $empresa_ruc, $aseguradora_id, $inicio, $fin, $sueldo, $cuenta,
-  $banco, $cci){
+  private function guardarTrabajador($persona_dni, $empresa_ruc, $aseguradora_id, $inicio, $fin,
+    $sueldo, $af, $he, $cuenta, $banco, $cci){
 
     $trabajador = new Trabajador;
     $trabajador->persona_dni = $persona_dni;
@@ -365,6 +407,8 @@ class TrabajadorController extends BaseController{
     $trabajador->inicio = $inicio;
     $trabajador->fin = $fin;
     $trabajador->sueldo = $sueldo;
+    $trabajador->af = $af;
+    $trabajador->he = $he;
     $trabajador->cuenta = mb_strtoupper($cuenta);
     $trabajador->banco = mb_strtoupper($banco);
     $trabajador->cci = $cci;
@@ -465,13 +509,16 @@ class TrabajadorController extends BaseController{
     }
   }
 
-  private function actualizarTrabajador($id, $aseguradora_id, $inicio, $fin, $sueldo, $cuenta, $banco, $cci){
+  private function actualizarTrabajador($id, $aseguradora_id, $inicio, $fin, $sueldo, $af, $he,
+    $cuenta, $banco, $cci){
 
     $trabajador = Trabajador::find($id);
     $trabajador->aseguradora_id = $aseguradora_id;
     $trabajador->inicio = $inicio;
     $trabajador->fin = $fin;
     $trabajador->sueldo = $sueldo;
+    $trabajador->af = $af;
+    $trabajador->he = $he;
     $trabajador->cuenta = mb_strtoupper($cuenta);
     $trabajador->banco = mb_strtoupper($banco);
     $trabajador->cci = $cci;
