@@ -40,7 +40,7 @@
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>S</b>GM</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>SISGEM</b> 1.0</span>
+      <span class="logo-lg"><b>SISGEM</b> 1.1</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -54,46 +54,20 @@
 
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-          <!-- Notifications: style can be found in dropdown.less -->
-          <li class="dropdown notifications-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-bell-o"></i>
-              <span class="label label-warning">10</span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="header">Tienes una alerta</li>
-              <li>
-                <!-- inner menu: contains the actual data -->
-                <ul class="menu">
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-users text-aqua"></i> 5 licencias expiradas.
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i class="fa fa-users text-aqua"></i> 5 licencias por expirar.
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li class="footer"><a href="#">Ver todos</a></li>
-            </ul>
-          </li>
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="<?=URL::to('dist/img/user2-160x160.jpg')?>" class="user-image" alt="User Image">
+              <img src="<?=URL::to('dist/img/user2-160x160.png')?>" class="user-image" alt="User Image">
               <span class="hidden-xs">{{Auth::user()->persona->nombre}}</span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="<?=URL::to('dist/img/user2-160x160.jpg')?>" class="img-circle" alt="User Image">
+                <img src="<?=URL::to('dist/img/user2-160x160.png')?>" class="img-circle" alt="User Image">
 
                 <p>
                   {{Auth::user()->persona->nombre}} - Administrador
-                  <small><optgroup></optgroup></small>
+                  <small><optgroup>jk</optgroup></small>
                 </p>
               </li>
               <!-- Menu Footer-->
@@ -115,10 +89,10 @@
     <section class="sidebar">
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="<?=URL::to('dist/img/user2-160x160.jpg')?>" class="img-circle" alt="User Image">
+          <img src="<?=URL::to('dist/img/user2-160x160.png')?>" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>{{Auth::user()->persona->nombre}}</p>
+          <p>{{Auth::user()->persona->apellidos}}</p>
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
@@ -192,7 +166,7 @@
           </li>
           <li class="treeview">
             <a href="#">
-              <i class="fa fa-money"></i> <span>Pagos *</span>
+              <i class="fa fa-money"></i> <span>Pagos</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
@@ -318,14 +292,14 @@
           </li>
           <li class="treeview">
             <a href="#">
-              <i class="fa fa-file-text"></i> <span>Emisión de recibos *</span>
+              <i class="fa fa-file-text"></i> <span>Emisión de recibos</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
             </a>
             <ul class="treeview-menu">
               @foreach(Empresa::all() as $empresa)
-              <li><a href="#">
+              <li><a href="<?=URL::to('recibo/inicio/'.$empresa->ruc)?>">
                 <i class="fa fa-circle-o"></i> {{$empresa->nombre}}</a></li>
               @endforeach
             </ul>
@@ -338,21 +312,21 @@
               </span>
             </a>
             <ul class="treeview-menu">
-              <li><a href="<?=URL::to('documento')?>"><i class="fa fa-circle-o"></i> 
+              <li><a href="<?=URL::to('documento')?>"><i class="fa fa-circle-o"></i>
                 Documentos</a></li>
-              <li><a href="<?=URL::to('cargo')?>"><i class="fa fa-circle-o"></i> 
+              <li><a href="<?=URL::to('cargo')?>"><i class="fa fa-circle-o"></i>
                 Cargos</a></li>
-              <li><a href="<?=URL::to('area')?>"><i class="fa fa-circle-o"></i> 
+              <li><a href="<?=URL::to('area')?>"><i class="fa fa-circle-o"></i>
                 Areas</a></li>
-              <li><a href="<?=URL::to('tipoMemorandum')?>"><i class="fa fa-circle-o"></i> 
+              <li><a href="<?=URL::to('tipoMemorandum')?>"><i class="fa fa-circle-o"></i>
                 Tipo Memorandums</a></li>
-              <li><a href="<?=URL::to('turno')?>"><i class="fa fa-circle-o"></i> 
+              <li><a href="<?=URL::to('turno')?>"><i class="fa fa-circle-o"></i>
                 Turnos</a></li>
-              <li><a href="<?=URL::to('descuento')?>"><i class="fa fa-circle-o"></i> 
+              <li><a href="<?=URL::to('descuento')?>"><i class="fa fa-circle-o"></i>
                 Descuentos</a></li>
-              <li><a href="<?=URL::to('bonificacion')?>"><i class="fa fa-circle-o"></i> 
+              <li><a href="<?=URL::to('bonificacion')?>"><i class="fa fa-circle-o"></i>
                 Bonificaciones</a></li>
-              <li><a href="<?=URL::to('aseguradora')?>"><i class="fa fa-circle-o"></i> 
+              <li><a href="<?=URL::to('aseguradora')?>"><i class="fa fa-circle-o"></i>
                 Aseguradoras</a></li>
             </ul>
           </li>
