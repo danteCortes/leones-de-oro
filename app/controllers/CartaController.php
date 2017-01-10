@@ -65,7 +65,7 @@ class CartaController extends BaseController{
   public function postNuevo(){
 
     set_time_limit(300);
-    
+
     if(Input::get('contenido') == ''){
       $mensaje = "EL CONTENIDO DE LA CARTA NO DEBE SER VACIO. INTENTE NUEVAMENTE.";
       return Redirect::to('carta/nuevo/'.Input::get('empresa_ruc'))
@@ -78,7 +78,7 @@ class CartaController extends BaseController{
       if(!Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
         ->where('anio', '=', date('Y'))->first()->anio){
 
-        $mensaje = "NO SE CONFIGURO EL NOMBRE DEL AÑO, RECUERDE QUE ESTO SOLO SE HACE UNA VEZ AL 
+        $mensaje = "NO SE CONFIGURO EL NOMBRE DEL AÑO, RECUERDE QUE ESTO SOLO SE HACE UNA VEZ AL
         AÑO. INTENTE NUEVAMENTE.";
         return Redirect::to('carta/nuevo/'.Input::get('empresa_ruc'))
           ->with('rojo', $mensaje);
@@ -90,22 +90,32 @@ class CartaController extends BaseController{
       if(!Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
       ->where('anio', '=', date('Y'))->first()->inicio_carta){
 
-        $mensaje = "NO SE CONFIGURO LA NUMERACION DE LAS CARTAS, RECUERDE QUE ESTO SOLO SE HACE UNA VEZ AL 
+        $mensaje = "NO SE CONFIGURO LA NUMERACION DE LAS CARTAS, RECUERDE QUE ESTO SOLO SE HACE UNA VEZ AL
         AÑO. INTENTE NUEVAMENTE.";
         return Redirect::to('carta/nuevo/'.Input::get('empresa_ruc'))
           ->with('rojo', $mensaje);
       }else{
+
         if(Carta::where('empresa_ruc', '=', Input::get('empresa_ruc'))
-          ->orderBy('numero', 'desc')->first()){
-          $nro = Carta::where('empresa_ruc', '=', Input::get('empresa_ruc'))
-            ->orderBy('numero', 'desc')->first()->numero + 1;
+          ->orderBy('id', 'desc')->first()){
+
+          if(date('Y', strtotime(Carta::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+            ->orderBy('id', 'desc')->first()->redaccion)) == date('Y')){
+
+            $nro = Carta::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+              ->orderBy('id', 'desc')->first()->numero + 1;
+          }else{
+
+            $nro = Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+              ->where('anio', '=', date('Y'))->first()->inicio_carta;
+          }
         }else{
           $nro = Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
             ->where('anio', '=', date('Y'))->first()->inicio_carta;
         }
       }
     }else{
-      $mensaje = "NO SE CONFIGURO EL NOMBRE DEL AÑO, RECUERDE QUE ESTO SOLO SE HACE UNA VEZ AL 
+      $mensaje = "NO SE CONFIGURO EL NOMBRE DEL AÑO, RECUERDE QUE ESTO SOLO SE HACE UNA VEZ AL
       AÑO. INTENTE NUEVAMENTE.";
       return Redirect::to('carta/nuevo/'.Input::get('empresa_ruc'))
         ->with('rojo', $mensaje);
@@ -138,7 +148,7 @@ class CartaController extends BaseController{
         <meta http-equiv='Content-Type' content='text/html; charset=ISO-8859-1'>
         <meta http-equiv='X-UA-Compatible' content='IE=edge'>
         <title>".$carta->codigo."</title>
-        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' 
+        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
           name='viewport'>
       </head>
       <body>
@@ -245,7 +255,7 @@ class CartaController extends BaseController{
         <meta http-equiv='Content-Type' content='text/html; charset=ISO-8859-1'>
         <meta http-equiv='X-UA-Compatible' content='IE=edge'>
         <title>".$carta->codigo."</title>
-        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' 
+        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
           name='viewport'>
       </head>
       <body>

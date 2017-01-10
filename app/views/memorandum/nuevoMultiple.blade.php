@@ -52,8 +52,8 @@ Memorandum | Nuevo
             @if(Variable::where('empresa_ruc', '=', $empresa->ruc)->where('anio', '=', date('Y'))->first())
               @if(Variable::where('empresa_ruc', '=', $empresa->ruc)->where('anio', '=', date('Y'))->first()->inicio_memorandum)
                 @if(Memorandum::where('empresa_ruc', '=', $empresa->ruc)->where('redaccion', 'like', '%'.date('Y').'%')
-                  ->orderBy('numero', 'desc')->first())
-                  {{Memorandum::where('empresa_ruc', '=', $empresa->ruc)->orderBy('numero', 'desc')->first()->numero+1}}
+                  ->orderBy('id', 'desc')->first())
+                  {{Memorandum::where('empresa_ruc', '=', $empresa->ruc)->orderBy('id', 'desc')->first()->numero+1}}
                 @else
                   {{Variable::where('empresa_ruc', '=', $empresa->ruc)->where('anio', '=', date('Y'))->first()->inicio_memorandum}}
                 @endif
@@ -74,7 +74,7 @@ Memorandum | Nuevo
                           <div class="form-group">
                             {{Form::label(null, 'Numeración*:', array('class'=>'control-label col-sm-6'))}}
                             <div class="col-sm-6">
-                              {{Form::text('numero', null, array('class'=>'form-control input-sm numero', 
+                              {{Form::text('numero', null, array('class'=>'form-control input-sm numero',
                               'id'=>'numero', 'required'=>''))}}
                             </div>
                           </div>
@@ -106,7 +106,7 @@ Memorandum | Nuevo
                         <div class="form-group">
                           {{Form::label(null, 'Numeración*:', array('class'=>'control-label col-sm-6'))}}
                           <div class="col-sm-6">
-                            {{Form::text('numero', null, array('class'=>'form-control input-sm numero', 
+                            {{Form::text('numero', null, array('class'=>'form-control input-sm numero',
                             'id'=>'numero', 'required'=>''))}}
                           </div>
                         </div>
@@ -121,11 +121,11 @@ Memorandum | Nuevo
                 </div>
               </div>
             @endif
-            </label> - {{date('Y')}}/<label id="codigo">X</label>/{{$empresa->nombre}}  
+            </label> - {{date('Y')}}/<label id="codigo">X</label>/{{$empresa->nombre}}
             <small>Redactar</small>
           </h3>
         </div>
-        {{Form::open(array('url'=>'memorandum/nuevo-multiple', 'class'=>'form-horizontal', 
+        {{Form::open(array('url'=>'memorandum/nuevo-multiple', 'class'=>'form-horizontal',
           'method'=>'post', 'id'=>'formulario'))}}
           <div class="box-body">
             <div class="form-group">
@@ -134,7 +134,7 @@ Memorandum | Nuevo
                 <select name="remite" class="form-control input-sm" required id="usuario">
                   <option value="">SELECIONAR</option>
                   @foreach($empresa->usuarios as $usuario)
-                    <option value="{{$usuario->id}}">{{$usuario->persona->nombre}} 
+                    <option value="{{$usuario->id}}">{{$usuario->persona->nombre}}
                       {{$usuario->persona->apellidos}}</option>
                   @endforeach
                 </select>
@@ -167,7 +167,7 @@ Memorandum | Nuevo
               <div class="col-xs-10" id="trabajadores">
                 {{Form::text('destinatario','' , array('class'=>'form-control input-sm mayuscula'
                   ,'placeholder'=>'DESTINATARIO', 'id'=>'trabajador'))}}
-                {{Form::button('Agregar', array('id'=>'btnAgregar', 
+                {{Form::button('Agregar', array('id'=>'btnAgregar',
                   'class'=>'btn btn-success btn-xs'))}}
               </div>
             </div>
@@ -205,7 +205,7 @@ Memorandum | Nuevo
                   </textarea>
                 </div>
               </div>
-              {{Form::button('Guardar', array('class'=>'btn btn-primary', 'type'=>'submit', 
+              {{Form::button('Guardar', array('class'=>'btn btn-primary', 'type'=>'submit',
                 'id'=>'guardar'))}}
               <a href="<?=URL::to('memorandum/inicio/'.$empresa->ruc)?>"
                 class="btn btn-warning pull-right">Atras</a>
@@ -291,7 +291,7 @@ Memorandum | Nuevo
           $.ajax({
             url: "<?=URL::to('memorandum/agregar-trabajador')?>",
             type: 'POST',
-            data: {trabajador_nombre_apellidos: $("#trabajador").val(), empresa_ruc: 
+            data: {trabajador_nombre_apellidos: $("#trabajador").val(), empresa_ruc:
               $("#empresa_ruc").val()},
             error: function(){
               alert("hubo un error en la conexión con el controlador");

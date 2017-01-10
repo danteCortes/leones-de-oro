@@ -45,7 +45,7 @@ class MemorandumController extends BaseController{
     $trabajadores = $empresa->trabajadores;
 
     foreach($trabajadores as $trabajador){
-      
+
       if(Input::get('trabajador_nombre_apellidos') == $trabajador->persona->nombre." ".
         $trabajador->persona->apellidos){
         return $trabajador;
@@ -69,23 +69,34 @@ class MemorandumController extends BaseController{
       if(!Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
       ->where('anio', '=', date('Y'))->first()->inicio_memorandum){
 
-        $mensaje = "NO SE CONFIGURO LA NUMERACION DE LOS MEMORANDUMS, RECUERDE QUE ESTO SOLO 
+        $mensaje = "NO SE CONFIGURO LA NUMERACION DE LOS MEMORANDUMS, RECUERDE QUE ESTO SOLO
         SE HACE UNA VEZ AL AÑO. INTENTE NUEVAMENTE.";
         return Redirect::to('memorandum/nuevo/'.Input::get('empresa_ruc'))
           ->with('rojo', $mensaje);
       }else{
+
         if(Memorandum::where('empresa_ruc', '=', Input::get('empresa_ruc'))
-          ->orderBy('numero', 'desc')->first()){
-          $nro = Memorandum::where('empresa_ruc', '=', Input::get('empresa_ruc'))
-            ->orderBy('numero', 'desc')->first()->numero + 1;
+          ->orderBy('id', 'desc')->first()){
+
+          if(date('Y', strtotime(Memorandum::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+            ->orderBy('id', 'desc')->first()->redaccion)) == date('Y')){
+
+            $nro = Memorandum::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+              ->orderBy('id', 'desc')->first()->numero + 1;
+          }else{
+
+            $nro = Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+              ->where('anio', '=', date('Y'))->first()->inicio_memorandum;
+          }
         }else{
+          
           $nro = Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
             ->where('anio', '=', date('Y'))->first()->inicio_memorandum;
         }
       }
     }else{
-      $mensaje = "NO SE CONFIGURO EL NOMBRE DEL AÑO, RECUERDE QUE ESTO SOLO SE HACE UNA VEZ AL 
-      AÑO. INTENTE NUEVAMENTE.";
+      $mensaje = "NO SE CONFIGURO LA NUMERACION DE LOS MEMORANDUMS, RECUERDE QUE ESTO SOLO
+      SE HACE UNA VEZ AL AÑO. INTENTE NUEVAMENTE.";
       return Redirect::to('memorandum/nuevo/'.Input::get('empresa_ruc'))
         ->with('rojo', $mensaje);
     }
@@ -125,7 +136,7 @@ class MemorandumController extends BaseController{
         }
       }
     }
-    
+
     foreach ($empresa->trabajadores as $trabajador) {
       if(Input::get('trabajador'.$trabajador->persona_dni) == $trabajador->persona_dni){
         foreach ($trabajadores as $key) {
@@ -169,7 +180,7 @@ class MemorandumController extends BaseController{
           <meta http-equiv='Content-Type' content='text/html; charset=ISO-8859-1'>
           <meta http-equiv='X-UA-Compatible' content='IE=edge'>
           <title>".$memorandum->codigo."</title>
-          <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' 
+          <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
             name='viewport'>
         </head>
         <body>
@@ -248,7 +259,7 @@ class MemorandumController extends BaseController{
     $area = Area::find($empresa->usuarios()->find($usuario->id)->area_id);
     return Response::json($area);
   }
-  
+
   public function postNuevo(){
     set_time_limit(300);
 
@@ -264,22 +275,33 @@ class MemorandumController extends BaseController{
       if(!Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
       ->where('anio', '=', date('Y'))->first()->inicio_memorandum){
 
-        $mensaje = "NO SE CONFIGURO LA NUMERACION DE LOS MEMORANDUMS, RECUERDE QUE ESTO SOLO 
+        $mensaje = "NO SE CONFIGURO LA NUMERACION DE LOS MEMORANDUMS, RECUERDE QUE ESTO SOLO
         SE HACE UNA VEZ AL AÑO. INTENTE NUEVAMENTE.";
         return Redirect::to('memorandum/nuevo/'.Input::get('empresa_ruc'))
           ->with('rojo', $mensaje);
       }else{
+
         if(Memorandum::where('empresa_ruc', '=', Input::get('empresa_ruc'))
-          ->orderBy('numero', 'desc')->first()){
-          $nro = Memorandum::where('empresa_ruc', '=', Input::get('empresa_ruc'))
-            ->orderBy('numero', 'desc')->first()->numero + 1;
+          ->orderBy('id', 'desc')->first()){
+
+          if(date('Y', strtotime(Memorandum::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+            ->orderBy('id', 'desc')->first()->redaccion)) == date('Y')){
+
+            $nro = Memorandum::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+              ->orderBy('id', 'desc')->first()->numero + 1;
+          }else{
+
+            $nro = Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+              ->where('anio', '=', date('Y'))->first()->inicio_memorandum;
+          }
         }else{
+
           $nro = Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
             ->where('anio', '=', date('Y'))->first()->inicio_memorandum;
         }
       }
     }else{
-      $mensaje = "NO SE CONFIGURO EL NOMBRE DEL AÑO, RECUERDE QUE ESTO SOLO SE HACE UNA VEZ AL 
+      $mensaje = "NO SE CONFIGURO EL NOMBRE DEL AÑO, RECUERDE QUE ESTO SOLO SE HACE UNA VEZ AL
       AÑO. INTENTE NUEVAMENTE.";
       return Redirect::to('memorandum/nuevo/'.Input::get('empresa_ruc'))
         ->with('rojo', $mensaje);
@@ -291,7 +313,7 @@ class MemorandumController extends BaseController{
     $area = Area::find($remite->empresas()->find($empresa->ruc)->area_id);
 
     $codigo = 'MEMORANDUM Nº '.$nro.'-'.date('Y').'/'.$area->abreviatura.'/'.$empresa->nombre;
-    
+
     $memorandum = new Memorandum;
     $memorandum->usuario_id = Auth::user()->id;
     $memorandum->remite = $remite->id;
@@ -315,7 +337,7 @@ class MemorandumController extends BaseController{
           <meta http-equiv='Content-Type' content='text/html; charset=ISO-8859-1'>
           <meta http-equiv='X-UA-Compatible' content='IE=edge'>
           <title>".$memorandum->codigo."</title>
-          <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' 
+          <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
             name='viewport'>
         </head>
         <body>
@@ -420,7 +442,7 @@ class MemorandumController extends BaseController{
     $trabajadores = $empresa->trabajadores;
 
     foreach($trabajadores as $trabajador){
-      
+
       if(Input::get('trabajador_nombre_apellidos') == $trabajador->persona->nombre." ".
         $trabajador->persona->apellidos){
         return $trabajador;
@@ -455,7 +477,7 @@ class MemorandumController extends BaseController{
       return Redirect::to('memorandum/editar/'.$id)
         ->with('rojo', $mensaje);
     }
-    
+
     $memorandum = Memorandum::find($id);
 
     $remite = Usuario::find(Input::get('remite'));
@@ -477,7 +499,7 @@ class MemorandumController extends BaseController{
     $memorandum->save();
 
     foreach ($memorandum->trabajadores as $trabajador) {
-      $memorandum->trabajadores()->updateExistingPivot($trabajador->id, 
+      $memorandum->trabajadores()->updateExistingPivot($trabajador->id,
         array('trabajador_id'=>Input::get('trabajador_id')));
     };
 
@@ -488,7 +510,7 @@ class MemorandumController extends BaseController{
           <meta http-equiv='Content-Type' content='text/html; charset=ISO-8859-1'>
           <meta http-equiv='X-UA-Compatible' content='IE=edge'>
           <title>".$memorandum->codigo."</title>
-          <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' 
+          <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
             name='viewport'>
         </head>
         <body>
@@ -602,7 +624,7 @@ class MemorandumController extends BaseController{
         }
       }
     }
-    
+
     foreach ($empresa->trabajadores as $trabajador) {
       if(Input::get('trabajador'.$trabajador->persona_dni) == $trabajador->persona_dni){
         foreach ($trabajadores as $key) {
@@ -644,7 +666,7 @@ class MemorandumController extends BaseController{
           <meta http-equiv='Content-Type' content='text/html; charset=ISO-8859-1'>
           <meta http-equiv='X-UA-Compatible' content='IE=edge'>
           <title>".$memorandum->codigo."</title>
-          <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' 
+          <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
             name='viewport'>
         </head>
         <body>
@@ -715,7 +737,7 @@ class MemorandumController extends BaseController{
 
   public function deleteBorrar($id){
     set_time_limit(300);
-    
+
     $memorandum = Memorandum::find($id);
     $ruc = $memorandum->empresa_ruc;
     if(Hash::check(Input::get('password'), Auth::user()->password)){

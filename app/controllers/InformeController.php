@@ -78,7 +78,7 @@ class InformeController extends BaseController{
       if(!Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
         ->where('anio', '=', date('Y'))->first()->anio){
 
-        $mensaje = "NO SE CONFIGURO EL NOMBRE DEL AÑO, RECUERDE QUE ESTO SOLO SE HACE UNA VEZ AL 
+        $mensaje = "NO SE CONFIGURO EL NOMBRE DEL AÑO, RECUERDE QUE ESTO SOLO SE HACE UNA VEZ AL
         AÑO. INTENTE NUEVAMENTE.";
         return Redirect::to('informe/nuevo/'.Input::get('empresa_ruc'))
           ->with('rojo', $mensaje);
@@ -90,22 +90,33 @@ class InformeController extends BaseController{
       if(!Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
       ->where('anio', '=', date('Y'))->first()->inicio_informe){
 
-        $mensaje = "NO SE CONFIGURO LA NUMERACION DE LOS INFORMES, RECUERDE QUE ESTO SOLO SE HACE UNA VEZ AL 
+        $mensaje = "NO SE CONFIGURO LA NUMERACION DE LOS INFORMES, RECUERDE QUE ESTO SOLO SE HACE UNA VEZ AL
         AÑO. INTENTE NUEVAMENTE.";
         return Redirect::to('informe/nuevo/'.Input::get('empresa_ruc'))
           ->with('rojo', $mensaje);
       }else{
+
         if(Informe::where('empresa_ruc', '=', Input::get('empresa_ruc'))
-          ->orderBy('numero', 'desc')->first()){
-          $nro = Informe::where('empresa_ruc', '=', Input::get('empresa_ruc'))
-            ->orderBy('numero', 'desc')->first()->numero + 1;
+          ->orderBy('id', 'desc')->first()){
+
+          if(date('Y', strtotime(Informe::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+            ->orderBy('id', 'desc')->first()->redaccion)) == date('Y')){
+
+            $nro = Informe::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+              ->orderBy('id', 'desc')->first()->numero + 1;
+          }else{
+
+            $nro = Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
+              ->where('anio', '=', date('Y'))->first()->inicio_informe;
+          }
         }else{
+
           $nro = Variable::where('empresa_ruc', '=', Input::get('empresa_ruc'))
             ->where('anio', '=', date('Y'))->first()->inicio_informe;
         }
       }
     }else{
-      $mensaje = "NO SE CONFIGURO EL NOMBRE DEL AÑO, RECUERDE QUE ESTO SOLO SE HACE UNA VEZ AL 
+      $mensaje = "NO SE CONFIGURO EL NOMBRE DEL AÑO, RECUERDE QUE ESTO SOLO SE HACE UNA VEZ AL
       AÑO. INTENTE NUEVAMENTE.";
       return Redirect::to('informe/nuevo/'.Input::get('empresa_ruc'))
         ->with('rojo', $mensaje);
@@ -115,7 +126,7 @@ class InformeController extends BaseController{
     $usuario = Usuario::find(Auth::user()->id);
 
     $codigo = 'INFORME Nº '.$nro.'-'.date('Y').'/'.$empresa->nombre;
-    
+
     $informe = new Informe;
     $informe->usuario_id = Auth::user()->id;
     $informe->empresa_ruc = $empresa->ruc;
@@ -139,7 +150,7 @@ class InformeController extends BaseController{
         <meta http-equiv='Content-Type' content='text/html; charset=ISO-8859-1'>
         <meta http-equiv='X-UA-Compatible' content='IE=edge'>
         <title>".$informe->codigo."</title>
-        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' 
+        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
           name='viewport'>
       </head>
       <body>
@@ -256,7 +267,7 @@ class InformeController extends BaseController{
         <meta http-equiv='Content-Type' content='text/html; charset=ISO-8859-1'>
         <meta http-equiv='X-UA-Compatible' content='IE=edge'>
         <title>".$informe->codigo."</title>
-        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' 
+        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
           name='viewport'>
       </head>
       <body>
@@ -327,7 +338,7 @@ class InformeController extends BaseController{
   public function deleteBorrar($id){
 
     set_time_limit(300);
-    
+
     $informe = Informe::find($id);
     $ruc = $informe->empresa_ruc;
     if(Hash::check(Input::get('password'), Auth::user()->password)){

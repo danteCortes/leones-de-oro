@@ -57,17 +57,17 @@
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="<?=URL::to('dist/img/user2-160x160.png')?>" class="user-image" alt="User Image">
+              <img src="<?=URL::to('dist/img/logo.png')?>" class="user-image" alt="Imagen de Usuario">
               <span class="hidden-xs">{{Auth::user()->persona->nombre}}</span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="<?=URL::to('dist/img/user2-160x160.png')?>" class="img-circle" alt="User Image">
+                <img src="<?=URL::to('dist/img/logo.png')?>" class="img-circle" alt="User Image">
 
                 <p>
                   {{Auth::user()->persona->nombre}} - Administrador
-                  <small><optgroup>jk</optgroup></small>
+                  <small><optgroup></optgroup></small>
                 </p>
               </li>
               <!-- Menu Footer-->
@@ -89,10 +89,10 @@
     <section class="sidebar">
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="<?=URL::to('dist/img/user2-160x160.png')?>" class="img-circle" alt="User Image">
+          <img src="<?=URL::to('dist/img/logo.png')?>" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>{{Auth::user()->persona->apellidos}}</p>
+          <p>{{Auth::user()->persona->nombre}}</p>
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>

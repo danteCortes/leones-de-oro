@@ -11,7 +11,7 @@ class TrabajadorController extends BaseController{
   }
 
   public function postContratar(){
-    
+
     $persona = Persona::find(Input::get('dni'));
     if ($persona) {
 
@@ -25,19 +25,19 @@ class TrabajadorController extends BaseController{
       }else{
         $trabajador = $this->guardarTrabajador($persona->dni, Input::get('empresa'), Input::get('aseguradora_id'),
           $this->formatoFecha(Input::get('inicio')), $this->formatoFecha(Input::get('fin')),
-          Input::get('sueldo'), Input::get('af'), Input::get('he'), Input::get('cuenta'), 
+          Input::get('sueldo'), Input::get('af'), Input::get('he'), Input::get('cuenta'),
           Input::get('banco'), Input::get('cci'));
 
         if ($this->guardarFoto(Input::file('foto'), $trabajador->id)) {
-          
+
           if ($this->guardarDocumento(Input::file('contrato'), $trabajador->id, 8)) {
-        
+
             $mensaje = "EL TRABAJADOR FUE CONTRATADO CON EXITO.";
             return Redirect::to('trabajador/inicio/'.Input::get('empresa'))
               ->with('verde', $mensaje);
           }else{
 
-            $mensaje = "EL TRABAJADOR FUE CONTRATADO CON EXITO, PERO DEBE INGRESAR SU 
+            $mensaje = "EL TRABAJADOR FUE CONTRATADO CON EXITO, PERO DEBE INGRESAR SU
               CONTRATO.";
             return Redirect::to('trabajador/inicio/'.Input::get('empresa'))
               ->with('naranja', $mensaje);
@@ -45,7 +45,7 @@ class TrabajadorController extends BaseController{
         }else{
 
           if ($this->guardarDocumento(Input::file('contrato'), $trabajador->id, 8)) {
-        
+
             $mensaje = "EL TRABAJADOR FUE CONTRATADO CON EXITO, PERO DEBE ACTUALIZAR SU
               FOTO.";
             return Redirect::to('trabajador/inicio/'.Input::get('empresa'))
@@ -66,19 +66,19 @@ class TrabajadorController extends BaseController{
 
       $trabajador = $this->guardarTrabajador($persona->dni, Input::get('empresa'), Input::get('aseguradora_id'),
         $this->formatoFecha(Input::get('inicio')), $this->formatoFecha(Input::get('fin')),
-        Input::get('sueldo'), Input::get('af'), Input::get('he'), Input::get('cuenta'), 
+        Input::get('sueldo'), Input::get('af'), Input::get('he'), Input::get('cuenta'),
         Input::get('banco'), Input::get('cci'));
 
       if ($this->guardarFoto(Input::file('foto'), $trabajador->id)) {
-          
+
         if ($this->guardarDocumento(Input::file('contrato'), $trabajador->id, 8)) {
-      
+
           $mensaje = "EL TRABAJADOR FUE CONTRATADO CON EXITO.";
           return Redirect::to('trabajador/inicio/'.Input::get('empresa'))
             ->with('verde', $mensaje);
         }else{
 
-          $mensaje = "EL TRABAJADOR FUE CONTRATADO CON EXITO, PERO DEBE INGRESAR SU 
+          $mensaje = "EL TRABAJADOR FUE CONTRATADO CON EXITO, PERO DEBE INGRESAR SU
             CONTRATO.";
           return Redirect::to('trabajador/inicio/'.Input::get('empresa'))
             ->with('naranja', $mensaje);
@@ -86,7 +86,7 @@ class TrabajadorController extends BaseController{
       }else{
 
         if ($this->guardarDocumento(Input::file('contrato'), $trabajador->id, 8)) {
-      
+
           $mensaje = "EL TRABAJADOR FUE CONTRATADO CON EXITO, PERO DEBE ACTUALIZAR SU
             FOTO.";
           return Redirect::to('trabajador/inicio/'.Input::get('empresa'))
@@ -114,13 +114,13 @@ class TrabajadorController extends BaseController{
 
     if ($this->guardarDocumento(Input::file('archivo'), Input::get('trabajador_id')
       ,Input::get('documento_id'))) {
-      
+
       $mensaje = "EL ARCHIVO FUE GUARDADO CON EXITO.";
       return Redirect::to('trabajador/ver/'.Input::get('trabajador_id'))
         ->with('verde', $mensaje);
     }else{
 
-      $mensaje = "HUBO UN ERROR AL GUARDAR EL ARCHIVO. EL FORMATO DEL ARCHIVO DEBE SER .pdf 
+      $mensaje = "HUBO UN ERROR AL GUARDAR EL ARCHIVO. EL FORMATO DEL ARCHIVO DEBE SER .pdf
       INTENTE NUEVAMENTE.";
       return Redirect::to('trabajador/ver/'.Input::get('trabajador_id'))
         ->with('rojo', $mensaje);
@@ -143,7 +143,7 @@ class TrabajadorController extends BaseController{
       $this->actualizarTrabajador($id, Input::get('aseguradora_id'), $this->formatoFecha(Input::get('inicio')),
         $this->formatoFecha(Input::get('fin')), Input::get('sueldo'), Input::get('af'), Input::get('he'), Input::get('cuenta'),
         Input::get('banco'), Input::get('cci'));
-      
+
       $mensaje = "LOS DATOS DEL TRABAJADOR SE ACTUALIZARON CON EXITO.";
       return Redirect::to('trabajador/inicio/'.$trabajador->empresa->ruc)->with('verde', $mensaje);
     }else{
@@ -156,7 +156,7 @@ class TrabajadorController extends BaseController{
   public function putFoto($id){
 
     if ($this->guardarFoto(Input::file('foto'), $id)) {
-      
+
       $mensaje = "LA FOTO FUE ACTUALIZADA CON EXITO.";
       return Redirect::to("trabajador/editar/".$id)->with('verde', $mensaje);
     }else{
@@ -173,7 +173,7 @@ class TrabajadorController extends BaseController{
     $persona = $trabajador->persona;
     $documentos = $trabajador->documentos;
     if (Hash::check(Input::get('password'), Auth::user()->password)) {
-      
+
       foreach ($documentos as $documento) {
 
         File::delete('documentos/documentos/'.$documento->pivot->nombre);
@@ -248,7 +248,7 @@ class TrabajadorController extends BaseController{
         if ($punto->trabajadores->find(Input::get('trabajador_id'))) {
           //Si el trabajador ya esta relacionado con el punto de trabajo, actualizamos los
           //datos del registro
-          $punto->trabajadores()->updateExistingPivot(Input::get('trabajador_id'), 
+          $punto->trabajadores()->updateExistingPivot(Input::get('trabajador_id'),
             array('cargo_id'=>Input::get('cargo')));
         }else{
           //si no esta relacionado, creamos un nuevo registro en la tabla punto_trabajador
@@ -256,18 +256,18 @@ class TrabajadorController extends BaseController{
           $punto->trabajadores()->attach(Input::get('trabajador_id'), array('cargo_id'=>
             Input::get('cargo')));
         }
-        //Si el punto no existe regresamos a la vista de ver trabajador con un mensaje 
+        //Si el punto no existe regresamos a la vista de ver trabajador con un mensaje
         //informando el error.
         $mensaje = "EL PUNTO DE TRABAJO FUE AGREGADO CORRECTAMENTE AL TRABAJADOR.";
         return Redirect::to('trabajador/ver/'.Input::get('trabajador_id'))->with('verde', $mensaje);
       }else{
-        //Si el punto no existe regresamos a la vista de ver trabajador con un mensaje 
+        //Si el punto no existe regresamos a la vista de ver trabajador con un mensaje
         //informando el error.
         $mensaje = "HUBO UN ERROR CON EL PUNTO DE TRABAJO, VUELVA A INTENTARLO";
         return Redirect::to('trabajador/ver/'.Input::get('trabajador_id'))->with('rojo', $mensaje);
       }
     }else{
-      //Si el cliente no existe regresamos a la vista de ver trabajador con un mensaje 
+      //Si el cliente no existe regresamos a la vista de ver trabajador con un mensaje
       //informando el error.
       $mensaje = "HUBO UN ERROR CON EL CLIENTE, VUELVA A INTENTARLO";
       return Redirect::to('trabajador/ver/'.Input::get('trabajador_id'))->with('rojo', $mensaje);
@@ -403,6 +403,9 @@ class TrabajadorController extends BaseController{
     $trabajador = new Trabajador;
     $trabajador->persona_dni = $persona_dni;
     $trabajador->empresa_ruc = $empresa_ruc;
+    if (!$aseguradora_id) {
+      $aseguradora_id = null;
+    }
     $trabajador->aseguradora_id = $aseguradora_id;
     $trabajador->inicio = $inicio;
     $trabajador->fin = $fin;
@@ -421,12 +424,12 @@ class TrabajadorController extends BaseController{
   private function guardarFoto($foto, $trabajador_id){
 
     if ($foto) {
-      
+
       $extencion = explode('.', trim($foto->getClientOriginalName()));
       $extencion = $extencion[count($extencion)-1];
 
       if ($extencion == 'jpg' || $extencion == 'JPG') {
-        
+
         $foto->move("documentos/fotos", $trabajador_id.".".$extencion);
 
         $trabajador = Trabajador::find($trabajador_id);
@@ -444,20 +447,20 @@ class TrabajadorController extends BaseController{
   private function guardarDocumento($archivo, $trabajador_id, $documento_id){
 
     if ($archivo) {
-      
+
       $extencion = explode('.', trim($archivo->getClientOriginalName()));
       $extencion = $extencion[count($extencion)-1];
 
       if ($extencion == 'pdf' || $extencion == 'PDF') {
 
         $documento = Documento::find($documento_id);
-        
+
         $archivo->move("documentos/documentos", $trabajador_id.$documento->nombre."."
           .$extencion);
 
         $trabajador = Trabajador::find($trabajador_id);
         if (!$trabajador->documentos()->find($documento_id)) {
-          
+
           $trabajador->documentos()->attach($documento_id, array('nombre'=>$trabajador->id
             .$documento->nombre.'.'.$extencion));
         }
@@ -478,7 +481,7 @@ class TrabajadorController extends BaseController{
   private function actualizarPersona($id, $dni, $nombre, $apellidos, $direccion, $telefono){
 
     if ($id == $dni) {
-      
+
       $persona = Persona::find($id);
       $persona->dni = $dni;
       $persona->nombre = mb_strtoupper($nombre);
@@ -492,7 +495,7 @@ class TrabajadorController extends BaseController{
 
       $persona = Persona::find($dni);
       if ($persona) {
-        
+
         return false;
       }else{
 
