@@ -1,15 +1,14 @@
-s<?php
+<?php
 
 class EmpresaController extends \BaseController {
 
   public function index(){
-    
     $empresas = Empresa::all();
-    return View::make('empresa.inicio')->with('empresas', $empresas);
+    return View::make('empresa.inicio2')->with('empresas', $empresas);
   }
 
   public function store(){
-    
+
     $empresa = new Empresa;
     $empresa->ruc = Input::get('ruc');
     $empresa->nombre = mb_strtoupper(Input::get('nombre'));
